@@ -1,0 +1,22 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+.vscode/
+.idea/
+*.sublime-*
+
+# Temporary Files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Node modules (if you ever add them)
+node_modules/
+
+# Environment variables
+.env
+.env.local

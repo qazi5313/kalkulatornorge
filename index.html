@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Norske Kalkulatorer 2025 - Gratis Verktøy</title>
+    <meta name="description" content="Gratis norske kalkulatorer for skatt, feriepenger, lønn, pendlerfradrag og mer. Enkle og nøyaktige beregningsverktøy for 2025.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .year-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .category-section {
+            margin-bottom: 40px;
+        }
+
+        .category-title {
+            color: white;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1.1em;
+            }
+
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                gap: 20px;
+            }
+
+            .stat-item {
+                padding: 15px 20px;
+            }
+
+            .category-title {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Norske Kalkulatorer 2025</h1>
+            <p>Gratis og enkle beregningsverktøy for 2025</p>
+            <div class="year-badge">✨ Oppdatert for 2025</div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Kalkulatorer</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Gratis</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2025</span>
+                    <span class="stat-label">Oppdatert</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOBB & LØNN SECTION -->
+        <div class="category-section">
+            <h2 class="category-title">💼 Jobb & Lønn</h2>
+            <div class="calculator-grid">
+                <a href="skatt.html" class="calculator-card">
+                    <div class="card-icon">💰</div>
+                    <div class="card-title">Skattekalkulator</div>
+                    <div class="card-description">Beregn skatten din basert på inntekt og fradrag for 2025</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+
+                <a href="brutto-netto.html" class="calculator-card">
+                    <div class="card-icon">💵</div>
+                    <div class="card-title">Brutto/Netto Lønn</div>
+                    <div class="card-description">Konverter mellom brutto og netto månedslønn</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+
+                <a href="feriepenger.html" class="calculator-card">
+                    <div class="card-icon">🏖️</div>
+                    <div class="card-title">Feriepengekalkulator</div>
+                    <div class="card-description">Regn ut hvor mye feriepenger du får med 10,2% eller 12%</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+
+                <a href="overtid.html" class="calculator-card">
+                    <div class="card-icon">⏰</div>
+                    <div class="card-title">Overtidsbetaling</div>
+                    <div class="card-description">Regn ut overtidsbetaling med 50% eller 100% tillegg</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+
+                <a href="arbeidsgiveravgift.html" class="calculator-card">
+                    <div class="card-icon">💼</div>
+                    <div class="card-title">Arbeidsgiveravgift</div>
+                    <div class="card-description">Beregn arbeidsgiveravgift basert på sone (0-14,1%)</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- HUSHOLDNING SECTION -->
+        <div class="category-section">
+            <h2 class="category-title">🏠 Husholdning</h2>
+            <div class="calculator-grid">
+                <a href="stromkostnad.html" class="calculator-card">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">Strømkostnad</div>
+                    <div class="card-description">Regn ut strømregningen din med spotpris og påslag</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+
+                <a href="bilkostnad.html" class="calculator-card">
+                    <div class="card-icon">🚗</div>
+                    <div class="card-title">Bilkostnad</div>
+                    <div class="card-description">Beregn årlige kostnader for bil - bensin, diesel eller elbil</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- FAMILIE & HELSE SECTION -->
+        <div class="category-section">
+            <h2 class="category-title">👨‍👩‍👧 Familie & Helse</h2>
+            <div class="calculator-grid">
+                <a href="barnebidrag.html" class="calculator-card">
+                    <div class="card-icon">👶</div>
+                    <div class="card-title">Barnebidrag</div>
+                    <div class="card-description">Beregn månedlig barnebidrag basert på NAVs satser</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+
+                <a href="sykepenger.html" class="calculator-card">
+                    <div class="card-icon">🏥</div>
+                    <div class="card-title">Sykepenger</div>
+                    <div class="card-description">Beregn sykepenger fra arbeidsgiver og NAV</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- TRANSPORT SECTION -->
+        <div class="category-section">
+            <h2 class="category-title">🚗 Transport</h2>
+            <div class="calculator-grid">
+                <a href="pendlerfradrag.html" class="calculator-card">
+                    <div class="card-icon">🚗</div>
+                    <div class="card-title">Pendlerfradrag</div>
+                    <div class="card-description">Beregn reisefradrag for jobbreiser over 5 mil</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+
+                <a href="tilhengervekt.html" class="calculator-card">
+                    <div class="card-icon">🚛</div>
+                    <div class="card-title">Tilhengervekt</div>
+                    <div class="card-description">Sjekk om du kan trekke tilhengeren lovlig med ditt førerkort</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- NÆRING SECTION -->
+        <div class="category-section">
+            <h2 class="category-title">💰 Næring</h2>
+            <div class="calculator-grid">
+                <a href="timelonn-frilanser.html" class="calculator-card">
+                    <div class="card-icon">💼</div>
+                    <div class="card-title">Timelønn for Frilansere</div>
+                    <div class="card-description">Beregn riktig timepris som selvstendig næringsdrivende</div>
+                    <span class="status active">✓ Tilgjengelig</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Alle kalkulatorer er oppdatert for 2025</strong></p>
+            <p>Gratis verktøy for nordmenn - ingen registrering nødvendig</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">💡 Tips: Bokmerk denne siden for enkel tilgang</p>
+        </div>
+    </div>
+</body>
+</html>

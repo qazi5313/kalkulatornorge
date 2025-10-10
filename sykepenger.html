@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sykepengekalkulator 2025 - Beregn Sykepenger</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .top-nav {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .back-button {
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: #f8f9fa;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: #f8f9fa;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 280px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            z-index: 1000;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-category {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            font-weight: 700;
+            color: #333;
+            font-size: 0.9em;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.2s;
+            font-size: 0.95em;
+        }
+
+        .dropdown-content a:hover {
+            background: #f0f4ff;
+            color: #667eea;
+        }
+
+        .dropdown-content a.current {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .breakdown-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .breakdown-title {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .timeline-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .total-box {
+            margin-top: 20px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .total-value {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .sources-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .sources-box h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .sources-box a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .sources-box a:hover {
+            text-decoration: underline;
+        }
+
+        .bottom-nav {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a href="index.html" class="back-button">← Tilbake Hjem</a>
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown()">📊 Andre Kalkulatorer ▼</button>
+            <div id="dropdownMenu" class="dropdown-content">
+                <div class="dropdown-category">💼 Jobb & Lønn</div>
+                <a href="skatt.html">Skattekalkulator</a>
+                <a href="brutto-netto.html">Brutto/Netto Lønn</a>
+                <a href="feriepenger.html">Feriepengekalkulator</a>
+                <a href="overtid.html">Overtidsbetaling</a>
+                <a href="arbeidsgiveravgift.html">Arbeidsgiveravgift</a>
+                <div class="dropdown-category">🏠 Husholdning</div>
+                <a href="stromkostnad.html">Strømkostnad</a>
+                <a href="bilkostnad.html">Bilkostnad</a>
+                <div class="dropdown-category">👨‍👩‍👧 Familie & Helse</div>
+                <a href="barnebidrag.html">Barnebidrag</a>
+                <a href="sykepenger.html" class="current">Sykepenger</a>
+                <div class="dropdown-category">🚗 Transport</div>
+                <a href="pendlerfradrag.html">Pendlerfradrag</a>
+                <a href="tilhengervekt.html">Tilhengervekt</a>
+                <div class="dropdown-category">💰 Næring</div>
+                <a href="timelonn-frilanser.html">Timelønn for Frilansere</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Sykepengekalkulator 2025</h1>
+            <p>Beregn hva du får utbetalt under sykefravær</p>
+        </div>
+
+        <div class="content">
+            <div class="input-group">
+                <label for="salary">Månedslønn (brutto kr):</label>
+                <input type="number" id="salary" placeholder="f.eks. 45000" min="0">
+            </div>
+
+            <div class="input-group">
+                <label for="sickDays">Antall sykedager:</label>
+                <input type="number" id="sickDays" placeholder="f.eks. 10" min="1">
+            </div>
+
+            <div class="input-group">
+                <label for="employmentType">Ansettelsesforhold:</label>
+                <select id="employmentType">
+                    <option value="employee">Fast ansatt</option>
+                    <option value="selfEmployed">Selvstendig næringsdrivende</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="calculate()">Beregn Sykepenger</button>
+
+            <div id="result" class="result">
+                <div class="result-title">📊 Sykepenger Beregning</div>
+                
+                <div class="breakdown-box">
+                    <div class="breakdown-title">🏥 Slik fungerer sykepenger:</div>
+                    <div class="timeline-item">
+                        <strong>Dag 1-3: Egenmelding</strong><br>
+                        <span id="day1to3">0 kr</span> (ingen utbetaling - arbeidsgiverperiode)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Dag 4-16: Arbeidsgiver</strong><br>
+                        <span id="day4to16">0 kr</span>
+                    </div>
+                    <div class="timeline-item" id="navPeriod" style="display:none;">
+                        <strong>Dag 17+: NAV</strong><br>
+                        <span id="day17plus">0 kr</span>
+                    </div>
+                </div>
+
+                <div class="total-box">
+                    <div class="total-label">Total sykepengeutbetaling</div>
+                    <div class="total-value" id="totalPay">0 kr</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>ℹ️ Om Sykepenger i Norge</h3>
+                <p><strong>Slik fungerer systemet:</strong></p>
+                <p>• <strong>Dag 1-3:</strong> Egenmelding - ingen betaling (arbeidsgiverperiode)</p>
+                <p>• <strong>Dag 4-16:</strong> Arbeidsgiver dekker 100% av lønnen</p>
+                <p>• <strong>Dag 17+:</strong> NAV overtar og betaler opptil 6G (ca. 744 168 kr/år)</p>
+                <p style="margin-top: 10px;"><strong>Selvstendig næringsdrivende:</strong></p>
+                <p>• Må vente 16 dager før sykepenger utbetales</p>
+                <p>• Får kun 80% av beregnet inntekt (ikke 100%)</p>
+            </div>
+
+            <div class="sources-box">
+                <h4>📚 Kilder:</h4>
+                <p>• <a href="https://www.nav.no/sykepenger" target="_blank" rel="noopener">NAV - Sykepenger</a></p>
+                <p>• <a href="https://lovdata.no/dokument/NL/lov/1997-02-28-19" target="_blank" rel="noopener">Folketrygdloven (Lovdata)</a></p>
+                <p>• <a href="https://www.nav.no/arbeidsgiver/sykepenger-i-arbeidsgiverperioden" target="_blank" rel="noopener">NAV - Sykepenger i arbeidsgiverperioden</a>
+            </div>
+
+            <div class="bottom-nav">
+                <a href="index.html" class="back-button">← Tilbake Hjem</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById("dropdownMenu").classList.toggle("show");
+        }
+
+        let closeTimeout;
+
+        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
+    closeTimeout = setTimeout(function() {
+        document.getElementById("dropdownMenu").classList.remove("show");
+    }, 500);
+});
+
+        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
+            clearTimeout(closeTimeout);
+        });
+        
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-button')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    if (dropdowns[i].classList.contains('show')) {
+                        dropdowns[i].classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function calculate() {
+            const salary = parseFloat(document.getElementById('salary').value);
+            const sickDays = parseInt(document.getElementById('sickDays').value);
+            const employmentType = document.getElementById('employmentType').value;
+
+            if (!salary || salary <= 0) {
+                alert('Vennligst fyll inn en gyldig månedslønn');
+                return;
+            }
+
+            if (!sickDays || sickDays <= 0) {
+                alert('Vennligst fyll inn antall sykedager');
+                return;
+            }
+
+            const annualSalary = salary * 12;
+            const maxSalary = 744168;
+            const cappedSalary = Math.min(annualSalary, maxSalary);
+            const dailyRate = cappedSalary / 260;
+
+            let day1to3 = 0;
+            let day4to16 = 0;
+            let day17plus = 0;
+
+            if (employmentType === 'employee') {
+                if (sickDays <= 3) {
+                    day1to3 = 0;
+                } else if (sickDays <= 16) {
+                    day1to3 = 0;
+                    day4to16 = (sickDays - 3) * dailyRate;
+                } else {
+                    day1to3 = 0;
+                    day4to16 = 13 * dailyRate;
+                    day17plus = (sickDays - 16) * dailyRate;
+                    document.getElementById('navPeriod').style.display = 'block';
+                }
+            } else {
+                if (sickDays <= 16) {
+                    day1to3 = 0;
+                } else {
+                    day1to3 = 0;
+                    day17plus = (sickDays - 16) * dailyRate * 0.8;
+                    document.getElementById('navPeriod').style.display = 'block';
+                }
+            }
+
+            const totalPay = day1to3 + day4to16 + day17plus;
+
+            document.getElementById('day1to3').textContent = day1to3.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('day4to16').textContent = day4to16.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('day17plus').textContent = day17plus.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('totalPay').textContent = totalPay.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

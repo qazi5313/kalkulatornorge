@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilhengervekt Kalkulator 2025 - Sjekk Tilhenger</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .top-nav {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .back-button {
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: #f8f9fa;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 280px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            z-index: 1000;
+            margin-top: 5px;
+            overflow-y: hidden;
+        }
+
+        .dropdown-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-category {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            font-weight: 700;
+            color: #333;
+            font-size: 0.9em;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 14px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.2s;
+            font-size: 0.95em;
+        }
+
+        .dropdown-content a:hover {
+            background: #f0f4ff;
+           color: #667eea;
+        }
+
+        .dropdown-content a.current {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .dropdown-category {
+            padding: 10px 20px;
+            font-weight: bold;
+            color: #667eea;
+            background: #f8f9fa;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 0.85em;
+            font-style: italic;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .legal-box {
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+
+        .legal-box.legal {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .legal-box.illegal {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .legal-box h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .legal-box .icon {
+            font-size: 2em;
+        }
+
+        .result-details {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .result-details p {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+        }
+
+        .sources-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .sources-box h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .sources-box a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .sources-box a:hover {
+            text-decoration: underline;
+        }
+
+        .bottom-nav {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a href="index.html" class="back-button">← Tilbake Hjem</a>
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown()">📊 Andre Kalkulatorer ▼</button>
+            <div id="dropdownMenu" class="dropdown-content">
+                <div class="dropdown-category">💼 Jobb & Lønn</div>
+                <a href="skatt.html">Skattekalkulator</a>
+                <a href="brutto-netto.html">Brutto/Netto Lønn</a>
+                <a href="feriepenger.html">Feriepengekalkulator</a>
+                <a href="overtid.html">Overtidsbetaling</a>
+                <a href="arbeidsgiveravgift.html">Arbeidsgiveravgift</a>
+                <div class="dropdown-category">🏠 Husholdning</div>
+                <a href="stromkostnad.html">Strømkostnad</a>
+                <a href="bilkostnad.html">Bilkostnad</a>
+                <div class="dropdown-category">👨‍👩‍👧 Familie & Helse</div>
+                <a href="barnebidrag.html">Barnebidrag</a>
+                <a href="sykepenger.html">Sykepenger</a>
+                <div class="dropdown-category">🚗 Transport</div>
+                <a href="pendlerfradrag.html">Pendlerfradrag</a>
+                <a href="tilhengervekt.html" class="current">Tilhengervekt</a>
+                <div class="dropdown-category">💰 Næring</div>
+                <a href="timelonn-frilanser.html">Timelønn for Frilansere</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🚛 Tilhengervekt Kalkulator 2025</h1>
+            <p>Sjekk om du kan trekke tilhengeren lovlig</p>
+        </div>
+
+        <div class="content">
+            <div class="input-group">
+                <label for="licenseClass">Førerkortklasse:</label>
+                <select id="licenseClass">
+                    <option value="B">Klasse B (personbil)</option>
+                    <option value="BE">Klasse BE (personbil med tilhenger)</option>
+                </select>
+                <small>Vanlig førerkort er klasse B</small>
+            </div>
+
+            <div class="input-group">
+                <label for="carCurbWeight">Bilens egenvekt (kg):</label>
+                <input type="number" id="carCurbWeight" placeholder="f.eks. 1500" min="0">
+                <small>Finner du i registrert (felt G)</small>
+            </div>
+
+            <div class="input-group">
+                <label for="carTotalWeight">Bilens totalvekt (kg):</label>
+                <input type="number" id="carTotalWeight" placeholder="f.eks. 2000" min="0">
+                <small>Finner du i registrert (felt F.1)</small>
+            </div>
+
+            <div class="input-group">
+                <label for="carMaxTrailerWeight">Bilens tilhengervekt m/brems (kg):</label>
+                <input type="number" id="carMaxTrailerWeight" placeholder="f.eks. 1500" min="0">
+                <small>Finner du i registrert (felt O.1)</small>
+            </div>
+
+            <div class="input-group">
+                <label for="trailerCurbWeight">Tilhengerens egenvekt (kg):</label>
+                <input type="number" id="trailerCurbWeight" placeholder="f.eks. 600" min="0">
+                <small>Finner du i tilhengerens vognkort</small>
+            </div>
+
+            <div class="input-group">
+                <label for="trailerTotalWeight">Tilhengerens totalvekt (kg):</label>
+                <input type="number" id="trailerTotalWeight" placeholder="f.eks. 1500" min="0">
+                <small>Maksimal tillatt vekt for tilhengeren</small>
+            </div>
+
+            <div class="input-group">
+                <label for="trailerLoad">Last på tilhenger (kg):</label>
+                <input type="number" id="trailerLoad" placeholder="f.eks. 400" min="0">
+                <small>Vekt av det du skal laste</small>
+            </div>
+
+            <button class="btn" onclick="calculate()">Sjekk om det er lovlig</button>
+
+            <div id="result" class="result">
+                <div id="legalityBox" class="legal-box"></div>
+                
+                <div class="result-details">
+                    <p><strong>Total vekt:</strong> <span id="totalWeight"></span></p>
+                    <p><strong>Tilhengervekt med last:</strong> <span id="trailerWithLoad"></span></p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>ℹ️ Regler for Tilhengervekt i Norge</h3>
+                
+                <p><strong>Førerkort klasse B (vanlig bilførerkort):</strong></p>
+                <ul>
+                    <li>Totalvekt bil + tilhenger kan IKKE overstige 3500 kg</li>
+                    <li>Tilhengerens totalvekt kan IKKE overstige bilens egenvekt</li>
+                    <li>Tilhengerens vekt må IKKE overstige bilens tilhengerkapasitet</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>Førerkort klasse BE:</strong></p>
+                <ul>
+                    <li>Totalvekt bil + tilhenger kan overstige 3500 kg</li>
+                    <li>Tilhengervekt kan være inntil 3500 kg</li>
+                    <li>Tilhengerens totalvekt kan overstige bilens egenvekt</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>Viktig å huske:</strong></p>
+                <ul>
+                    <li>Overskridelse av tillatt vekt er ulovlig</li>
+                    <li>Forsikringen kan nekte å dekke skader ved ulovlig vekt</li>
+                    <li>Sjekk alltid vognkortet for nøyaktige tall</li>
+                </ul>
+            </div>
+
+            <div class="sources-box">
+                <h4>📚 Kilder:</h4>
+                <p>• <a href="https://www.vegvesen.no/kjoretoy/eie-og-vedlikeholde/tilhenger/tilhengerkalkulator/" target="_blank" rel="noopener">Statens vegvesen - Tilhengerkalkulator</a></p>
+            </div>
+
+            <div class="bottom-nav">
+                <a href="index.html" class="back-button">← Tilbake Hjem</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById("dropdownMenu").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-button')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    if (dropdowns[i].classList.contains('show')) {
+                        dropdowns[i].classList.remove('show');
+                    }
+                }
+            }
+        }
+        let closeTimeout;
+
+        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
+            closeTimeout = setTimeout(function() {
+                document.getElementById("dropdownMenu").classList.remove("show");
+            }, 500);
+        });
+
+        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
+            clearTimeout(closeTimeout);
+        });
+
+        function calculate() {
+            const licenseClass = document.getElementById('licenseClass').value;
+            const carCurbWeight = parseFloat(document.getElementById('carCurbWeight').value);
+            const carTotalWeight = parseFloat(document.getElementById('carTotalWeight').value);
+            const carMaxTrailerWeight = parseFloat(document.getElementById('carMaxTrailerWeight').value);
+            const trailerCurbWeight = parseFloat(document.getElementById('trailerCurbWeight').value);
+            const trailerTotalWeight = parseFloat(document.getElementById('trailerTotalWeight').value);
+            const trailerLoad = parseFloat(document.getElementById('trailerLoad').value);
+
+            if (!carCurbWeight || !carTotalWeight || !carMaxTrailerWeight || !trailerCurbWeight || !trailerTotalWeight || !trailerLoad) {
+                alert('Vennligst fyll inn alle feltene');
+                return;
+            }
+
+            const trailerWithLoad = trailerCurbWeight + trailerLoad;
+            const totalWeight = carTotalWeight + trailerWithLoad;
+
+            // Check if legal
+            let isLegal = true;
+            let problems = [];
+
+            // Check 1: Trailer total weight must not exceed car's max trailer weight
+            if (trailerTotalWeight > carMaxTrailerWeight) {
+                isLegal = false;
+                problems.push(`Tilhengervekten (${trailerTotalWeight} kg) overskider bilens tillatte hengervekt (${carMaxTrailerWeight} kg). Du trenger BE-førerkort.`);
+            }
+
+            // Check 2: Combined weight must not exceed limits
+            if (licenseClass === 'B' && totalWeight > 3500) {
+                isLegal = false;
+                problems.push(`Total vekt (${totalWeight} kg) overskider grensen for førerkort B (3500 kg). Du trenger BE-førerkort.`);
+            }
+
+            // Check 3: Trailer must not be heavier than car
+            if (trailerTotalWeight > carTotalWeight) {
+                isLegal = false;
+                problems.push(`Tilhengervekten (${trailerTotalWeight} kg) overskider bilens totalvekt (${carTotalWeight} kg). Tilhengeren må ikke være tyngre enn bilen.`);
+            }
+
+            // Display results
+            const legalityBox = document.getElementById('legalityBox');
+            
+            if (isLegal) {
+                legalityBox.className = 'legal-box legal';
+                legalityBox.innerHTML = `
+                    <h3><span class="icon">✅</span> LOVLIG Å KJØRE</h3>
+                    <p>Kombinasjonen er innenfor lovlige grenser. Du kan kjøre trygt med denne konfigurasjonen.</p>
+                `;
+            } else {
+                legalityBox.className = 'legal-box illegal';
+                legalityBox.innerHTML = `
+                    <h3><span class="icon">⛔</span> ULOVLIG Å KJØRE</h3>
+                    <p><strong>Problemer:</strong></p>
+                    <p>${problems.join('<br>')}</p>
+                `;
+            }
+
+            document.getElementById('totalWeight').textContent = totalWeight.toLocaleString('nb-NO') + ' kg';
+            document.getElementById('trailerWithLoad').textContent = trailerWithLoad.toLocaleString('nb-NO') + ' kg';
+
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
