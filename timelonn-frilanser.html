@@ -386,6 +386,44 @@
     </style>
 </head>
 <body>
+    <div id="cookieConsent" style="position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: white; padding: 20px; text-align: center; z-index: 9999; display: none;">
+        <p style="margin: 0 0 10px 0;">
+            Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen. 
+            <a href="/personvern.html" style="color: #667eea;">Les mer</a>
+        </p>
+        <button onclick="acceptCookies()" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px;">
+            Aksepter
+        </button>
+        <button onclick="declineCookies()" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px;">
+            Avslå
+        </button>
+    </div>
+
+    <script>
+        // Show banner if user hasn't chosen
+        if (!localStorage.getItem('cookieConsent')) {
+            document.getElementById('cookieConsent').style.display = 'block';
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieConsent').style.display = 'none';
+            // Enable Google Analytics
+            window['ga-disable-G-1LJB1LYD72'] = false;
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookieConsent').style.display = 'none';
+            // Disable Google Analytics
+            window['ga-disable-G-1LJB1LYD72'] = true;
+        }
+
+        // Check if declined
+        if (localStorage.getItem('cookieConsent') === 'declined') {
+            window['ga-disable-G-1LJB1LYD72'] = true;
+        }
+    </script>
     <div class="top-nav">
         <a href="index.html" class="back-button">← Tilbake Hjem</a>
         <div class="dropdown">
@@ -627,6 +665,7 @@
 </body>
 
 </html>
+
 
 
 
