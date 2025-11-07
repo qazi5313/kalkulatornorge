@@ -34,7 +34,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1FD59B 0%, #0EA5E9 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -90,7 +90,7 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 1.3em;
-            color: #667eea;
+            color: #1FD59B;
             pointer-events: none;
         }
 
@@ -104,7 +104,7 @@
 
         .quick-link {
             background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
+            color: #1F2937;
             padding: 10px 20px;
             border-radius: 25px;
             text-decoration: none;
@@ -112,12 +112,14 @@
             font-size: 0.95em;
             transition: all 0.3s;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
         }
 
         .quick-link:hover {
             background: white;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: #1FD59B;
         }
 
         .value-props {
@@ -165,12 +167,13 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
             color: white;
             padding: 5px 12px;
             border-radius: 15px;
             font-size: 0.75em;
             font-weight: 700;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
         }
 
         .calculator-card {
@@ -185,8 +188,8 @@
         }
 
         .tag {
-            background: #f0f0f0;
-            color: #666;
+            background: #E0F2FE;
+            color: #0C4A6E;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.75em;
@@ -251,20 +254,22 @@
         }
 
         .calculator-card {
-            background: white;
+            background: #F9FAFB;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: block;
+            border: 2px solid transparent;
         }
 
         .calculator-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 40px rgba(31, 213, 155, 0.2);
+            border-color: #1FD59B;
         }
 
         .card-icon {
@@ -275,12 +280,12 @@
         .card-title {
             font-size: 1.5em;
             font-weight: 700;
-            color: #333;
+            color: #1F2937;
             margin-bottom: 10px;
         }
 
         .card-description {
-            color: #666;
+            color: #4B5563;
             line-height: 1.6;
             margin-bottom: 15px;
         }
@@ -294,8 +299,8 @@
         }
 
         .status.active {
-            background: #d4edda;
-            color: #155724;
+            background: #D1FAE5;
+            color: #065F46;
         }
 
         .footer {
@@ -340,10 +345,10 @@
 <body>
     <div id="cookieConsent" style="position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: white; padding: 20px; text-align: center; z-index: 9999; display: none;">
         <p style="margin: 0 0 10px 0;">
-            Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen. 
-            <a href="/personvern.html" style="color: #667eea;">Les mer</a>
+            Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen.
+            <a href="/personvern.html" style="color: #1FD59B;">Les mer</a>
         </p>
-        <button onclick="acceptCookies()" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px;">
+        <button onclick="acceptCookies()" style="background: #1FD59B; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px; font-weight: 600;">
             Aksepter
         </button>
         <button onclick="declineCookies()" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px;">
