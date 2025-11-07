@@ -63,6 +63,136 @@
             margin-bottom: 10px;
         }
 
+        .search-container {
+            max-width: 600px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 18px 50px 18px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+            color: #667eea;
+            pointer-events: none;
+        }
+
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-link:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .value-props {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        .value-prop {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 1em;
+        }
+
+        .value-prop-icon {
+            font-size: 1.5em;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .no-results h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .no-results p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 700;
+        }
+
+        .calculator-card {
+            position: relative;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            color: #666;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
         .year-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
@@ -251,7 +381,37 @@
             <h1>Norske Kalkulatorer 2025</h1>
             <p>Gratis og enkle beregningsverktøy for 2025</p>
             <div class="year-badge">✨ Oppdatert for 2025</div>
-            
+
+            <!-- Value Propositions -->
+            <div class="value-props">
+                <div class="value-prop">
+                    <span class="value-prop-icon">⚡</span>
+                    <span>Raske og nøyaktige beregninger</span>
+                </div>
+                <div class="value-prop">
+                    <span class="value-prop-icon">🔒</span>
+                    <span>100% privat - ingen data lagres</span>
+                </div>
+                <div class="value-prop">
+                    <span class="value-prop-icon">📱</span>
+                    <span>Fungerer på alle enheter</span>
+                </div>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="searchBox" class="search-box" placeholder="Søk etter kalkulator... (f.eks. skatt, lønn, feriepenger)" autocomplete="off">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <a href="skatt.html" class="quick-link">⚡ Skattekalkulator</a>
+                <a href="brutto-netto.html" class="quick-link">💵 Brutto/Netto</a>
+                <a href="feriepenger.html" class="quick-link">🏖️ Feriepenger</a>
+                <a href="sykepenger.html" class="quick-link">🏥 Sykepenger</a>
+            </div>
+
             <div class="stats">
                 <div class="stat-item">
                     <span class="stat-number">12</span>
@@ -272,38 +432,61 @@
         <div class="category-section">
             <h2 class="category-title">💼 Jobb & Lønn</h2>
             <div class="calculator-grid">
-                <a href="skatt.html" class="calculator-card">
+                <a href="skatt.html" class="calculator-card" data-keywords="skatt inntekt fradrag personfradrag skattesats trinnskatt">
+                    <span class="popular-badge">⭐ Populær</span>
                     <div class="card-icon">💰</div>
                     <div class="card-title">Skattekalkulator</div>
                     <div class="card-description">Beregn skatten din basert på inntekt og fradrag for 2025</div>
+                    <div class="card-tags">
+                        <span class="tag">Skatt</span>
+                        <span class="tag">Inntekt</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
 
-                <a href="brutto-netto.html" class="calculator-card">
+                <a href="brutto-netto.html" class="calculator-card" data-keywords="brutto netto lønn månedslønn nettolønn skattetrekk">
+                    <span class="popular-badge">⭐ Populær</span>
                     <div class="card-icon">💵</div>
                     <div class="card-title">Brutto/Netto Lønn</div>
                     <div class="card-description">Konverter mellom brutto og netto månedslønn</div>
+                    <div class="card-tags">
+                        <span class="tag">Lønn</span>
+                        <span class="tag">Skatt</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
 
-                <a href="feriepenger.html" class="calculator-card">
+                <a href="feriepenger.html" class="calculator-card" data-keywords="feriepenger ferie lønn 10.2% 12% ferietillegg">
+                    <span class="popular-badge">⭐ Populær</span>
                     <div class="card-icon">🏖️</div>
                     <div class="card-title">Feriepengekalkulator</div>
                     <div class="card-description">Regn ut hvor mye feriepenger du får med 10,2% eller 12%</div>
+                    <div class="card-tags">
+                        <span class="tag">Ferie</span>
+                        <span class="tag">Lønn</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
 
-                <a href="overtid.html" class="calculator-card">
+                <a href="overtid.html" class="calculator-card" data-keywords="overtid overtidsbetaling tillegg lønn ekstrabetaling">
                     <div class="card-icon">⏰</div>
                     <div class="card-title">Overtidsbetaling</div>
                     <div class="card-description">Regn ut overtidsbetaling med 50% eller 100% tillegg</div>
+                    <div class="card-tags">
+                        <span class="tag">Lønn</span>
+                        <span class="tag">Overtid</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
 
-                <a href="arbeidsgiveravgift.html" class="calculator-card">
+                <a href="arbeidsgiveravgift.html" class="calculator-card" data-keywords="arbeidsgiveravgift avgift bedrift arbeidsgiver sone">
                     <div class="card-icon">💼</div>
                     <div class="card-title">Arbeidsgiveravgift</div>
                     <div class="card-description">Beregn arbeidsgiveravgift basert på sone (0-14,1%)</div>
+                    <div class="card-tags">
+                        <span class="tag">Bedrift</span>
+                        <span class="tag">Avgift</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
             </div>
@@ -313,17 +496,25 @@
         <div class="category-section">
             <h2 class="category-title">🏠 Husholdning</h2>
             <div class="calculator-grid">
-                <a href="stromkostnad.html" class="calculator-card">
+                <a href="stromkostnad.html" class="calculator-card" data-keywords="strøm strømkostnad spotpris strømregning elektrisitet">
                     <div class="card-icon">⚡</div>
                     <div class="card-title">Strømkostnad</div>
                     <div class="card-description">Regn ut strømregningen din med spotpris og påslag</div>
+                    <div class="card-tags">
+                        <span class="tag">Husholdning</span>
+                        <span class="tag">Strøm</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
 
-                <a href="bilkostnad.html" class="calculator-card">
+                <a href="bilkostnad.html" class="calculator-card" data-keywords="bil bilkostnad bensin diesel elbil kjøretøy drivstoff">
                     <div class="card-icon">🚗</div>
                     <div class="card-title">Bilkostnad</div>
                     <div class="card-description">Beregn årlige kostnader for bil - bensin, diesel eller elbil</div>
+                    <div class="card-tags">
+                        <span class="tag">Transport</span>
+                        <span class="tag">Bil</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
             </div>
@@ -333,17 +524,26 @@
         <div class="category-section">
             <h2 class="category-title">👨‍👩‍👧 Familie & Helse</h2>
             <div class="calculator-grid">
-                <a href="barnebidrag.html" class="calculator-card">
+                <a href="barnebidrag.html" class="calculator-card" data-keywords="barnebidrag bidrag barn familie NAV underholdsbidrag">
                     <div class="card-icon">👶</div>
                     <div class="card-title">Barnebidrag</div>
                     <div class="card-description">Beregn månedlig barnebidrag basert på NAVs satser</div>
+                    <div class="card-tags">
+                        <span class="tag">Familie</span>
+                        <span class="tag">NAV</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
 
-                <a href="sykepenger.html" class="calculator-card">
+                <a href="sykepenger.html" class="calculator-card" data-keywords="sykepenger sykemelding NAV arbeidsgiver sykdom helse">
+                    <span class="popular-badge">⭐ Populær</span>
                     <div class="card-icon">🏥</div>
                     <div class="card-title">Sykepenger</div>
                     <div class="card-description">Beregn sykepenger fra arbeidsgiver og NAV</div>
+                    <div class="card-tags">
+                        <span class="tag">Helse</span>
+                        <span class="tag">NAV</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
             </div>
@@ -353,17 +553,25 @@
         <div class="category-section">
             <h2 class="category-title">🚗 Transport</h2>
             <div class="calculator-grid">
-                <a href="pendlerfradrag.html" class="calculator-card">
+                <a href="pendlerfradrag.html" class="calculator-card" data-keywords="pendler pendlerfradrag reisefradrag jobb reise skatt fradrag">
                     <div class="card-icon">🚗</div>
                     <div class="card-title">Pendlerfradrag</div>
                     <div class="card-description">Beregn reisefradrag for jobbreiser over 5 mil</div>
+                    <div class="card-tags">
+                        <span class="tag">Transport</span>
+                        <span class="tag">Fradrag</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
 
-                <a href="tilhengervekt.html" class="calculator-card">
+                <a href="tilhengervekt.html" class="calculator-card" data-keywords="tilhenger tilhengervekt førerkort vekt vogntog bil">
                     <div class="card-icon">🚛</div>
                     <div class="card-title">Tilhengervekt</div>
                     <div class="card-description">Sjekk om du kan trekke tilhengeren lovlig med ditt førerkort</div>
+                    <div class="card-tags">
+                        <span class="tag">Transport</span>
+                        <span class="tag">Bil</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
             </div>
@@ -373,13 +581,23 @@
         <div class="category-section">
             <h2 class="category-title">💰 Næring</h2>
             <div class="calculator-grid">
-                <a href="timelonn-frilanser.html" class="calculator-card">
+                <a href="timelonn-frilanser.html" class="calculator-card" data-keywords="timelønn frilanser selvstendig næringsdrivende timepris konsulent">
                     <div class="card-icon">💼</div>
                     <div class="card-title">Timelønn for Frilansere</div>
                     <div class="card-description">Beregn riktig timepris som selvstendig næringsdrivende</div>
+                    <div class="card-tags">
+                        <span class="tag">Næring</span>
+                        <span class="tag">Lønn</span>
+                    </div>
                     <span class="status active">✓ Tilgjengelig</span>
                 </a>
             </div>
+        </div>
+
+        <!-- No Results Section -->
+        <div id="noResults" class="no-results">
+            <h3>🔍 Ingen kalkulatorer funnet</h3>
+            <p>Prøv et annet søkeord eller se gjennom kategoriene nedenfor</p>
         </div>
 
         <div class="footer">
@@ -400,6 +618,84 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Search functionality
+        const searchBox = document.getElementById('searchBox');
+        const calculatorCards = document.querySelectorAll('.calculator-card');
+        const categorySections = document.querySelectorAll('.category-section');
+        const noResults = document.getElementById('noResults');
+
+        searchBox.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            // If search is empty, show all
+            if (searchTerm === '') {
+                calculatorCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                categorySections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                noResults.style.display = 'none';
+                return;
+            }
+
+            // Search through cards
+            calculatorCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const description = card.querySelector('.card-description').textContent.toLowerCase();
+                const keywords = card.getAttribute('data-keywords') || '';
+                const tags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
+
+                const searchText = `${title} ${description} ${keywords} ${tags}`;
+
+                if (searchText.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show/hide category sections based on visible cards
+            categorySections.forEach(section => {
+                const visibleCardsInSection = section.querySelectorAll('.calculator-card[style="display: block;"]').length;
+                if (visibleCardsInSection > 0) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Show no results message if nothing found
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+
+            // Track search in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'search', {
+                    search_term: searchTerm
+                });
+            }
+        });
+
+        // Add focus effect
+        searchBox.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+
+        searchBox.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+
+        // Add smooth transition
+        document.querySelector('.search-container').style.transition = 'transform 0.3s ease';
+    </script>
 </body>
 
 </html>
