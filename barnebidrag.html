@@ -4,13 +4,13 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barnebidrag Kalkulator 2025 - Kalkulatornorge.no</title>
-    
+    <title>Barnebidrag Kalkulator 2026 - Kalkulatornorge.no</title>
+
     <meta name="description" content="Beregn barnebidrag basert på Navs retningslinjer - Kalkulator for barnebidrag i Norge. Faktorer inkluderer inntekt og antall barn.">
     <meta name="keywords" content="barnebidrag, barnebidrag kalkulator, nav barnebidrag, beregne barnebidrag, underholdsbidrag">
     <meta name="author" content="Kalkulatornorge.no">
-    
-    <meta property="og:title" content="Barnebidrag Kalkulator 2025 - Kalkulatornorge.no">
+
+    <meta property="og:title" content="Barnebidrag Kalkulator 2026 - Kalkulatornorge.no">
     <meta property="og:description" content="Beregn barnebidrag basert på Navs retningslinjer for norske familier.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/barnebidrag.html">
@@ -23,9 +23,11 @@
       gtag('js', new Date());
 
       gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-    
+
     </script>
-    
+
+    <script src="tax-rates-config.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -418,7 +420,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>👶 Barnebidrag Kalkulator 2025</h1>
+            <h1>👶 Barnebidrag Kalkulator 2026</h1>
             <p>Beregn månedlig barnebidrag</p>
         </div>
 
@@ -451,7 +453,7 @@
                     <span class="result-value" id="numChildren">0</span>
                 </div>
                 <div class="result-item">
-                    <span>Sats per barn (2025)</span>
+                    <span>Sats per barn (2026)</span>
                     <span class="result-value" id="ratePerChild">1 710 kr</span>
                 </div>
                 <div class="total-box">
@@ -466,7 +468,7 @@
 
             <div class="info-box">
                 <h3>ℹ️ Om Barnebidrag i Norge</h3>
-                <p><strong>Barnebidragssats 2025:</strong></p>
+                <p><strong>Barnebidragssats 2026:</strong></p>
                 <p>Standard barnebidrag er <strong>kr 1 710 per måned per barn</strong> (kr 20 520 per år).</p>
     
                 <p style="margin-top: 10px;"><strong>Viktig å vite:</strong></p>
@@ -530,6 +532,8 @@
             clearTimeout(closeTimeout);
         });
 
+        const rates = getRates();
+
         function calculate() {
             const children = parseInt(document.getElementById('children').value);
             const otherChildren = document.getElementById('otherChildren').value;
@@ -539,11 +543,12 @@
                 return;
             }
 
-            const ratePerChild = 1710;
+            const ratePerChild = rates.childSupport.monthlyRate;
             const totalMonthly = ratePerChild * children;
             const totalYearly = totalMonthly * 12;
 
             document.getElementById('numChildren').textContent = children;
+            document.getElementById('ratePerChild').textContent = ratePerChild.toLocaleString('nb-NO') + ' kr';
             document.getElementById('totalBidrag').textContent = totalMonthly.toLocaleString('nb-NO') + ' kr';
             document.getElementById('yearlyTotal').textContent = totalYearly.toLocaleString('nb-NO') + ' kr';
 

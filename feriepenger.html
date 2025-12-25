@@ -4,13 +4,13 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feriepengekalkulator 2025 - Kalkulatornorge.no</title>
-    
+    <title>Feriepengekalkulator 2026 - Kalkulatornorge.no</title>
+
     <meta name="description" content="Beregn feriepenger (10,2% eller 12%) - Gratis feriepengekalkulator for norske arbeidstakere.">
     <meta name="keywords" content="feriepenger, feriepengekalkulator, 10.2 prosent, 12 prosent, feriepenger over 60 år">
     <meta name="author" content="Kalkulatornorge.no">
-    
-    <meta property="og:title" content="Feriepengekalkulator 2025 - Kalkulatornorge.no">
+
+    <meta property="og:title" content="Feriepengekalkulator 2026 - Kalkulatornorge.no">
     <meta property="og:description" content="Beregn feriepenger (10,2% eller 12%) med vår feriepengekalkulator.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/feriepenger.html">
@@ -23,9 +23,11 @@
       gtag('js', new Date());
 
       gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-    
+
     </script>
-    
+
+    <script src="tax-rates-config.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -472,7 +474,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>🏖️ Feriepengekalkulator 2025</h1>
+            <h1>🏖️ Feriepengekalkulator 2026</h1>
             <p>Beregn dine feriepenger raskt og enkelt</p>
         </div>
 
@@ -534,7 +536,7 @@
 
             <div class="info-box">
                 <h3>ℹ️ Om Feriepenger i Norge</h3>
-                <p><strong>Feriepengesatser 2025:</strong></p>
+                <p><strong>Feriepengesatser 2026:</strong></p>
                 <p>• <strong>Fast ansatte (månedslønn):</strong> 10,2% av årslønnen (tilsvarer 25 dagers ferie)</p>
                 <p>• <strong>Timelønnede/midlertidig ansatte:</strong> 12% av årslønnen (inkluderer 25% ferietillegg)</p>
                 <p style="margin-top: 10px;"><strong>Over 60 år:</strong> Alle over 60 år har rett til én ekstra feriedag (totalt 26 dager), men dette påvirker ikke feriepengeberegningen direkte.</p>
@@ -584,13 +586,15 @@
             }
         }
 
+        const rates = getRates();
+
         document.querySelectorAll('input[name="salaryType"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const badge = document.getElementById('rateBadge');
                 if (this.value === 'monthly') {
-                    badge.textContent = 'Feriepengesats: 10,2%';
+                    badge.textContent = 'Feriepengesats: ' + rates.holidayPay.standardPercent;
                 } else {
-                    badge.textContent = 'Feriepengesats: 12%';
+                    badge.textContent = 'Feriepengesats: ' + rates.holidayPay.over60Percent;
                 }
             });
         });
@@ -604,7 +608,7 @@
                 return;
             }
 
-            const rate = salaryType === 'monthly' ? 0.102 : 0.12;
+            const rate = salaryType === 'monthly' ? rates.holidayPay.standard : rates.holidayPay.over60;
             const holidayPay = salary * rate;
             const monthlyHolidayPay = holidayPay / 12;
 

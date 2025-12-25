@@ -4,14 +4,14 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skattekalkulator 2025 - Kalkulatornorge.no</title>
+    <title>Skattekalkulator 2026 - Kalkulatornorge.no</title>
     
-    <meta name="description" content="Beregn skatten din for 2025 - Gratis skattekalkulator basert på offisielle norske skattesatser. Trinnskatt, minstefradrag og personinntekt.">
-    <meta name="keywords" content="skattekalkulator, beregn skatt, skatt 2025, trinnskatt, personinntekt, minstefradrag">
+    <meta name="description" content="Beregn skatten din for 2026 - Gratis skattekalkulator basert på offisielle norske skattesatser. Trinnskatt, minstefradrag og personinntekt.">
+    <meta name="keywords" content="skattekalkulator, beregn skatt, skatt 2026, trinnskatt, personinntekt, minstefradrag">
     <meta name="author" content="Kalkulatornorge.no">
     
-    <meta property="og:title" content="Skattekalkulator 2025 - Kalkulatornorge.no">
-    <meta property="og:description" content="Beregn skatten din for 2025 med vår nøyaktige skattekalkulator basert på offisielle skattesatser.">
+    <meta property="og:title" content="Skattekalkulator 2026 - Kalkulatornorge.no">
+    <meta property="og:description" content="Beregn skatten din for 2026 med vår nøyaktige skattekalkulator basert på offisielle skattesatser.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/skatt.html">
     <meta property="og:image" content="https://kalkulatornorge.no/favicon.ico">
@@ -25,7 +25,10 @@
       gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
     
     </script>
-    
+
+    <!-- Import centralized tax rates configuration -->
+    <script src="tax-rates-config.js"></script>
+
        <style>
         * {
             margin: 0;
@@ -445,7 +448,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>💰 Skattekalkulator 2025</h1>
+            <h1>💰 Skattekalkulator 2026</h1>
             <p>Beregn din skatt basert på inntekt og fradrag</p>
         </div>
 
@@ -463,7 +466,7 @@
             <button class="btn" onclick="calculate()">Beregn Skatt</button>
 
             <div id="result" class="result">
-                <div class="result-title">📊 Skatteberegning for 2025</div>
+                <div class="result-title">📊 Skatteberegning for 2026</div>
                 
                 <div class="result-item">
                     <span class="result-label">Bruttoinntekt</span>
@@ -486,12 +489,12 @@
                 </div>
 
                 <div class="result-item">
-                    <span class="result-label">Kommuneskatt (22%)</span>
+                    <span class="result-label">Kommuneskatt (<span id="municipalRate">22</span>%)</span>
                     <span class="result-value" id="municipalTax">0 kr</span>
                 </div>
 
                 <div class="result-item">
-                    <span class="result-label">Trygdeavgift (8.3%)</span>
+                    <span class="result-label">Trygdeavgift (<span id="socialRate">7.6</span>%)</span>
                     <span class="result-value" id="socialTax">0 kr</span>
                 </div>
 
@@ -507,9 +510,10 @@
             </div>
 
             <div class="info-box">
-                <h3>ℹ️ Om Skatteberegning 2025</h3>
-                <p><strong>Trinnskatt 2025:</strong> Trinn 1: 1,9% (208 151-292 850 kr) • Trinn 2: 4,2% (292 851-670 000 kr) • Trinn 3: 13,9% (670 001-937 900 kr) • Trinn 4: 16,9% (937 901-1 350 000 kr) • Trinn 5: 17,9% (over 1 350 000 kr)</p>
-                <p style="margin-top: 10px;"><strong>Minstefradrag:</strong> 46% av inntekt, maks 104 450 kr. Automatisk inkludert i beregningen.</p>
+                <h3>ℹ️ Om Skatteberegning 2026</h3>
+                <p><strong>Trinnskatt 2026:</strong> Trinn 1: 1,7% (226 101-318 300 kr) • Trinn 2: 4,0% (318 301-725 050 kr) • Trinn 3: 13,7% (725 051-980 100 kr) • Trinn 4: 16,8% (980 101-1 467 200 kr) • Trinn 5: 17,8% (over 1 467 200 kr)</p>
+                <p style="margin-top: 10px;"><strong>Minstefradrag:</strong> 46% av inntekt, maks 95 700 kr. Automatisk inkludert i beregningen.</p>
+                <p style="margin-top: 10px;"><strong>Trygdeavgift:</strong> 7,6% for lønnsinntekt (alder 17-69 år).</p>
             </div>
 
             <div class="sources-box">
@@ -555,6 +559,9 @@
         });
 
         function calculate() {
+            // Get current tax rates from centralized config
+            const rates = getRates();
+
             const income = parseFloat(document.getElementById('income').value);
             const deductions = parseFloat(document.getElementById('deductions').value) || 0;
 
@@ -563,37 +570,24 @@
                 return;
             }
 
-            const standardDeduction = Math.min(income * 0.46, 104450);
+            // Use centralized calculation functions
+            const standardDeduction = calculateStandardDeduction(income);
             const totalDeductions = standardDeduction + deductions;
             const taxableIncome = Math.max(0, income - totalDeductions);
 
-            let bracketTax = 0;
-            if (taxableIncome > 1350000) {
-                bracketTax += (taxableIncome - 1350000) * 0.179;
-                bracketTax += (937900 - 670000) * 0.139;
-                bracketTax += (670000 - 292850) * 0.042;
-                bracketTax += (292850 - 208150) * 0.019;
-            } else if (taxableIncome > 937900) {
-                bracketTax += (taxableIncome - 937900) * 0.169;
-                bracketTax += (937900 - 670000) * 0.139;
-                bracketTax += (670000 - 292850) * 0.042;
-                bracketTax += (292850 - 208150) * 0.019;
-            } else if (taxableIncome > 670000) {
-                bracketTax += (taxableIncome - 670000) * 0.139;
-                bracketTax += (670000 - 292850) * 0.042;
-                bracketTax += (292850 - 208150) * 0.019;
-            } else if (taxableIncome > 292850) {
-                bracketTax += (taxableIncome - 292850) * 0.042;
-                bracketTax += (292850 - 208150) * 0.019;
-            } else if (taxableIncome > 208150) {
-                bracketTax += (taxableIncome - 208150) * 0.019;
-            }
+            // Calculate taxes using centralized functions
+            const bracketTax = calculateBracketTax(taxableIncome);
+            const municipalTax = taxableIncome * rates.municipalTax.rate;
+            const socialTax = calculateSocialSecurityTax(income - deductions);
 
-            const municipalTax = taxableIncome * 0.22;
-            const socialTax = (income - deductions) * 0.083;
             const totalTax = bracketTax + municipalTax + socialTax;
             const netIncome = income - totalTax;
 
+            // Update dynamic tax rate labels
+            document.getElementById('municipalRate').textContent = (rates.municipalTax.rate * 100).toFixed(1);
+            document.getElementById('socialRate').textContent = (rates.socialSecurityTax.lonnsinntekt.rate * 100).toFixed(1);
+
+            // Display results
             document.getElementById('grossIncome').textContent = income.toLocaleString('nb-NO') + ' kr';
             document.getElementById('totalDeductions').textContent = totalDeductions.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
             document.getElementById('taxableIncome').textContent = taxableIncome.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';

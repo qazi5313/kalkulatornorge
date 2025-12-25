@@ -4,13 +4,13 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brutto/Netto Lønnskalkulator 2025 - Kalkulatornorge.no</title>
-    
-    <meta name="description" content="Beregn netto lønn fra brutto lønn - Se hva du får utbetalt etter skatt og trekk. Oppdatert for 2025.">
+    <title>Brutto/Netto Lønnskalkulator 2026 - Kalkulatornorge.no</title>
+
+    <meta name="description" content="Beregn netto lønn fra brutto lønn - Se hva du får utbetalt etter skatt og trekk. Oppdatert for 2026.">
     <meta name="keywords" content="brutto netto, lønnskalkulator, lønn etter skatt, nettoinntekt, bruttoinntekt">
     <meta name="author" content="Kalkulatornorge.no">
-    
-    <meta property="og:title" content="Brutto/Netto Lønnskalkulator 2025 - Kalkulatornorge.no">
+
+    <meta property="og:title" content="Brutto/Netto Lønnskalkulator 2026 - Kalkulatornorge.no">
     <meta property="og:description" content="Beregn netto lønn fra brutto lønn - Se hva du får utbetalt etter skatt.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/brutto-netto.html">
@@ -25,7 +25,10 @@
       gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
     
     </script>
-    
+
+    <!-- Import centralized tax rates configuration -->
+    <script src="tax-rates-config.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -449,7 +452,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>💵 Brutto/Netto Lønnskalkulator 2025</h1>
+            <h1>💵 Brutto/Netto Lønnskalkulator 2026</h1>
             <p>Konverter mellom brutto og netto lønn</p>
         </div>
 
@@ -472,7 +475,7 @@
                         <span class="result-value" id="bruttoMonthly">0 kr</span>
                     </div>
                     <div class="result-item">
-                        <span>Skatt (ca. 28%)</span>
+                        <span>Skatt (ca. <span id="taxRateDisplay1">28</span>%)</span>
                         <span class="result-value" id="taxAmount">0 kr</span>
                     </div>
                     <div class="total-box">
@@ -495,7 +498,7 @@
                         <span class="result-value" id="nettoInput">0 kr</span>
                     </div>
                     <div class="result-item">
-                        <span>Skatt (ca. 28%)</span>
+                        <span>Skatt (ca. <span id="taxRateDisplay2">28</span>%)</span>
                         <span class="result-value" id="taxFromNetto">0 kr</span>
                     </div>
                     <div class="total-box">
@@ -509,7 +512,7 @@
                 <h3>ℹ️ Om Brutto og Netto Lønn</h3>
                 <p><strong>Bruttolønn:</strong> Din lønn før skatt trekkes. Dette er det arbeidsgiveren betaler.</p>
                 <p><strong>Nettolønn:</strong> Det du faktisk får utbetalt etter at skatt er trukket.</p>
-                <p style="margin-top: 10px;"><strong>Viktig:</strong> Denne kalkulatoren bruker ca. 28% gjennomsnittlig skattesats. Din faktiske skatt avhenger av inntekt, fradrag, og kommune.</p>
+                <p style="margin-top: 10px;"><strong>Viktig:</strong> Denne kalkulatoren bruker en forenklet gjennomsnittlig skattesats. Din faktiske skatt avhenger av inntekt, fradrag, og kommune. Bruk skattekalkulatoren for mer nøyaktige beregninger.</p>
             </div>
 
             <div class="sources-box">
@@ -565,16 +568,29 @@
         }
 
         function calculateNetto() {
+            const rates = getRates(); // Get 2026 rates
             const brutto = parseFloat(document.getElementById('bruttoSalary').value);
             if (!brutto || brutto <= 0) {
                 alert('Vennligst fyll inn en gyldig bruttolønn');
                 return;
             }
-            
-            const taxRate = 0.28;
-            const tax = brutto * taxRate;
+
+            // Calculate approximate effective tax rate
+            // This is a simplified calculation: municipal (22%) + social security (7.6%) - standard deduction effect
+            const annualIncome = brutto * 12;
+            const standardDeduction = calculateStandardDeduction(annualIncome);
+            const taxableIncome = annualIncome - standardDeduction;
+
+            // Simplified effective rate calculation
+            const municipalTax = taxableIncome * rates.municipalTax.rate;
+            const socialTax = calculateSocialSecurityTax(annualIncome);
+            const totalTax = municipalTax + socialTax;
+            const effectiveTaxRate = totalTax / annualIncome;
+
+            const tax = brutto * effectiveTaxRate;
             const netto = brutto - tax;
-            
+
+            document.getElementById('taxRateDisplay1').textContent = (effectiveTaxRate * 100).toFixed(1);
             document.getElementById('bruttoMonthly').textContent = brutto.toLocaleString('nb-NO') + ' kr';
             document.getElementById('taxAmount').textContent = tax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
             document.getElementById('nettoMonthly').textContent = netto.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
@@ -587,11 +603,13 @@
                 alert('Vennligst fyll inn en gyldig nettolønn');
                 return;
             }
-            
+
+            // Use approximation for reverse calculation (simplified to 28% for stability)
             const taxRate = 0.28;
             const brutto = netto / (1 - taxRate);
             const tax = brutto - netto;
-            
+
+            document.getElementById('taxRateDisplay2').textContent = (taxRate * 100).toFixed(1);
             document.getElementById('nettoInput').textContent = netto.toLocaleString('nb-NO') + ' kr';
             document.getElementById('taxFromNetto').textContent = tax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
             document.getElementById('bruttoFromNetto').textContent = brutto.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';

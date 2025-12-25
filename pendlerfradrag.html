@@ -4,13 +4,13 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendlerfradrag Kalkulator 2025 - Kalkulatornorge.no</title>
-    
-    <meta name="description" content="Beregn pendlerfradrag for reise mellom hjem og jobb - Fradrag for reiseavstand over 50 km. Oppdatert for 2025.">
+    <title>Pendlerfradrag Kalkulator 2026 - Kalkulatornorge.no</title>
+
+    <meta name="description" content="Beregn pendlerfradrag for reise mellom hjem og jobb - 1,90 kr/km med 12,000 kr egenandel. Oppdatert for 2026.">
     <meta name="keywords" content="pendlerfradrag, reisefradrag, kjøregodtgjørelse, skattefradrag, reise jobb, kilometer fradrag">
     <meta name="author" content="Kalkulatornorge.no">
-    
-    <meta property="og:title" content="Pendlerfradrag Kalkulator 2025 - Kalkulatornorge.no">
+
+    <meta property="og:title" content="Pendlerfradrag Kalkulator 2026 - Kalkulatornorge.no">
     <meta property="og:description" content="Beregn pendlerfradrag for reise mellom hjem og jobb - Fradrag for avstand over 50 km.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/pendlerfradrag.html">
@@ -23,9 +23,11 @@
       gtag('js', new Date());
 
       gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-    
+
     </script>
-    
+
+    <script src="tax-rates-config.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -413,7 +415,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>🚗 Pendlerfradrag Kalkulator 2025</h1>
+            <h1>🚗 Pendlerfradrag Kalkulator 2026</h1>
             <p>Beregn reisefradrag for jobbreiser</p>
         </div>
 
@@ -457,7 +459,15 @@
                 </div>
                 <div class="result-item">
                     <span>Fradragssats</span>
-                    <span class="result-value" id="rate">1,72 kr/km</span>
+                    <span class="result-value" id="rate">1,90 kr/km</span>
+                </div>
+                <div class="result-item">
+                    <span>Egenandel fratrukket</span>
+                    <span class="result-value" id="deductible">0 kr</span>
+                </div>
+                <div class="result-item">
+                    <span>Maks fradrag</span>
+                    <span class="result-value" id="maxDeduction">120 000 kr</span>
                 </div>
                 <div class="total-box">
                     <div style="color: #666; font-size: 0.9em; margin-bottom: 10px;">Årlig pendlerfradrag</div>
@@ -477,10 +487,12 @@
                 <p style="margin-top: 10px;">
                 <p><strong>Hvem kan få pendlerfradrag?</strong></p>
                 <p>Du kan få reisefradrag hvis arbeidsreisen er over 50 km (én vei). Kun distansen over 50 km gir fradrag.</p>
-                <p style="margin-top: 10px;"><strong>Satser for 2025:</strong></p>
-                <p>• <strong>Bil/motorsykkel:</strong> Kr 1,72 per km</p>
-                <p>• <strong>Kollektivtransport:</strong> Faktiske kostnader minus kr 16 900</p>
-                <p style="margin-top: 10px;"><strong>Eksempel:</strong> Bor du 35 km fra jobb (70 km tur/retur), må du kjøre over 50 km hver vei for å få fradrag. Derfor får du IKKE fradrag i dette tilfellet.</p>
+                <p style="margin-top: 10px;"><strong>Satser for 2026 (NYE REGLER):</strong></p>
+                <p>• <strong>Bil/motorsykkel:</strong> 1,90 kr per km (økning fra 1,72 kr)</p>
+                <p>• <strong>Egenandel:</strong> 12 000 kr (fratrukket før utbetaling)</p>
+                <p>• <strong>Maksimum:</strong> 120 000 kr per år</p>
+                <p>• <strong>Kollektivtransport:</strong> Faktiske kostnader minus egenandel</p>
+                <p style="margin-top: 10px;"><strong>Eksempel 2026:</strong> Bor du 60 km fra jobb, kjører du 120 km tur/retur. Fradragsberettiget distanse er 20 km tur/retur (60-50 km x 2). Med 230 arbeidsdager: 20 km x 230 dager x 1,90 kr = 8 740 kr. Etter egenandel på 12 000 kr får du IKKE fradrag (siden 8 740 kr < 12 000 kr).</p>
             </div>
 
             <div class="sources-box">
@@ -525,6 +537,8 @@
             clearTimeout(closeTimeout);
         });
 
+        const rates = getRates();
+
         function calculate() {
             const distance = parseFloat(document.getElementById('distance').value);
             const days = parseInt(document.getElementById('days').value);
@@ -537,17 +551,26 @@
 
             const dailyDistance = distance * 2;
             const yearlyDistance = dailyDistance * days;
-            
+
             let deduction = 0;
             let rateText = '';
-            
+            let deductibleAmount = 0;
+
             if (transport === 'car') {
                 const threshold = 50;
                 if (distance > threshold) {
                     const deductibleKm = (distance - threshold) * 2 * days;
-                    const rate = 1.72;
-                    deduction = deductibleKm * rate;
-                    rateText = rate + ' kr/km';
+                    const rate = rates.commuterDeduction.ratePerKm;
+                    const grossDeduction = deductibleKm * rate;
+                    deductibleAmount = rates.commuterDeduction.egenandel;
+
+                    // Subtract egenandel (deductible)
+                    deduction = Math.max(0, grossDeduction - deductibleAmount);
+
+                    // Apply maximum cap
+                    deduction = Math.min(deduction, rates.commuterDeduction.maxAmount);
+
+                    rateText = rate.toFixed(2) + ' kr/km';
                 } else {
                     deduction = 0;
                     rateText = '0 kr (under 50 km grense)';
@@ -557,14 +580,16 @@
                 rateText = 'Faktiske kostnader';
             }
 
-            const deductibleDistance = transport === 'car' && distance > 50 
-                ? (distance - 50) * 2 * days 
+            const deductibleDistance = transport === 'car' && distance > 50
+                ? (distance - 50) * 2 * days
                 : 0;
 
             document.getElementById('dailyDistance').textContent = dailyDistance.toLocaleString('nb-NO', {maximumFractionDigits: 1}) + ' km';
             document.getElementById('yearlyDistance').textContent = yearlyDistance.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' km';
             document.getElementById('deductibleDistance').textContent = deductibleDistance.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' km';
             document.getElementById('rate').textContent = rateText;
+            document.getElementById('deductible').textContent = deductibleAmount.toLocaleString('nb-NO') + ' kr';
+            document.getElementById('maxDeduction').textContent = rates.commuterDeduction.maxAmount.toLocaleString('nb-NO') + ' kr';
             document.getElementById('totalDeduction').textContent = deduction.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
 
             document.getElementById('result').style.display = 'block';

@@ -4,14 +4,14 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arbeidsgiveravgift Kalkulator 2025 - Kalkulatornorge.no</title>
-    
-    <meta name="description" content="Beregn arbeidsgiveravgift basert på sone - Satser for 2025: Sone 1-5. Kalkulator for arbeidsgivers totale lønnskostnader.">
+    <title>Arbeidsgiveravgift Kalkulator 2026 - Kalkulatornorge.no</title>
+
+    <meta name="description" content="Beregn arbeidsgiveravgift basert på sone - Satser for 2026: Sone 1-5 (inkl. ny sone 4a). Kalkulator for arbeidsgivers totale lønnskostnader.">
     <meta name="keywords" content="arbeidsgiveravgift, aga, arbeidsgiveravgift kalkulator, arbeidsgiveravgift sone, lønnskostnader">
     <meta name="author" content="Kalkulatornorge.no">
-    
-    <meta property="og:title" content="Arbeidsgiveravgift Kalkulator 2025 - Kalkulatornorge.no">
-    <meta property="og:description" content="Beregn arbeidsgiveravgift basert på sone og lønn - Satser for 2025.">
+
+    <meta property="og:title" content="Arbeidsgiveravgift Kalkulator 2026 - Kalkulatornorge.no">
+    <meta property="og:description" content="Beregn arbeidsgiveravgift basert på sone og lønn - Satser for 2026.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/arbeidsgiveravgift.html">
     <meta property="og:image" content="https://kalkulatornorge.no/favicon.ico">
@@ -23,9 +23,11 @@
       gtag('js', new Date());
 
       gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-    
+
     </script>
-    
+
+    <script src="tax-rates-config.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -470,7 +472,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>💼 Arbeidsgiveravgift Kalkulator 2025</h1>
+            <h1>💼 Arbeidsgiveravgift Kalkulator 2026</h1>
             <p>Beregn arbeidsgiveravgift basert på sone</p>
         </div>
 
@@ -483,11 +485,12 @@
             <div class="input-group">
                 <label for="zone">Velg sone:</label>
                 <select id="zone">
-                    <option value="14.1">Sone 1 - 14,1% (Oslo, Bergen, Stavanger, Trondheim)</option>
-                    <option value="10.6">Sone 2 - 10,6% (Akershus, Rogaland, Hordaland)</option>
-                    <option value="6.4">Sone 3 - 6,4% (Sør-Norge, Østlandet)</option>
-                    <option value="5.1">Sone 4 - 5,1% (Nord-Norge, deler av Møre og Romsdal)</option>
-                    <option value="0">Sone 5 - 0% (Svalbard, norske skip i utenriksfart)</option>
+                    <option value="zone1">Sone 1 - 14,1% (Oslo, Bergen, Stavanger, Trondheim)</option>
+                    <option value="zone2">Sone 2 - 10,6% (Akershus, Rogaland, Hordaland)</option>
+                    <option value="zone3">Sone 3 - 6,4% (Sør-Norge, Østlandet)</option>
+                    <option value="zone4">Sone 4 - 5,1% (Nord-Norge redusert sats)</option>
+                    <option value="zone4a">Sone 4a - 7,9% (Nord-Norge standard sats)</option>
+                    <option value="zone5">Sone 5 - 0% (Svalbard, norske skip i utenriksfart)</option>
                 </select>
             </div>
 
@@ -530,14 +533,15 @@
             <div class="info-box">
                 <h3>ℹ️ Om Arbeidsgiveravgift</h3>
                 <p>Arbeidsgiveravgift er en skatt som arbeidsgivere må betale til staten basert på lønnskostnadene. Satsen varierer avhengig av hvilken sone bedriften ligger i.</p>
-                
+
                 <div class="zone-info">
-                    <strong>Sone-inndeling 2025:</strong>
+                    <strong>Sone-inndeling 2026:</strong>
                     <ul class="zone-list">
                         <li><strong>Sone 1 (14,1%):</strong> Oslo, Bergen, Stavanger, Trondheim og omkringliggende kommuner</li>
                         <li><strong>Sone 2 (10,6%):</strong> Akershus, Rogaland, Hordaland (unntatt Sone 1-kommuner)</li>
                         <li><strong>Sone 3 (6,4%):</strong> Sør-Norge og Østlandet (unntatt Sone 1 og 2)</li>
-                        <li><strong>Sone 4 (5,1%):</strong> Nord-Norge (Nordland, Troms, Finnmark) og deler av Møre og Romsdal</li>
+                        <li><strong>Sone 4 (5,1%):</strong> Nord-Norge (redusert sats)</li>
+                        <li><strong>Sone 4a (7,9%):</strong> Nord-Norge (standard sats) - NY for 2026</li>
                         <li><strong>Sone 5 (0%):</strong> Svalbard og norske skip i utenriksfart</li>
                     </ul>
                 </div>
@@ -586,23 +590,26 @@
         document.querySelector('.dropdown').addEventListener('mouseenter', function() {
             clearTimeout(closeTimeout);
         });
+        const rates = getRates();
+
         function calculate() {
             const salary = parseFloat(document.getElementById('salary').value);
-            const zone = parseFloat(document.getElementById('zone').value);
+            const zoneKey = document.getElementById('zone').value;
 
             if (!salary || salary <= 0) {
                 alert('Vennligst fyll inn en gyldig månedslønn');
                 return;
             }
 
+            const zoneRate = getEmployerTaxRate(zoneKey);
             const annualSalary = salary * 12;
-            const monthlyTax = salary * (zone / 100);
+            const monthlyTax = salary * zoneRate;
             const annualTax = monthlyTax * 12;
             const totalMonthlyCost = salary + monthlyTax;
 
             document.getElementById('monthlySalary').textContent = salary.toLocaleString('nb-NO') + ' kr';
             document.getElementById('annualSalary').textContent = annualSalary.toLocaleString('nb-NO') + ' kr';
-            document.getElementById('taxRate').textContent = zone + '%';
+            document.getElementById('taxRate').textContent = formatPercentage(zoneRate, 1);
             document.getElementById('monthlyTax').textContent = monthlyTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
             document.getElementById('annualTax').textContent = annualTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
             document.getElementById('totalCost').textContent = totalMonthlyCost.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
