@@ -89,7 +89,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -217,7 +217,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
@@ -268,7 +268,7 @@
         .btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -465,6 +465,10 @@
     </script>
     <div class="top-nav">
         
+        <a href="index.html" class="back-button">
+            ← Tilbake Hjem
+        </a>
+
         <div class="dropdown">
             <button class="dropdown-button" onclick="toggleDropdown()">
                 📊 Andre Kalkulatorer ▼
@@ -571,88 +575,6 @@
 </div>
 
         </div>
-    </div>
-
-    <script>
-        let closeTimeout;
-
-        function toggleDropdown() {
-            const dropdown = document.getElementById("dropdownMenu");
-            dropdown.classList.toggle("show");
-            clearTimeout(closeTimeout);
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropdown-button') && !event.target.closest('.dropdown-content')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
-            closeTimeout = setTimeout(function() {
-                document.getElementById("dropdownMenu").classList.remove("show");
-            }, 500);
-        });
-
-        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
-            clearTimeout(closeTimeout);
-        });
-
-        function calculate() {
-            // Get current tax rates from centralized config
-            const rates = getRates();
-
-            const income = parseFloat(document.getElementById('income').value);
-            const deductions = parseFloat(document.getElementById('deductions').value) || 0;
-
-            if (!income || income <= 0) {
-                alert('Vennligst fyll inn en gyldig inntekt');
-                return;
-            }
-
-            // Use centralized calculation functions
-            const standardDeduction = calculateStandardDeduction(income);
-            const totalDeductions = standardDeduction + deductions;
-            const taxableIncome = Math.max(0, income - totalDeductions);
-
-            // Calculate taxes using centralized functions
-            const bracketTax = calculateBracketTax(taxableIncome);
-            const municipalTax = taxableIncome * rates.municipalTax.rate;
-            const socialTax = calculateSocialSecurityTax(income - deductions);
-
-            const totalTax = bracketTax + municipalTax + socialTax;
-            const netIncome = income - totalTax;
-
-            // Update dynamic tax rate labels
-            document.getElementById('municipalRate').textContent = (rates.municipalTax.rate * 100).toFixed(1);
-            document.getElementById('socialRate').textContent = (rates.socialSecurityTax.lonnsinntekt.rate * 100).toFixed(1);
-
-            // Display results
-            document.getElementById('grossIncome').textContent = income.toLocaleString('nb-NO') + ' kr';
-            document.getElementById('totalDeductions').textContent = totalDeductions.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('taxableIncome').textContent = taxableIncome.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('bracketTax').textContent = bracketTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('municipalTax').textContent = municipalTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('socialTax').textContent = socialTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('totalTax').textContent = totalTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('netIncome').textContent = netIncome.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-
-            document.getElementById('result').style.display = 'block';
-        }
-
-        document.getElementById('deductions').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculate();
-            }
-        });
-    </script>
-
     <!-- SEO Content Article -->
     
     <article class="seo-content">
@@ -911,9 +833,91 @@
       </section>
     
     </article>
-<div class="back-button">        <a href="index.html">← Tilbake Hjem</a>    </div>
+    </div>
 
-    <footer style="margin-top: 50px; padding: 30px 20px; background: rgba(255,255,255,0.1); text-align: center; color: white;">
+    <script>
+        let closeTimeout;
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById("dropdownMenu");
+            dropdown.classList.toggle("show");
+            clearTimeout(closeTimeout);
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-button') && !event.target.closest('.dropdown-content')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
+            closeTimeout = setTimeout(function() {
+                document.getElementById("dropdownMenu").classList.remove("show");
+            }, 500);
+        });
+
+        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
+            clearTimeout(closeTimeout);
+        });
+
+        function calculate() {
+            // Get current tax rates from centralized config
+            const rates = getRates();
+
+            const income = parseFloat(document.getElementById('income').value);
+            const deductions = parseFloat(document.getElementById('deductions').value) || 0;
+
+            if (!income || income <= 0) {
+                alert('Vennligst fyll inn en gyldig inntekt');
+                return;
+            }
+
+            // Use centralized calculation functions
+            const standardDeduction = calculateStandardDeduction(income);
+            const totalDeductions = standardDeduction + deductions;
+            const taxableIncome = Math.max(0, income - totalDeductions);
+
+            // Calculate taxes using centralized functions
+            const bracketTax = calculateBracketTax(taxableIncome);
+            const municipalTax = taxableIncome * rates.municipalTax.rate;
+            const socialTax = calculateSocialSecurityTax(income - deductions);
+
+            const totalTax = bracketTax + municipalTax + socialTax;
+            const netIncome = income - totalTax;
+
+            // Update dynamic tax rate labels
+            document.getElementById('municipalRate').textContent = (rates.municipalTax.rate * 100).toFixed(1);
+            document.getElementById('socialRate').textContent = (rates.socialSecurityTax.lonnsinntekt.rate * 100).toFixed(1);
+
+            // Display results
+            document.getElementById('grossIncome').textContent = income.toLocaleString('nb-NO') + ' kr';
+            document.getElementById('totalDeductions').textContent = totalDeductions.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('taxableIncome').textContent = taxableIncome.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('bracketTax').textContent = bracketTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('municipalTax').textContent = municipalTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('socialTax').textContent = socialTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('totalTax').textContent = totalTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+            document.getElementById('netIncome').textContent = netIncome.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
+
+            document.getElementById('result').style.display = 'block';
+        }
+
+        document.getElementById('deductions').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+    </script>
+
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="index.html" class="back-button">← Tilbake Hjem</a>
+    </div>
         <div style="max-width: 1200px; margin: 0 auto;">
             <div style="margin-bottom: 15px;">
                 <a href="personvern.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: 500;">Personvernerklæring</a>
