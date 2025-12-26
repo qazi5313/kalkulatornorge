@@ -1,214 +1,144 @@
-/*
-  ============================================
-  SEO CONTENT STYLES FOR KALKULATORNORGE.NO
-  ============================================
-  Version 4.0 - Integrated Content (No Separate Box)
-  
-  This version makes the SEO content part of the 
-  calculator container - no separate white box.
-*/
+/* ============================================
+   SEO CONTENT STYLES - Updated for New Design
+   Version: 5.0 - Integrated with Design System
+   ============================================ */
 
-/* ===== MAIN ARTICLE CONTAINER ===== */
 .seo-content {
-  max-width: 900px;  /* Match calculator container width */
+  max-width: 900px;
   margin: 0 auto;
-  padding: 30px 40px 40px 40px;
+  padding: var(--space-10) var(--space-8);
   line-height: 1.8;
-  color: #333333;
-  
-  /* NO separate background - inherits from calculator container */
-  /* NO border-radius - continuous with calculator */
-  /* NO box-shadow - part of same container */
-  
-  font-size: 15px;
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
 }
 
-/* ===== FIRST HEADING - No top margin ===== */
-.seo-content > section:first-child h2:first-child,
-.seo-content > h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-/* ===== HEADINGS ===== */
+/* Headings */
 .seo-content h2 {
-  color: #2c3e50;
-  font-size: 1.35em;
-  margin-bottom: 18px;
-  margin-top: 35px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #f0f0f0;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--color-border-light);
 }
 
 .seo-content h3 {
-  color: #34495e;
-  font-size: 1.15em;
-  margin-top: 25px;
-  margin-bottom: 12px;
+  color: var(--color-text);
+  font-size: var(--text-xl);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
   font-weight: 600;
 }
 
-.seo-content h4 {
-  color: #2c3e50;
-  font-size: 1.05em;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-/* ===== PARAGRAPHS ===== */
 .seo-content p {
-  margin-bottom: 16px;
-  text-align: justify;
+  margin-bottom: var(--space-4);
+  line-height: var(--leading-relaxed);
 }
 
-/* ===== LINKS ===== */
+/* Links */
 .seo-content a {
-  color: #11998e;
+  color: var(--color-primary);
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
 }
 
 .seo-content a:hover {
-  color: #0d7a6f;
-  border-bottom: 1px solid #11998e;
+  color: var(--color-primary-hover);
+  border-bottom-color: var(--color-primary);
 }
 
-/* ===== LISTS ===== */
+/* Lists */
 .seo-content ul, .seo-content ol {
-  margin: 16px 0 16px 25px;
+  margin: var(--space-4) 0 var(--space-4) var(--space-6);
   padding-left: 0;
 }
 
 .seo-content li {
-  margin-bottom: 10px;
-  line-height: 1.7;
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-relaxed);
 }
 
-/* ===== TABLES ===== */
+/* Tables */
 .table-wrapper {
   overflow-x: auto;
-  margin: 20px 0;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .seo-content table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  font-size: 0.95em;
+  background: var(--color-surface);
+  font-size: var(--text-sm);
 }
 
 .seo-content thead {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  background: var(--color-primary);
   color: white;
 }
 
 .seo-content th {
-  padding: 14px;
+  padding: var(--space-4);
   text-align: left;
   font-weight: 600;
   border: none;
 }
 
 .seo-content td {
-  padding: 12px 14px;
-  border: 1px solid #e8e8e8;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-light);
 }
 
 .seo-content tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: var(--color-background-alt);
 }
 
 .seo-content tbody tr:hover {
-  background-color: #f0f8f7;
-  transition: background-color 0.2s;
+  background-color: var(--color-primary-lighter);
+  transition: background-color var(--transition-fast);
 }
 
-/* ===== INFO BOXES ===== */
+/* Info Boxes */
 .info-box {
-  background: linear-gradient(135deg, #e8f8f5 0%, #d1f2eb 100%);
-  border-left: 4px solid #11998e;
-  padding: 18px 22px;
-  margin: 25px 0;
-  border-radius: 6px;
+  background: var(--color-primary-lighter);
+  border-left: 4px solid var(--color-primary);
+  padding: var(--space-5) var(--space-6);
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
 }
 
 .info-box p {
   margin-bottom: 0;
 }
 
-/* ===== EXAMPLE BOX ===== */
+/* Example Box */
 .example-box {
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
-  padding: 20px 25px;
-  margin: 25px 0;
-  border-radius: 8px;
-  font-size: 0.95em;
+  background: var(--color-background-alt);
+  border: 2px solid var(--color-border);
+  padding: var(--space-6);
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
 }
 
 .example-box p {
-  margin-bottom: 10px;
-}
-
-.example-box hr {
-  border: none;
-  border-top: 1px dashed #dee2e6;
-  margin: 15px 0;
+  margin-bottom: var(--space-2);
 }
 
 .example-box .result {
-  font-size: 1.1em;
-  color: #11998e;
+  font-size: var(--text-lg);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
-/* ===== CALCULATOR GRID ===== */
-.calculator-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.calculator-card {
-  background: white;
-  border: 2px solid #e8e8e8;
-  padding: 18px;
-  border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s;
-  display: block;
-}
-
-.calculator-card:hover {
-  border-color: #11998e;
-  box-shadow: 0 4px 12px rgba(17, 153, 142, 0.15);
-  transform: translateY(-2px);
-}
-
-.calculator-card h4 {
-  color: #11998e;
-  margin: 0 0 8px 0;
-  font-size: 1.05em;
-}
-
-.calculator-card p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #666;
-  text-align: left;
-}
-
-/* ===== FAQ SECTION ===== */
+/* FAQ Section */
 .faq-item {
-  margin-bottom: 25px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .faq-item:last-child {
@@ -216,47 +146,44 @@
 }
 
 .faq-item h3 {
-  color: #2c3e50;
-  font-size: 1.1em;
-  margin-bottom: 10px;
+  color: var(--color-text);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
 }
 
-/* ===== DISCLAIMER ===== */
+/* Disclaimer */
 .disclaimer-section {
-  margin-top: 40px;
-  padding: 18px 22px;
-  background: #fff3cd;
-  border-left: 4px solid #ffc107;
-  border-radius: 6px;
+  margin-top: var(--space-10);
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-warning);
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid var(--color-warning);
+  border-radius: var(--radius-md);
 }
 
 .disclaimer-section p {
   margin: 0;
-  font-size: 0.9em;
-  color: #856404;
+  font-size: var(--text-sm);
+  color: var(--color-text);
 }
 
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media (max-width: 768px) {
   .seo-content {
-    padding: 25px 20px;
-    font-size: 14px;
+    padding: var(--space-8) var(--space-4);
+    font-size: var(--text-sm);
   }
   
   .seo-content h2 {
-    font-size: 1.25em;
-  }
-  
-  .calculator-grid {
-    grid-template-columns: 1fr;
+    font-size: var(--text-xl);
   }
   
   .seo-content table {
-    font-size: 0.85em;
+    font-size: 0.8rem;
   }
   
   .seo-content th,
   .seo-content td {
-    padding: 10px;
+    padding: var(--space-2);
   }
 }

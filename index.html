@@ -1,720 +1,281 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Norske Kalkulatorer 2026 - Gratis Verktøy</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <title>Norske Kalkulatorer 2026 | Gratis beregningsverktøy</title>
 
     <meta name="description" content="Gratis norske kalkulatorer for skatt, lønn, feriepenger, sykepenger og mer. Nøyaktige beregninger basert på 2026 satser.">
     <meta name="keywords" content="kalkulator norge, skattekalkulator, lønnskalkulator, feriepenger, sykepenger, 2026">
     <meta name="author" content="Kalkulatornorge.no">
-    
+
     <meta property="og:title" content="Kalkulator Norge 2026 - Norske Kalkulatorer">
     <meta property="og:description" content="Gratis norske kalkulatorer for skatt, lønn, feriepenger og mer.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/">
     <meta property="og:image" content="https://kalkulatornorge.no/favicon.ico">
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LJB1LYD72"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-    
     </script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #FAF9F7;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            padding: 60px 20px;
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .header p {
-            font-size: 1.3em;
-            opacity: 0.95;
-            margin-bottom: 10px;
-        }
-
-        .search-container {
-            max-width: 600px;
-            margin: 30px auto;
-            position: relative;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 18px 50px 18px 20px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            outline: none;
-            transition: box-shadow 0.3s;
-        }
-
-        .search-box:focus {
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.3em;
-            color: #C4533A;
-            pointer-events: none;
-        }
-
-        .quick-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .quick-link {
-            background: rgba(255, 255, 255, 0.95);
-            color: #1F2937;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95em;
-            transition: all 0.3s;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            border: 2px solid transparent;
-        }
-
-        .quick-link:hover {
-            background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border-color: #C4533A;
-        }
-
-        .value-props {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            padding: 0 20px;
-        }
-
-        .value-prop {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            font-size: 1em;
-        }
-
-        .value-prop-icon {
-            font-size: 1.5em;
-        }
-
-        .no-results {
-            display: none;
-            text-align: center;
-            color: white;
-            padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            margin: 40px 0;
-        }
-
-        .no-results h3 {
-            font-size: 2em;
-            margin-bottom: 15px;
-        }
-
-        .no-results p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #FAF9F7;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.75em;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
-        }
-
-        .calculator-card {
-            position: relative;
-        }
-
-        .card-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .tag {
-            background: #E0F2FE;
-            color: #0C4A6E;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-        }
-
-        .year-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px 30px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 700;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .category-section {
-            margin-bottom: 40px;
-        }
-
-        .category-title {
-            color: white;
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            padding-left: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .calculator-card {
-            background: #F9FAFB;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            border: 2px solid transparent;
-        }
-
-        .calculator-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(31, 213, 155, 0.2);
-            border-color: #C4533A;
-        }
-
-        .card-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .card-title {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #1F2937;
-            margin-bottom: 10px;
-        }
-
-        .card-description {
-            color: #4B5563;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-
-        .status.active {
-            background: #D1FAE5;
-            color: #065F46;
-        }
-
-        .footer {
-            text-align: center;
-            color: white;
-            padding: 40px 20px;
-            margin-top: 60px;
-        }
-
-        .footer p {
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .header p {
-                font-size: 1.1em;
-            }
-
-            .calculator-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats {
-                gap: 20px;
-            }
-
-            .stat-item {
-                padding: 15px 20px;
-            }
-
-            .category-title {
-                font-size: 1.4em;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="seo-content.css">
-    <link rel="stylesheet" href="css/design-system.css">
-    <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-    <div id="cookieConsent" style="position: fixed; bottom: 0; left: 0; right: 0; background: #FAF9F7; color: white; padding: 20px; text-align: center; z-index: 9999; display: none;">
-        <p style="margin: 0 0 10px 0;">
-            Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen.
-            <a href="/personvern.html" style="color: #C4533A;">Les mer</a>
-        </p>
-        <button onclick="acceptCookies()" style="background: #C4533A; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px; font-weight: 600;">
-            Aksepter
-        </button>
-        <button onclick="declineCookies()" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px;">
-            Avslå
-        </button>
-    </div>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 1.00666e-08 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C1.93278e-07 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">Kalkulatornorge.no</span>
+                </a>
+                <nav class="nav-links">
+                    <a href="#kalkulatorer" class="nav-link">Alle kalkulatorer</a>
+                    <a href="personvern.html" class="nav-link">Personvern</a>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-    <script>
-        // Show banner if user hasn't chosen
-        if (!localStorage.getItem('cookieConsent')) {
-            document.getElementById('cookieConsent').style.display = 'block';
-        }
-
-        function acceptCookies() {
-            localStorage.setItem('cookieConsent', 'accepted');
-            document.getElementById('cookieConsent').style.display = 'none';
-            // Enable Google Analytics
-            window['ga-disable-G-1LJB1LYD72'] = false;
-        }
-
-        function declineCookies() {
-            localStorage.setItem('cookieConsent', 'declined');
-            document.getElementById('cookieConsent').style.display = 'none';
-            // Disable Google Analytics
-            window['ga-disable-G-1LJB1LYD72'] = true;
-        }
-
-        // Check if declined
-        if (localStorage.getItem('cookieConsent') === 'declined') {
-            window['ga-disable-G-1LJB1LYD72'] = true;
-        }
-    </script>
-    <div class="container">
-        <div class="header">
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <span class="hero-badge">✨ Oppdatert for 2026</span>
             <h1>Norske Kalkulatorer 2026</h1>
-            <p>Gratis og enkle beregningsverktøy for 2026</p>
-            <div class="year-badge">✨ Oppdatert for 2026</div>
+            <p class="hero-subtitle">Gratis og enkle beregningsverktøy for skatt, lønn, feriepenger og mer</p>
 
-            <!-- Value Propositions -->
-            <div class="value-props">
-                <div class="value-prop">
-                    <span class="value-prop-icon">⚡</span>
-                    <span>Raske og nøyaktige beregninger</span>
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Kalkulatorer</div>
                 </div>
-                <div class="value-prop">
-                    <span class="value-prop-icon">🔒</span>
-                    <span>100% privat - ingen data lagres</span>
+                <div class="stat-box">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Gratis</div>
                 </div>
-                <div class="value-prop">
-                    <span class="value-prop-icon">📱</span>
-                    <span>Fungerer på alle enheter</span>
-                </div>
-            </div>
-
-            <!-- Search Box -->
-            <div class="search-container">
-                <input type="text" id="searchBox" class="search-box" placeholder="Søk etter kalkulator... (f.eks. skatt, lønn, feriepenger)" autocomplete="off">
-                <span class="search-icon">🔍</span>
-            </div>
-
-            <!-- Quick Links -->
-            <div class="quick-links">
-                <a href="skatt.html" class="quick-link">⚡ Skattekalkulator</a>
-                <a href="brutto-netto.html" class="quick-link">💵 Brutto/Netto</a>
-                <a href="feriepenger.html" class="quick-link">🏖️ Feriepenger</a>
-                <a href="sykepenger.html" class="quick-link">🏥 Sykepenger</a>
-            </div>
-
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-number">12</span>
-                    <span class="stat-label">Kalkulatorer</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">100%</span>
-                    <span class="stat-label">Gratis</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">2026</span>
-                    <span class="stat-label">Oppdatert</span>
+                <div class="stat-box">
+                    <div class="stat-number">2026</div>
+                    <div class="stat-label">Oppdaterte satser</div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- JOBB & LØNN SECTION -->
-        <div class="category-section">
-            <h2 class="category-title">💼 Jobb & Lønn</h2>
+    <!-- CALCULATOR CATEGORIES -->
+    <section class="section" id="kalkulatorer">
+        <div class="container">
+            <!-- Jobb & Lønn -->
+            <div class="section-header">
+                <h2>💼 Jobb & Lønn</h2>
+            </div>
             <div class="calculator-grid">
-                <a href="skatt.html" class="calculator-card" data-keywords="skatt inntekt fradrag personfradrag skattesats trinnskatt">
-                    <span class="popular-badge">⭐ Populær</span>
-                    <div class="card-icon">💰</div>
-                    <div class="card-title">Skattekalkulator</div>
-                    <div class="card-description">Beregn skatten din basert på inntekt og fradrag for 2026</div>
-                    <div class="card-tags">
-                        <span class="tag">Skatt</span>
-                        <span class="tag">Inntekt</span>
+                <a href="skatt.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 0H2C0.895 0 0 0.895 0 2V20C0 21.105 0.895 22 2 22H14C15.105 22 16 21.105 16 20V2C16 0.895 15.105 0 14 0Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Skattekalkulator</h3>
+                        <p class="calc-description">Beregn din skatt for 2026</p>
+                    </div>
                 </a>
 
-                <a href="brutto-netto.html" class="calculator-card" data-keywords="brutto netto lønn månedslønn nettolønn skattetrekk">
-                    <span class="popular-badge">⭐ Populær</span>
-                    <div class="card-icon">💵</div>
-                    <div class="card-title">Brutto/Netto Lønn</div>
-                    <div class="card-description">Konverter mellom brutto og netto månedslønn</div>
-                    <div class="card-tags">
-                        <span class="tag">Lønn</span>
-                        <span class="tag">Skatt</span>
+                <a href="brutto-netto.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 0H2C0.9 0 0 0.9 0 2V14C0 15.1 0.9 16 2 16H16C17.1 16 18 15.1 18 14V2C18 0.9 17.1 0 16 0Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Brutto/Netto Lønn</h3>
+                        <p class="calc-description">Se hva du får utbetalt</p>
+                    </div>
                 </a>
 
-                <a href="feriepenger.html" class="calculator-card" data-keywords="feriepenger ferie lønn 10.2% 12% ferietillegg">
-                    <span class="popular-badge">⭐ Populær</span>
-                    <div class="card-icon">🏖️</div>
-                    <div class="card-title">Feriepengekalkulator</div>
-                    <div class="card-description">Regn ut hvor mye feriepenger du får med 10,2% eller 12%</div>
-                    <div class="card-tags">
-                        <span class="tag">Ferie</span>
-                        <span class="tag">Lønn</span>
+                <a href="feriepenger.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="10" cy="10" r="10" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Feriepenger</h3>
+                        <p class="calc-description">Beregn dine feriepenger</p>
+                    </div>
                 </a>
 
-                <a href="overtid.html" class="calculator-card" data-keywords="overtid overtidsbetaling tillegg lønn ekstrabetaling">
-                    <div class="card-icon">⏰</div>
-                    <div class="card-title">Overtidsbetaling</div>
-                    <div class="card-description">Regn ut overtidsbetaling med 50% eller 100% tillegg</div>
-                    <div class="card-tags">
-                        <span class="tag">Lønn</span>
-                        <span class="tag">Overtid</span>
+                <a href="overtid.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 0C4.925 0 0 4.925 0 11C0 17.075 4.925 22 11 22C17.075 22 22 17.075 22 11C22 4.925 17.075 0 11 0Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Overtidsbetaling</h3>
+                        <p class="calc-description">Beregn overtidslønn</p>
+                    </div>
                 </a>
 
-                <a href="arbeidsgiveravgift.html" class="calculator-card" data-keywords="arbeidsgiveravgift avgift bedrift arbeidsgiver sone">
-                    <div class="card-icon">💼</div>
-                    <div class="card-title">Arbeidsgiveravgift</div>
-                    <div class="card-description">Beregn arbeidsgiveravgift basert på sone (0-14,1%)</div>
-                    <div class="card-tags">
-                        <span class="tag">Bedrift</span>
-                        <span class="tag">Avgift</span>
+                <a href="arbeidsgiveravgift.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Arbeidsgiveravgift</h3>
+                        <p class="calc-description">Beregn arbeidsgiveravgift</p>
+                    </div>
+                </a>
+
+                <a href="timelonn-frilanser.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 0H2C0.9 0 0 0.9 0 2V14C0 15.1 0.9 16 2 16H16C17.1 16 18 15.1 18 14V2C18 0.9 17.1 0 16 0Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Timelønn Frilansere</h3>
+                        <p class="calc-description">Beregn timelønn</p>
+                    </div>
                 </a>
             </div>
-        </div>
 
-        <!-- HUSHOLDNING SECTION -->
-        <div class="category-section">
-            <h2 class="category-title">🏠 Husholdning</h2>
+            <!-- Husholdning -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2>🏠 Husholdning</h2>
+            </div>
             <div class="calculator-grid">
-                <a href="stromkostnad.html" class="calculator-card" data-keywords="strøm strømkostnad spotpris strømregning elektrisitet">
-                    <div class="card-icon">⚡</div>
-                    <div class="card-title">Strømkostnad</div>
-                    <div class="card-description">Regn ut strømregningen din med spotpris og påslag</div>
-                    <div class="card-tags">
-                        <span class="tag">Husholdning</span>
-                        <span class="tag">Strøm</span>
+                <a href="stromkostnad.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.86 0L0 11.13H7.14L6.14 20L15 8.87H7.86L8.86 0Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Strømkostnad</h3>
+                        <p class="calc-description">Beregn strømutgifter</p>
+                    </div>
                 </a>
 
-                <a href="bilkostnad.html" class="calculator-card" data-keywords="bil bilkostnad bensin diesel elbil kjøretøy drivstoff">
-                    <div class="card-icon">🚗</div>
-                    <div class="card-title">Bilkostnad</div>
-                    <div class="card-description">Beregn årlige kostnader for bil - bensin, diesel eller elbil</div>
-                    <div class="card-tags">
-                        <span class="tag">Transport</span>
-                        <span class="tag">Bil</span>
+                <a href="bilkostnad.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4H15V2C15 0.9 14.1 0 13 0H3C1.9 0 1 0.9 1 2V9H0V11H2C2 12.66 3.34 14 5 14C6.66 14 8 12.66 8 11H12C12 12.66 13.34 14 15 14C16.66 14 18 12.66 18 11H20V7C20 6.31 19.67 5.66 19.17 5.21L18.92 5.01Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Bilkostnad</h3>
+                        <p class="calc-description">Beregn bilutgifter</p>
+                    </div>
                 </a>
             </div>
-        </div>
 
-        <!-- FAMILIE & HELSE SECTION -->
-        <div class="category-section">
-            <h2 class="category-title">👨‍👩‍👧 Familie & Helse</h2>
+            <!-- Familie & Helse -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2>👨‍👩‍👧 Familie & Helse</h2>
+            </div>
             <div class="calculator-grid">
-                <a href="barnebidrag.html" class="calculator-card" data-keywords="barnebidrag bidrag barn familie NAV underholdsbidrag">
-                    <div class="card-icon">👶</div>
-                    <div class="card-title">Barnebidrag</div>
-                    <div class="card-description">Beregn månedlig barnebidrag basert på NAVs satser</div>
-                    <div class="card-tags">
-                        <span class="tag">Familie</span>
-                        <span class="tag">NAV</span>
+                <a href="barnebidrag.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 9H16V7H18M18 13H16V11H18M20 5H18V3C18 1.9 17.1 1 16 1H12C11.45 1 11 1.45 11 2H9C9 1.45 8.55 1 8 1H4C2.9 1 2 1.9 2 3V5H0V7H2V9H0V11H2V13H0V15H2V16H4V15H16V16H18V15H20V5Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Barnebidrag</h3>
+                        <p class="calc-description">Beregn barnebidrag</p>
+                    </div>
                 </a>
 
-                <a href="sykepenger.html" class="calculator-card" data-keywords="sykepenger sykemelding NAV arbeidsgiver sykdom helse">
-                    <span class="popular-badge">⭐ Populær</span>
-                    <div class="card-icon">🏥</div>
-                    <div class="card-title">Sykepenger</div>
-                    <div class="card-description">Beregn sykepenger fra arbeidsgiver og NAV</div>
-                    <div class="card-tags">
-                        <span class="tag">Helse</span>
-                        <span class="tag">NAV</span>
+                <a href="sykepenger.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 0H3C1.35 0 0 1.35 0 3V15C0 16.65 1.35 18 3 18H15C16.65 18 18 16.65 18 15V3C18 1.35 16.65 0 15 0ZM13 10H10V13H8V10H5V8H8V5H10V8H13V10Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Sykepenger</h3>
+                        <p class="calc-description">Beregn sykepenger</p>
+                    </div>
                 </a>
             </div>
-        </div>
 
-        <!-- TRANSPORT SECTION -->
-        <div class="category-section">
-            <h2 class="category-title">🚗 Transport</h2>
+            <!-- Transport -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2>🚗 Transport</h2>
+            </div>
             <div class="calculator-grid">
-                <a href="pendlerfradrag.html" class="calculator-card" data-keywords="pendler pendlerfradrag reisefradrag jobb reise skatt fradrag">
-                    <div class="card-icon">🚗</div>
-                    <div class="card-title">Pendlerfradrag</div>
-                    <div class="card-description">Beregn reisefradrag for jobbreiser over 5 mil</div>
-                    <div class="card-tags">
-                        <span class="tag">Transport</span>
-                        <span class="tag">Fradrag</span>
+                <a href="pendlerfradrag.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 4H17V2C17 0.9 16.1 0 15 0H5C3.9 0 3 0.9 3 2V4H2C0.9 4 0 4.9 0 6V13C0 14.1 0.9 15 2 15H3V16H5V15H15V16H17V15H18C19.1 15 20 14.1 20 13V6C20 4.9 19.1 4 18 4Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Pendlerfradrag</h3>
+                        <p class="calc-description">Beregn pendlerfradrag</p>
+                    </div>
                 </a>
 
-                <a href="tilhengervekt.html" class="calculator-card" data-keywords="tilhenger tilhengervekt førerkort vekt vogntog bil">
-                    <div class="card-icon">🚛</div>
-                    <div class="card-title">Tilhengervekt</div>
-                    <div class="card-description">Sjekk om du kan trekke tilhengeren lovlig med ditt førerkort</div>
-                    <div class="card-tags">
-                        <span class="tag">Transport</span>
-                        <span class="tag">Bil</span>
+                <a href="tilhengervekt.html" class="calc-card">
+                    <div class="calc-icon">
+                        <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 0H2C0.9 0 0 0.9 0 2V12C0 13.1 0.9 14 2 14H4V16C4 17.1 4.9 18 6 18H16C17.1 18 18 17.1 18 16V14H20C21.1 14 22 13.1 22 12V2C22 0.9 21.1 0 20 0Z" fill="#C4533A"/>
+                        </svg>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- NÆRING SECTION -->
-        <div class="category-section">
-            <h2 class="category-title">💰 Næring</h2>
-            <div class="calculator-grid">
-                <a href="timelonn-frilanser.html" class="calculator-card" data-keywords="timelønn frilanser selvstendig næringsdrivende timepris konsulent">
-                    <div class="card-icon">💼</div>
-                    <div class="card-title">Timelønn for Frilansere</div>
-                    <div class="card-description">Beregn riktig timepris som selvstendig næringsdrivende</div>
-                    <div class="card-tags">
-                        <span class="tag">Næring</span>
-                        <span class="tag">Lønn</span>
+                    <div class="calc-content">
+                        <h3 class="calc-title">Tilhengervekt</h3>
+                        <p class="calc-description">Beregn maksvekt for tilhenger</p>
                     </div>
-                    <span class="status active">✓ Tilgjengelig</span>
                 </a>
             </div>
         </div>
+    </section>
 
-        <!-- No Results Section -->
-        <div id="noResults" class="no-results">
-            <h3>🔍 Ingen kalkulatorer funnet</h3>
-            <p>Prøv et annet søkeord eller se gjennom kategoriene nedenfor</p>
-        </div>
-
-        <div class="footer">
-            <p><strong>Alle kalkulatorer er oppdatert for 2026</strong></p>
-            <p>Gratis verktøy for nordmenn - ingen registrering nødvendig</p>
-            <p style="margin-top: 20px; font-size: 0.9em;">💡 Tips: Bokmerk denne siden for enkel tilgang</p>
-        </div>
-    </div>
-    <footer style="margin-top: 50px; padding: 30px 20px; background: rgba(255,255,255,0.1); text-align: center; color: white;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <div style="margin-bottom: 15px;">
-                <a href="personvern.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: 500;">Personvernerklæring</a>
-                <a href="https://github.com/qazi5313/kalkulatornorge" target="_blank" style="color: white; text-decoration: none; margin: 0 15px; font-weight: 500;">GitHub</a>
-                <a href="https://github.com/qazi5313/kalkulatornorge/issues" target="_blank" style="color: white; text-decoration: none; margin: 0 15px; font-weight: 500;">Kontakt</a>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4 class="footer-heading">Kalkulatornorge.no</h4>
+                    <p class="footer-text">Gratis norske kalkulatorer for privatpersoner og bedrifter.</p>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-heading">Lenker</h4>
+                    <a href="#kalkulatorer" class="footer-link">Alle kalkulatorer</a>
+                    <a href="personvern.html" class="footer-link">Personvern</a>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-heading">Kontakt</h4>
+                    <a href="https://github.com/qazi5313/kalkulatornorge" target="_blank" class="footer-link">GitHub</a>
+                    <a href="https://github.com/qazi5313/kalkulatornorge/issues" target="_blank" class="footer-link">Rapporter feil</a>
+                </div>
             </div>
-            <div style="font-size: 0.9em; opacity: 0.8;">
-                © 2026 Kalkulatornorge.no - Laget med ❤️ for norske brukere
+            <div class="footer-bottom">
+                <p>© 2026 Kalkulatornorge.no - Laget med ❤️ for norske brukere</p>
             </div>
         </div>
     </footer>
-
-    <script>
-        // Search functionality
-        const searchBox = document.getElementById('searchBox');
-        const calculatorCards = document.querySelectorAll('.calculator-card');
-        const categorySections = document.querySelectorAll('.category-section');
-        const noResults = document.getElementById('noResults');
-
-        searchBox.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            let visibleCount = 0;
-
-            // If search is empty, show all
-            if (searchTerm === '') {
-                calculatorCards.forEach(card => {
-                    card.style.display = 'block';
-                });
-                categorySections.forEach(section => {
-                    section.style.display = 'block';
-                });
-                noResults.style.display = 'none';
-                return;
-            }
-
-            // Search through cards
-            calculatorCards.forEach(card => {
-                const title = card.querySelector('.card-title').textContent.toLowerCase();
-                const description = card.querySelector('.card-description').textContent.toLowerCase();
-                const keywords = card.getAttribute('data-keywords') || '';
-                const tags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
-
-                const searchText = `${title} ${description} ${keywords} ${tags}`;
-
-                if (searchText.includes(searchTerm)) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Show/hide category sections based on visible cards
-            categorySections.forEach(section => {
-                const visibleCardsInSection = section.querySelectorAll('.calculator-card[style="display: block;"]').length;
-                if (visibleCardsInSection > 0) {
-                    section.style.display = 'block';
-                } else {
-                    section.style.display = 'none';
-                }
-            });
-
-            // Show no results message if nothing found
-            if (visibleCount === 0) {
-                noResults.style.display = 'block';
-            } else {
-                noResults.style.display = 'none';
-            }
-
-            // Track search in Google Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'search', {
-                    search_term: searchTerm
-                });
-            }
-        });
-
-        // Add focus effect
-        searchBox.addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-        });
-
-        searchBox.addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
-        });
-
-        // Add smooth transition
-        document.querySelector('.search-container').style.transition = 'transform 0.3s ease';
-    </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
