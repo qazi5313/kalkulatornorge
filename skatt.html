@@ -422,6 +422,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="seo-content.css">
 </head>
 <body>
     <div id="cookieConsent" style="position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: white; padding: 20px; text-align: center; z-index: 9999; display: none;">
@@ -572,9 +573,6 @@
     <p>• <a href="https://www.skatteetaten.no/en/person/taxes/tax-calculator/" target="_blank" rel="noopener">Skatteetaten - Tax Calculator / Skattekalkulator</a></p>
 </div>
 
-            <div class="bottom-nav">
-                <a href="index.html" class="back-button">← Tilbake Hjem</a>
-            </div>
         </div>
     </div>
 
@@ -659,272 +657,264 @@
     </script>
 
     <!-- SEO Content Article -->
-    <article class="seo-content" style="max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.8; color: #333;">
-
+    
+    <article class="seo-content">
+    
       <!-- INTRO SECTION -->
-      <section class="intro-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.8em; margin-bottom: 20px;">Slik beregner du skatten din i 2026</h2>
-
+      <section class="intro-section">
+        <h2>Slik beregner du skatten din i 2026</h2>
+        
         <p>Lurer du på hvor mye skatt du må betale i 2026? Vår <strong>gratis skattekalkulator</strong> gir deg et nøyaktig estimat basert på de offisielle skattesatsene fra Skatteetaten. Enten du er lønnsmottaker, frilanser eller selvstendig næringsdrivende, hjelper kalkulatoren deg med å forstå din totale skattebyrde.</p>
-
+        
         <p>I Norge har vi et <strong>progressivt skattesystem</strong>, som betyr at jo høyere inntekt du har, desto høyere prosent betaler du i skatt. Dette gjøres gjennom trinnskatt, som er delt inn i fem trinn med ulike satser.</p>
       </section>
-
+    
       <!-- TRINNSKATT TABLE -->
-      <section class="trinnskatt-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.5em; margin-bottom: 20px;">📊 Trinnskatt 2026 - Alle satser</h2>
-
+      <section class="trinnskatt-section">
+        <h2>📊 Trinnskatt 2026 - Alle satser</h2>
+        
         <p>Trinnskatten er den progressive delen av inntektsskatten i Norge. Her er de oppdaterte satsene for 2026:</p>
-
-        <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95em;">
+        
+        <div class="table-wrapper">
+          <table>
             <thead>
-              <tr style="background-color: #1FD59B; color: white;">
-                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Trinn</th>
-                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Inntektsintervall</th>
-                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Sats</th>
+              <tr>
+                <th>Trinn</th>
+                <th>Inntektsintervall</th>
+                <th>Sats</th>
               </tr>
             </thead>
             <tbody>
-              <tr style="background-color: #f9f9f9;">
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Trinn 1</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">226 101 kr – 318 300 kr</td>
-                <td style="padding: 12px; text-align: center; border: 1px solid #ddd;">1,7%</td>
+              <tr>
+                <td><strong>Trinn 1</strong></td>
+                <td>226 101 kr – 318 300 kr</td>
+                <td>1,7%</td>
               </tr>
               <tr>
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Trinn 2</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">318 301 kr – 725 050 kr</td>
-                <td style="padding: 12px; text-align: center; border: 1px solid #ddd;">4,0%</td>
-              </tr>
-              <tr style="background-color: #f9f9f9;">
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Trinn 3</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">725 051 kr – 980 100 kr</td>
-                <td style="padding: 12px; text-align: center; border: 1px solid #ddd;">13,7%</td>
+                <td><strong>Trinn 2</strong></td>
+                <td>318 301 kr – 725 050 kr</td>
+                <td>4,0%</td>
               </tr>
               <tr>
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Trinn 4</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">980 101 kr – 1 467 200 kr</td>
-                <td style="padding: 12px; text-align: center; border: 1px solid #ddd;">16,8%</td>
+                <td><strong>Trinn 3</strong></td>
+                <td>725 051 kr – 980 100 kr</td>
+                <td>13,7%</td>
               </tr>
-              <tr style="background-color: #f9f9f9;">
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Trinn 5</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">Over 1 467 200 kr</td>
-                <td style="padding: 12px; text-align: center; border: 1px solid #ddd;">17,8%</td>
+              <tr>
+                <td><strong>Trinn 4</strong></td>
+                <td>980 101 kr – 1 467 200 kr</td>
+                <td>16,8%</td>
+              </tr>
+              <tr>
+                <td><strong>Trinn 5</strong></td>
+                <td>Over 1 467 200 kr</td>
+                <td>17,8%</td>
               </tr>
             </tbody>
           </table>
         </div>
-
+        
         <p><strong>Merk:</strong> Trinnskatten beregnes kun på inntekt over hvert trinn. Hvis du tjener 400 000 kr, betaler du 1,7% på beløpet mellom 226 101 og 318 300 kr, og 4,0% på beløpet mellom 318 301 og 400 000 kr.</p>
       </section>
-
+    
       <!-- SKATTEKOMPONENTER -->
-      <section class="komponenter-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.5em; margin-bottom: 20px;">💰 Hva består skatten din av?</h2>
-
+      <section class="komponenter-section">
+        <h2>💰 Hva består skatten din av?</h2>
+        
         <p>Din totale skatt i Norge består av flere komponenter. Her er en oversikt over de viktigste:</p>
-
-        <h3 style="font-size: 1.2em; margin-top: 25px; color: #333;">1. Trinnskatt (progressiv skatt)</h3>
+        
+        <h3>1. Trinnskatt (progressiv skatt)</h3>
         <p>Som forklart over, er trinnskatten den progressive delen av inntektsskatten. Den sørger for at de med høyere inntekt betaler en større andel i skatt.</p>
-
-        <h3 style="font-size: 1.2em; margin-top: 25px; color: #333;">2. Skatt på alminnelig inntekt (22%)</h3>
+        
+        <h3>2. Skatt på alminnelig inntekt (22%)</h3>
         <p>Alle lønnsmottakere betaler 22% skatt på alminnelig inntekt. Dette er en flat sats som beregnes etter at minstefradrag og andre fradrag er trukket fra bruttoinntekten.</p>
-
-        <h3 style="font-size: 1.2em; margin-top: 25px; color: #333;">3. Trygdeavgift (7,6%)</h3>
+        
+        <h3>3. Trygdeavgift (7,6%)</h3>
         <p>Trygdeavgiften finansierer folketrygden og gir deg rett til sykepenger, dagpenger, pensjon og andre velferdsytelser. Satsen for lønnsmottakere mellom 17 og 69 år er 7,6%.</p>
-
-        <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #1FD59B;">
-          <p style="margin: 0;"><strong>💡 Tips:</strong> Bruk vår <a href="brutto-netto.html" style="color: #1FD59B;">brutto/netto kalkulator</a> for å se nøyaktig hvor mye du får utbetalt etter skatt hver måned.</p>
+        
+        <div class="info-box">
+          <p><strong>💡 Tips:</strong> Bruk vår <a href="brutto-netto.html">brutto/netto kalkulator</a> for å se nøyaktig hvor mye du får utbetalt etter skatt hver måned.</p>
         </div>
       </section>
-
+    
       <!-- MINSTEFRADRAG -->
-      <section class="minstefradrag-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.5em; margin-bottom: 20px;">📋 Minstefradrag 2026</h2>
-
+      <section class="minstefradrag-section">
+        <h2>📋 Minstefradrag 2026</h2>
+        
         <p>Minstefradraget er et standardfradrag som alle lønnsmottakere automatisk får. Det reduserer din skattbare inntekt og dermed skatten du må betale.</p>
-
-        <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        
+        <div class="table-wrapper">
+          <table>
             <thead>
-              <tr style="background-color: #1FD59B; color: white;">
-                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Type</th>
-                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Sats / Beløp</th>
+              <tr>
+                <th>Type</th>
+                <th>Sats / Beløp</th>
               </tr>
             </thead>
             <tbody>
-              <tr style="background-color: #f9f9f9;">
-                <td style="padding: 12px; border: 1px solid #ddd;">Minstefradrag i lønn</td>
-                <td style="padding: 12px; border: 1px solid #ddd;">46% av inntekt</td>
+              <tr>
+                <td>Minstefradrag i lønn</td>
+                <td>46% av inntekt</td>
               </tr>
               <tr>
-                <td style="padding: 12px; border: 1px solid #ddd;">Maksimalt minstefradrag</td>
-                <td style="padding: 12px; border: 1px solid #ddd;">95 700 kr</td>
+                <td>Maksimalt minstefradrag</td>
+                <td>95 700 kr</td>
               </tr>
-              <tr style="background-color: #f9f9f9;">
-                <td style="padding: 12px; border: 1px solid #ddd;">Personfradrag</td>
-                <td style="padding: 12px; border: 1px solid #ddd;">73 100 kr</td>
+              <tr>
+                <td>Personfradrag</td>
+                <td>73 100 kr</td>
               </tr>
             </tbody>
           </table>
         </div>
-
+        
         <p><strong>Eksempel:</strong> Hvis du tjener 500 000 kr i året, blir minstefradraget ditt 46% × 500 000 = 230 000 kr. Men siden dette overstiger maksgrensen, får du kun 95 700 kr i minstefradrag.</p>
       </section>
-
+    
       <!-- REGNEEKSEMPEL -->
-      <section class="eksempel-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.5em; margin-bottom: 20px;">🧮 Eksempel: Skatteberegning for 600 000 kr</h2>
-
+      <section class="eksempel-section">
+        <h2>🧮 Eksempel: Skatteberegning for 600 000 kr</h2>
+        
         <p>La oss se på et konkret eksempel med en årsinntekt på 600 000 kr:</p>
-
-        <div style="background-color: #f5f5f5; padding: 25px; border-radius: 8px; margin: 20px 0;">
+        
+        <div class="example-box">
           <p><strong>Bruttoinntekt:</strong> 600 000 kr</p>
           <p><strong>Minstefradrag:</strong> 95 700 kr (maks)</p>
           <p><strong>Alminnelig inntekt:</strong> 600 000 - 95 700 = 504 300 kr</p>
-
-          <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
-
+          
+          <hr>
+          
           <p><strong>Skatt på alminnelig inntekt:</strong> (504 300 - 73 100) × 22% = 94 864 kr</p>
           <p><strong>Trygdeavgift:</strong> 600 000 × 7,6% = 45 600 kr</p>
           <p><strong>Trinnskatt:</strong></p>
-          <ul style="margin-left: 20px;">
+          <ul>
             <li>Trinn 1: (318 300 - 226 101) × 1,7% = 1 567 kr</li>
             <li>Trinn 2: (600 000 - 318 301) × 4,0% = 11 268 kr</li>
           </ul>
-
-          <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
-
-          <p style="font-size: 1.2em;"><strong>Total skatt: ca. 153 300 kr</strong></p>
-          <p style="font-size: 1.2em;"><strong>Netto årsinntekt: ca. 446 700 kr</strong></p>
+          
+          <hr>
+          
+          <p class="result"><strong>Total skatt: ca. 153 300 kr</strong></p>
+          <p class="result"><strong>Netto årsinntekt: ca. 446 700 kr</strong></p>
           <p><strong>Gjennomsnittlig skatteprosent: 25,6%</strong></p>
         </div>
-
-        <p>Vil du vite hvor mye du får i <strong>feriepenger</strong> av denne lønnen? Prøv vår <a href="feriepenger.html" style="color: #1FD59B;">feriepengekalkulator</a>!</p>
+        
+        <p>Vil du vite hvor mye du får i <strong>feriepenger</strong> av denne lønnen? Prøv vår <a href="feriepenger.html">feriepengekalkulator</a>!</p>
       </section>
-
+    
       <!-- VIKTIGE DATOER -->
-      <section class="datoer-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.5em; margin-bottom: 20px;">📅 Viktige skattedatoer i 2026</h2>
-
-        <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+      <section class="datoer-section">
+        <h2>📅 Viktige skattedatoer i 2026</h2>
+        
+        <div class="table-wrapper">
+          <table>
             <thead>
-              <tr style="background-color: #1FD59B; color: white;">
-                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Dato</th>
-                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Hva skjer</th>
+              <tr>
+                <th>Dato</th>
+                <th>Hva skjer</th>
               </tr>
             </thead>
             <tbody>
-              <tr style="background-color: #f9f9f9;">
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Januar 2026</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">Nytt skattekort tilgjengelig på Skatteetaten</td>
+              <tr>
+                <td><strong>Januar 2026</strong></td>
+                <td>Nytt skattekort tilgjengelig på Skatteetaten</td>
               </tr>
               <tr>
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Mars/April 2026</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">Skattemeldingen (selvangivelsen) sendes ut</td>
-              </tr>
-              <tr style="background-color: #f9f9f9;">
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>30. april 2026</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">Frist for å levere skattemeldingen</td>
+                <td><strong>Mars/April 2026</strong></td>
+                <td>Skattemeldingen (selvangivelsen) sendes ut</td>
               </tr>
               <tr>
-                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Juni 2026</strong></td>
-                <td style="padding: 12px; border: 1px solid #ddd;">Skatteoppgjøret kommer - se om du får tilbake eller må betale</td>
+                <td><strong>30. april 2026</strong></td>
+                <td>Frist for å levere skattemeldingen</td>
+              </tr>
+              <tr>
+                <td><strong>Juni 2026</strong></td>
+                <td>Skatteoppgjøret kommer - se om du får tilbake eller må betale</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-
+    
       <!-- FAQ SECTION -->
-      <section class="faq-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.5em; margin-bottom: 20px;">❓ Ofte stilte spørsmål om skatt i Norge</h2>
-
-        <div style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-          <h3 style="font-size: 1.1em; color: #333; margin-bottom: 10px;">Hvor mye skatt betaler jeg på 500 000 kr i årslønn?</h3>
+      <section class="faq-section">
+        <h2>❓ Ofte stilte spørsmål om skatt i Norge</h2>
+        
+        <div class="faq-item">
+          <h3>Hvor mye skatt betaler jeg på 500 000 kr i årslønn?</h3>
           <p>Med en årsinntekt på 500 000 kr i 2026, vil du betale omtrent 120 000 - 125 000 kr i skatt, avhengig av dine fradrag. Dette gir en gjennomsnittlig skatteprosent på ca. 24-25%. Bruk kalkulatoren over for et nøyaktig estimat.</p>
         </div>
-
-        <div style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-          <h3 style="font-size: 1.1em; color: #333; margin-bottom: 10px;">Hva er forskjellen på bruttoskatt og nettoskatt?</h3>
+        
+        <div class="faq-item">
+          <h3>Hva er forskjellen på bruttoskatt og nettoskatt?</h3>
           <p><strong>Bruttoskatt</strong> (skatt på alminnelig inntekt) beregnes på inntekten din etter fradrag. <strong>Nettoskatt</strong> er et begrep som ikke brukes offisielt i Norge, men mange refererer til dette som den totale skatten du faktisk betaler.</p>
         </div>
-
-        <div style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-          <h3 style="font-size: 1.1em; color: #333; margin-bottom: 10px;">Hvordan kan jeg redusere skatten min lovlig?</h3>
+        
+        <div class="faq-item">
+          <h3>Hvordan kan jeg redusere skatten min lovlig?</h3>
           <p>Det finnes flere lovlige måter å redusere skatten på:</p>
-          <ul style="margin-left: 20px; margin-top: 10px;">
-            <li><strong>Pendlerfradrag:</strong> Hvis du reiser langt til jobb, kan du få fradrag. <a href="pendlerfradrag.html" style="color: #1FD59B;">Beregn ditt pendlerfradrag her</a>.</li>
+          <ul>
+            <li><strong>Pendlerfradrag:</strong> Hvis du reiser langt til jobb, kan du få fradrag. <a href="pendlerfradrag.html">Beregn ditt pendlerfradrag her</a>.</li>
             <li><strong>Fagforeningskontingent:</strong> Du får fradrag for opptil 8 250 kr i fagforeningskontingent.</li>
             <li><strong>BSU (Boligsparing for ungdom):</strong> Inntil 27 500 kr gir 10% skattefradrag.</li>
             <li><strong>Renteutgifter:</strong> Renter på boliglån gir 22% fradrag.</li>
           </ul>
         </div>
-
-        <div style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-          <h3 style="font-size: 1.1em; color: #333; margin-bottom: 10px;">Når må jeg betale restskatt?</h3>
+        
+        <div class="faq-item">
+          <h3>Når må jeg betale restskatt?</h3>
           <p>Hvis du har betalt for lite skatt gjennom året, må du betale restskatt. Skatteoppgjøret kommer vanligvis i juni. Hvis restskatten er under 1 000 kr, må du betale hele beløpet innen august. Høyere beløp kan deles opp i to terminer.</p>
         </div>
-
-        <div style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-          <h3 style="font-size: 1.1em; color: #333; margin-bottom: 10px;">Betaler jeg skatt av feriepenger?</h3>
-          <p>Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales (vanligvis i juni), fordi skatten allerede er fordelt over de andre månedene. <a href="feriepenger.html" style="color: #1FD59B;">Les mer om feriepenger her</a>.</p>
+        
+        <div class="faq-item">
+          <h3>Betaler jeg skatt av feriepenger?</h3>
+          <p>Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales (vanligvis i juni), fordi skatten allerede er fordelt over de andre månedene. <a href="feriepenger.html">Les mer om feriepenger her</a>.</p>
         </div>
-
-        <div style="margin-bottom: 25px;">
-          <h3 style="font-size: 1.1em; color: #333; margin-bottom: 10px;">Hva er marginalskatt?</h3>
+        
+        <div class="faq-item">
+          <h3>Hva er marginalskatt?</h3>
           <p>Marginalskatt er skatten du betaler på den siste kronen du tjener. I Norge kan marginalskatten være opptil ca. 47% for de høyeste inntektene (trinnskatt trinn 5 + skatt på alminnelig inntekt + trygdeavgift). For de fleste vanlige lønnsmottakere ligger marginalskatten på 34-44%.</p>
         </div>
       </section>
-
+    
       <!-- RELATERTE KALKULATORER -->
-      <section class="relaterte-section" style="margin-bottom: 40px;">
-        <h2 style="color: #1FD59B; font-size: 1.5em; margin-bottom: 20px;">🔗 Relaterte kalkulatorer</h2>
-
+      <section class="relaterte-section">
+        <h2>🔗 Relaterte kalkulatorer</h2>
+        
         <p>Utforsk våre andre gratis kalkulatorer for å få full oversikt over din økonomi:</p>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
-
-          <a href="brutto-netto.html" style="text-decoration: none; color: inherit;">
-            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; border-left: 4px solid #1FD59B; transition: transform 0.2s;">
-              <h4 style="margin: 0 0 8px 0; color: #333;">💼 Brutto/Netto Kalkulator</h4>
-              <p style="margin: 0; font-size: 0.9em; color: #666;">Se hva du får utbetalt etter skatt</p>
-            </div>
+        
+        <div class="calculator-grid">
+          
+          <a href="brutto-netto.html" class="calculator-card">
+            <h4>💼 Brutto/Netto Kalkulator</h4>
+            <p>Se hva du får utbetalt etter skatt</p>
           </a>
-
-          <a href="feriepenger.html" style="text-decoration: none; color: inherit;">
-            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; border-left: 4px solid #1FD59B; transition: transform 0.2s;">
-              <h4 style="margin: 0 0 8px 0; color: #333;">🏖️ Feriepengekalkulator</h4>
-              <p style="margin: 0; font-size: 0.9em; color: #666;">Beregn dine feriepenger for 2026</p>
-            </div>
+          
+          <a href="feriepenger.html" class="calculator-card">
+            <h4>🏖️ Feriepengekalkulator</h4>
+            <p>Beregn dine feriepenger for 2026</p>
           </a>
-
-          <a href="overtid.html" style="text-decoration: none; color: inherit;">
-            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; border-left: 4px solid #1FD59B; transition: transform 0.2s;">
-              <h4 style="margin: 0 0 8px 0; color: #333;">⏰ Overtidskalkulator</h4>
-              <p style="margin: 0; font-size: 0.9em; color: #666;">Beregn overtidsbetaling med riktig sats</p>
-            </div>
+          
+          <a href="overtid.html" class="calculator-card">
+            <h4>⏰ Overtidskalkulator</h4>
+            <p>Beregn overtidsbetaling med riktig sats</p>
           </a>
-
-          <a href="pendlerfradrag.html" style="text-decoration: none; color: inherit;">
-            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; border-left: 4px solid #1FD59B; transition: transform 0.2s;">
-              <h4 style="margin: 0 0 8px 0; color: #333;">🚗 Pendlerfradrag</h4>
-              <p style="margin: 0; font-size: 0.9em; color: #666;">Få fradrag for lang arbeidsreise</p>
-            </div>
+          
+          <a href="pendlerfradrag.html" class="calculator-card">
+            <h4>🚗 Pendlerfradrag</h4>
+            <p>Få fradrag for lang arbeidsreise</p>
           </a>
-
+          
         </div>
       </section>
-
+    
       <!-- DISCLAIMER -->
-      <section class="disclaimer-section" style="background-color: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <p style="margin: 0; font-size: 0.9em; color: #856404;">
-          <strong>⚠️ Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler og kan avvike fra din faktiske skatt. For nøyaktig skatteberegning, bruk <a href="https://www.skatteetaten.no/person/skatt/skattekort/skatteberegning/" target="_blank" rel="noopener" style="color: #856404;">Skatteetatens offisielle kalkulator</a> eller kontakt en autorisert regnskapsfører.
-        </p>
+      <section class="disclaimer-section">
+        <p><strong>⚠️ Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler og kan avvike fra din faktiske skatt. For nøyaktig skatteberegning, bruk <a href="https://www.skatteetaten.no/person/skatt/skattekort/skatteberegning/" target="_blank" rel="noopener">Skatteetatens offisielle kalkulator</a> eller kontakt en autorisert regnskapsfører.</p>
       </section>
-
+    
     </article>
+<div class="bottom-nav" style="text-align: center; margin: 40px 0;">        <a href="index.html" class="back-button" style="display: inline-block; padding: 12px 30px; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s;">← Tilbake Hjem</a>    </div>
 
     <footer style="margin-top: 50px; padding: 30px 20px; background: rgba(255,255,255,0.1); text-align: center; color: white;">
         <div style="max-width: 1200px; margin: 0 auto;">
