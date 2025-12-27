@@ -1,0 +1,196 @@
+#!/bin/bash
+# Update seo-content.css to match new design
+
+cat > seo-content.css << 'CSS'
+/* ============================================
+   SEO CONTENT STYLES - Updated for New Design
+   Version: 5.0 - Integrated with Design System
+   ============================================ */
+
+.seo-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-8);
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+/* Headings */
+.seo-content h2 {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--color-border-light);
+}
+
+.seo-content h3 {
+  color: var(--color-text);
+  font-size: var(--text-xl);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+  font-weight: 600;
+}
+
+.seo-content p {
+  margin-bottom: var(--space-4);
+  line-height: var(--leading-relaxed);
+}
+
+/* Links */
+.seo-content a {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.seo-content a:hover {
+  color: var(--color-primary-hover);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Lists */
+.seo-content ul, .seo-content ol {
+  margin: var(--space-4) 0 var(--space-4) var(--space-6);
+  padding-left: 0;
+}
+
+.seo-content li {
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-relaxed);
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.seo-content table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.seo-content thead {
+  background: var(--color-primary);
+  color: white;
+}
+
+.seo-content th {
+  padding: var(--space-4);
+  text-align: left;
+  font-weight: 600;
+  border: none;
+}
+
+.seo-content td {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-light);
+}
+
+.seo-content tbody tr:nth-child(even) {
+  background-color: var(--color-background-alt);
+}
+
+.seo-content tbody tr:hover {
+  background-color: var(--color-primary-lighter);
+  transition: background-color var(--transition-fast);
+}
+
+/* Info Boxes */
+.info-box {
+  background: var(--color-primary-lighter);
+  border-left: 4px solid var(--color-primary);
+  padding: var(--space-5) var(--space-6);
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
+}
+
+.info-box p {
+  margin-bottom: 0;
+}
+
+/* Example Box */
+.example-box {
+  background: var(--color-background-alt);
+  border: 2px solid var(--color-border);
+  padding: var(--space-6);
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.example-box p {
+  margin-bottom: var(--space-2);
+}
+
+.example-box .result {
+  font-size: var(--text-lg);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* FAQ Section */
+.faq-item {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item h3 {
+  color: var(--color-text);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+/* Disclaimer */
+.disclaimer-section {
+  margin-top: var(--space-10);
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-warning);
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid var(--color-warning);
+  border-radius: var(--radius-md);
+}
+
+.disclaimer-section p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .seo-content {
+    padding: var(--space-8) var(--space-4);
+    font-size: var(--text-sm);
+  }
+  
+  .seo-content h2 {
+    font-size: var(--text-xl);
+  }
+  
+  .seo-content table {
+    font-size: 0.8rem;
+  }
+  
+  .seo-content th,
+  .seo-content td {
+    padding: var(--space-2);
+  }
+}
+CSS
+
+echo "seo-content.css updated!"

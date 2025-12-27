@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nUpdate all calculators to 2026 with centralized tax rate system\n\nCreated centralized tax rate configuration system and updated all 12 calculators to use verified 2026 Norwegian tax rates from Skatteetaten.\n\nNew Files:\n- tax-rates-config.js: Centralized rate configuration with both 2025 and 2026 rates\n- CLAUDE.md: Comprehensive project documentation and maintenance guide\n\nCalculator Updates \\(2025 → 2026\\):\n- skatt.html: Trinnskatt brackets updated, Trygdeavgift 7.6% \\(down from 8.3%\\), Minstefradrag max 95,700 kr\n- brutto-netto.html: Dynamic tax calculation using actual 2026 rates\n- feriepenger.html: Centralized holiday pay rates \\(10.2% / 12%\\)\n- overtid.html: Centralized overtime multipliers \\(1.5x / 2.0x\\)\n- arbeidsgiveravgift.html: Added NEW Zone 4a at 7.9% for Nord-Norge\n- stromkostnad.html: Centralized VAT rate \\(25%\\)\n- barnebidrag.html: Centralized child support rate \\(1,710 kr/month\\)\n- sykepenger.html: Updated 6G cap to 780,960 kr \\(from 744,168 kr\\)\n- pendlerfradrag.html: Updated to 1.90 kr/km with 12,000 kr egenandel and 120,000 kr max\n- tilhengervekt.html: Year reference updated to 2026\n- bilkostnad.html: Year reference updated to 2026\n- index.html: All year references updated to 2026\n\nKey 2026 Tax Changes:\n- Trinnskatt: All brackets adjusted with new thresholds and slightly lower rates\n- Trygdeavgift: Lønnsinntekt reduced to 7.6%, new categories for næring \\(10.8%\\), pensjon \\(5.1%\\)\n- Grunnbeløpet \\(G\\): Increased to 130,160 kr \\(+4.9%\\)\n- Arbeidsgiveravgift: New zone 4a added\n- Pendlerfradrag: Rate increased to 1.90 kr/km with new deductible and cap\n- Minstefradrag: Maximum decreased to 95,700 kr\n\nBenefits:\n- Single source of truth for all tax rates\n- Easy annual updates \\(one file instead of 12+\\)\n- Historical rate data preserved\n- Consistent rates across all calculators\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
