@@ -1,637 +1,851 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skattekalkulator 2026 - Beregn din skatt gratis | Kalkulatornorge.no</title>
-
     <meta name="description" content="Gratis skattekalkulator for 2026. Beregn trinnskatt, trygdeavgift og total skatt basert på offisielle norske skattesatser. Se hvor mye du får utbetalt etter skatt.">
-    <meta name="keywords" content="skattekalkulator, skattekalkulator 2026, beregn skatt, trinnskatt, skatt norge, skatteberegning, netto lønn, brutto lønn, skatt på inntekt">
-    <meta name="author" content="Kalkulatornorge.no">
+    <meta name="keywords" content="skattekalkulator, skatt 2026, trinnskatt, trygdeavgift, norsk skatt, skatteberegning">
     <link rel="canonical" href="https://kalkulatornorge.no/skatt.html">
-
-    <meta property="og:title" content="Skattekalkulator 2026 - Beregn din skatt gratis">
-    <meta property="og:description" content="Gratis skattekalkulator for 2026. Se hvor mye skatt du må betale og hva du får utbetalt.">
-    <meta property="og:url" content="https://kalkulatornorge.no/skatt.html">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://kalkulatornorge.no/favicon.ico">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LJB1LYD72"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-    </script>
-
-    <script src="tax-rates-config.js"></script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Hvor mye skatt betaler jeg på 500 000 kr i årslønn?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Med en årsinntekt på 500 000 kr i 2026, vil du betale omtrent 120 000 - 125 000 kr i skatt, avhengig av dine fradrag. Dette gir en gjennomsnittlig skatteprosent på ca. 24-25%."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Hva er trinnskatt i Norge?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Trinnskatt er den progressive delen av inntektsskatten i Norge. Den er delt inn i fem trinn med økende satser fra 1,7% til 17,8%, avhengig av inntektsnivå."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Betaler jeg skatt av feriepenger?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales, fordi skatten allerede er fordelt over de andre månedene i året."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Hva er minstefradrag?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Minstefradraget er et standardfradrag som alle lønnsmottakere automatisk får. I 2026 er satsen 46% av inntekten, med et maksimalt fradrag på 95 700 kr."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Når kommer skatteoppgjøret?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Skatteoppgjøret kommer vanligvis i juni hvert år. Da får du vite om du har penger til gode (skatteoppgjør) eller om du må betale restskatt."
-          }
-        }
-      ]
-    }
-    </script>
-
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="seo-content.css">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Skattekalkulator 2026 | Kalkulatornorge.no">
+    <meta property="og:description" content="Beregn din skatt for 2026 med vår gratis kalkulator. Trinnskatt, trygdeavgift og netto utbetaling.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kalkulatornorge.no/skatt.html">
+    
+    <style>
+        /* Results Table Styles */
+        .results-section { 
+            margin-top: 24px; 
+            display: none;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--color-surface);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            border-bottom: none;
+        }
+
+        .results-table thead {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .results-table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .results-table th:last-child { text-align: right; }
+
+        .results-table td {
+            padding: 14px 20px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .results-table td:first-child { color: var(--color-text-secondary); }
+
+        .results-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .results-table tbody tr:hover { background: var(--color-background); }
+
+        .results-table tr.tax-row td { background: rgba(196, 83, 58, 0.04); }
+        .results-table tr.tax-row td:last-child { color: var(--color-primary); }
+
+        .results-table tr.subtotal td {
+            font-weight: 600;
+            background: var(--color-background);
+            border-top: 1px solid var(--color-border);
+        }
+
+        /* Rust Gradient Footer */
+        .results-total {
+            background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .results-total .total-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .results-total .total-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .results-total .monthly-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .results-total .monthly-value {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .results-total .total-right { text-align: right; }
+
+        @media (max-width: 480px) {
+            .results-total {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+            .results-total .total-right { text-align: center; }
+            .results-total .total-value { font-size: 1.75rem; }
+        }
+
+        /* SEO Content Styles */
+        .seo-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .seo-content h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            color: var(--color-text);
+            margin: 48px 0 16px 0;
+        }
+
+        .seo-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .seo-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-text);
+            margin: 32px 0 12px 0;
+        }
+
+        .seo-content p {
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .seo-content a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .seo-content a:hover {
+            text-decoration: underline;
+        }
+
+        .seo-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+        }
+
+        .seo-content th,
+        .seo-content td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .seo-content th {
+            background: var(--color-background);
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .seo-content td {
+            color: var(--color-text-secondary);
+        }
+
+        .seo-content ul, .seo-content ol {
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .seo-content li {
+            margin-bottom: 8px;
+        }
+
+        .seo-content strong {
+            color: var(--color-text);
+        }
+
+        .seo-content hr {
+            border: none;
+            border-top: 1px solid var(--color-border);
+            margin: 24px 0;
+        }
+
+        /* Related Calculators Grid */
+        .related-calculators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .related-calc-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .related-calc-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .related-calc-card h4 {
+            font-family: var(--font-display);
+            color: var(--color-text);
+            margin: 0 0 4px 0;
+            font-size: 1rem;
+        }
+
+        .related-calc-card p {
+            color: var(--color-text-secondary);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Disclaimer Box */
+        .disclaimer-box {
+            background: rgba(196, 83, 58, 0.08);
+            border-left: 3px solid var(--color-primary);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 32px 0;
+        }
+
+        .disclaimer-box p {
+            margin: 0;
+            color: var(--color-text);
+        }
+    </style>
 </head>
 <body>
-    <!-- Cookie Consent Banner -->
-    <div id="cookieConsent" class="cookie-consent">
-        <div class="cookie-content">
-            <p>Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen.
-                <a href="/personvern.html">Les mer</a>
-            </p>
-            <div class="cookie-buttons">
-                <button onclick="acceptCookies()" class="btn btn-primary btn-sm">Aksepter</button>
-                <button onclick="declineCookies()" class="btn btn-secondary btn-sm">Avslå</button>
-            </div>
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <p>Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen. <a href="personvern.html">Les mer</a></p>
+        <div class="cookie-buttons">
+            <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Aksepter</button>
+            <button class="btn btn-secondary btn-sm" onclick="declineCookies()">Avslå</button>
         </div>
     </div>
 
-    <script>
-        if (!localStorage.getItem('cookieConsent')) {
-            document.getElementById('cookieConsent').style.display = 'flex';
-        }
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="#C4533A"/>
+                    <text x="16" y="22" text-anchor="middle" fill="white" font-family="Inter" font-weight="700" font-size="16">kr</text>
+                </svg>
+                <span class="logo-text">Kalkulatornorge.no</span>
+            </a>
+            <nav class="nav-menu">
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="nav-dropdown" id="navDropdown">
+                    <div class="nav-dropdown-header">
+                        <span>Andre Kalkulatorer</span>
+                        <button class="nav-close" id="navClose" aria-label="Close menu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="nav-grid">
+                        <div class="nav-category">
+                            <h4>Jobb & Lønn</h4>
+                            <a href="skatt.html" class="active">Skattekalkulator</a>
+                            <a href="brutto-netto.html">Brutto/Netto Lønn</a>
+                            <a href="feriepenger.html">Feriepengekalkulator</a>
+                            <a href="overtid.html">Overtidsbetaling</a>
+                            <a href="arbeidsgiveravgift.html">Arbeidsgiveravgift</a>
+                        </div>
+                        <div class="nav-category">
+                            <h4>Husholdning</h4>
+                            <a href="stromkostnad.html">Strømkostnad</a>
+                            <a href="bilkostnad.html">Bilkostnad</a>
+                        </div>
+                        <div class="nav-category">
+                            <h4>Familie & Helse</h4>
+                            <a href="barnebidrag.html">Barnebidrag</a>
+                            <a href="sykepenger.html">Sykepenger</a>
+                        </div>
+                        <div class="nav-category">
+                            <h4>Transport</h4>
+                            <a href="pendlerfradrag.html">Pendlerfradrag</a>
+                            <a href="tilhengervekt.html">Tilhengervekt</a>
+                        </div>
+                        <div class="nav-category">
+                            <h4>Næring</h4>
+                            <a href="timelonn-frilanser.html">Timelønn for Frilansere</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-        function acceptCookies() {
-            localStorage.setItem('cookieConsent', 'accepted');
-            document.getElementById('cookieConsent').style.display = 'none';
-            window['ga-disable-G-1LJB1LYD72'] = false;
-        }
-
-        function declineCookies() {
-            localStorage.setItem('cookieConsent', 'declined');
-            document.getElementById('cookieConsent').style.display = 'none';
-            window['ga-disable-G-1LJB1LYD72'] = true;
-        }
-
-        if (localStorage.getItem('cookieConsent') === 'declined') {
-            window['ga-disable-G-1LJB1LYD72'] = true;
-        }
-    </script>
-
-    <!-- Calculator Page Container -->
-    <div class="calculator-page">
-
-        <!-- Top Navigation -->
-        <div class="calc-nav">
+    <!-- CALCULATOR SECTION -->
+    <section class="section" style="background: var(--color-background);">
+        <div class="calculator-page">
+            <!-- Back button -->
             <a href="index.html" class="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
                 Tilbake Hjem
             </a>
-
-            <div class="dropdown">
-                <button class="dropdown-btn" onclick="toggleDropdown()">
-                    <svg width="20" height="20" viewBox="0 0 100 100" fill="currentColor">
-                        <rect x="10" y="15" width="30" height="30" rx="5"/>
-                        <rect x="55" y="15" width="30" height="30" rx="5"/>
-                        <rect x="10" y="55" width="30" height="30" rx="5"/>
-                        <rect x="55" y="55" width="30" height="30" rx="5"/>
+            
+            <!-- Header with icon -->
+            <div class="calculator-header">
+                <h1>
+                    <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 4C19.5 4 16 7.5 16 11V14H12C10.9 14 10 14.9 10 16V42C10 43.1 10.9 44 12 44H36C37.1 44 38 43.1 38 42V16C38 14.9 37.1 14 36 14H32V11C32 7.5 28.5 4 24 4ZM24 8C26.2 8 28 9.8 28 12V14H20V12C20 9.8 21.8 8 24 8ZM14 18H34V40H14V18Z" fill="#C4533A"/>
+                        <circle cx="24" cy="28" r="3" fill="#C4533A"/>
                     </svg>
-                    Andre Kalkulatorer
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                    Skattekalkulator 2026
+                </h1>
+                <p>Beregn din skatt basert på offisielle satser fra Skatteetaten. Se trinnskatt, trygdeavgift og netto utbetaling.</p>
+            </div>
+            
+            <!-- Calculator Form -->
+            <div class="calculator-box">
+                <div class="form-group">
+                    <label class="form-label" for="income">Årlig bruttoinntekt (kr)</label>
+                    <input type="number" class="form-input" id="income" placeholder="f.eks. 550000" min="0" step="1000">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="deductions">Egne fradrag utover minstefradrag (kr)</label>
+                    <input type="number" class="form-input" id="deductions" placeholder="f.eks. 50000 (valgfritt)" min="0" step="1000" value="0">
+                    <span class="form-hint">Renteutgifter, fagforeningskontingent, pendlerfradrag etc.</span>
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="calculateTax()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="4" y="2" width="16" height="20" rx="2"/>
+                        <line x1="8" y1="6" x2="16" y2="6"/>
+                        <line x1="8" y1="10" x2="16" y2="10"/>
+                        <line x1="8" y1="14" x2="12" y2="14"/>
                     </svg>
+                    Beregn Skatt
                 </button>
-                <div id="dropdownMenu" class="dropdown-menu">
-                    <div class="dropdown-category">Jobb & Lønn</div>
-                    <a href="skatt.html" class="dropdown-item active">Skattekalkulator</a>
-                    <a href="brutto-netto.html" class="dropdown-item">Brutto/Netto Lønn</a>
-                    <a href="feriepenger.html" class="dropdown-item">Feriepengekalkulator</a>
-                    <a href="overtid.html" class="dropdown-item">Overtidsbetaling</a>
-                    <a href="arbeidsgiveravgift.html" class="dropdown-item">Arbeidsgiveravgift</a>
-
-                    <div class="dropdown-category">Husholdning</div>
-                    <a href="stromkostnad.html" class="dropdown-item">Strømkostnad</a>
-                    <a href="bilkostnad.html" class="dropdown-item">Bilkostnad</a>
-
-                    <div class="dropdown-category">Familie & Helse</div>
-                    <a href="barnebidrag.html" class="dropdown-item">Barnebidrag</a>
-                    <a href="sykepenger.html" class="dropdown-item">Sykepenger</a>
-
-                    <div class="dropdown-category">Transport</div>
-                    <a href="pendlerfradrag.html" class="dropdown-item">Pendlerfradrag</a>
-                    <a href="tilhengervekt.html" class="dropdown-item">Tilhengervekt</a>
-
-                    <div class="dropdown-category">Næring</div>
-                    <a href="timelonn-frilanser.html" class="dropdown-item">Timelønn for Frilansere</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Calculator Header -->
-        <div class="calculator-header">
-            <div class="calc-icon-large">
-                <svg viewBox="0 0 100 100" fill="currentColor">
-                    <path d="M50 15 L85 30 L85 70 L50 85 L15 70 L15 30 Z" fill="none" stroke="currentColor" stroke-width="4"/>
-                    <circle cx="50" cy="50" r="20" fill="currentColor"/>
-                    <text x="50" y="57" font-size="24" font-weight="bold" text-anchor="middle" fill="white">kr</text>
-                </svg>
-            </div>
-            <h1>Skattekalkulator 2026</h1>
-            <p class="calc-subtitle">Beregn din skatt basert på inntekt og fradrag</p>
-        </div>
-
-        <!-- Calculator Box -->
-        <div class="calculator-box">
-            <div class="form-group">
-                <label for="income" class="form-label">Årlig bruttoinntekt (kr)</label>
-                <input type="number" id="income" class="form-input" placeholder="f.eks. 500000" min="0">
-            </div>
-
-            <div class="form-group">
-                <label for="deductions" class="form-label">Fradrag (kr)</label>
-                <input type="number" id="deductions" class="form-input" placeholder="f.eks. 50000" min="0" value="0">
-            </div>
-
-            <button class="btn btn-primary btn-large" onclick="calculate()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="4" y="2" width="16" height="20" rx="2"/>
-                    <line x1="8" y1="6" x2="16" y2="6"/>
-                    <line x1="8" y1="10" x2="16" y2="10"/>
-                    <line x1="8" y1="14" x2="16" y2="14"/>
-                    <line x1="8" y1="18" x2="12" y2="18"/>
-                </svg>
-                Beregn Skatt
-            </button>
-        </div>
-
-        <!-- Results Box -->
-        <div id="result" class="result-box" style="display: none;">
-            <h3 class="result-title">Skatteberegning for 2026</h3>
-
-            <div class="result-grid">
-                <div class="result-item">
-                    <span class="result-label">Bruttoinntekt</span>
-                    <span class="result-value" id="grossIncome">0 kr</span>
-                </div>
-
-                <div class="result-item">
-                    <span class="result-label">Fradrag</span>
-                    <span class="result-value" id="totalDeductions">0 kr</span>
-                </div>
-
-                <div class="result-item">
-                    <span class="result-label">Alminnelig inntekt</span>
-                    <span class="result-value" id="taxableIncome">0 kr</span>
-                </div>
-
-                <div class="result-item">
-                    <span class="result-label">Trinnskatt</span>
-                    <span class="result-value" id="bracketTax">0 kr</span>
-                </div>
-
-                <div class="result-item">
-                    <span class="result-label">Kommuneskatt (<span id="municipalRate">22</span>%)</span>
-                    <span class="result-value" id="municipalTax">0 kr</span>
-                </div>
-
-                <div class="result-item">
-                    <span class="result-label">Trygdeavgift (<span id="socialRate">7.6</span>%)</span>
-                    <span class="result-value" id="socialTax">0 kr</span>
-                </div>
-            </div>
-
-            <div class="result-total">
-                <div class="total-label">Total skatt</div>
-                <div class="total-value" id="totalTax">0 kr</div>
-            </div>
-
-            <div class="result-highlight">
-                <span class="result-label">Netto årslønn</span>
-                <span class="result-value success" id="netIncome">0 kr</span>
-            </div>
-        </div>
-
-        <!-- Info Box -->
-        <div class="info-box">
-            <div class="info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                    <line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="12" cy="8" r="1" fill="currentColor"/>
-                </svg>
-            </div>
-            <div class="info-content">
-                <h3>Om Skatteberegning 2026</h3>
-                <p><strong>Trinnskatt 2026:</strong> Trinn 1: 1,7% (226 101-318 300 kr) • Trinn 2: 4,0% (318 301-725 050 kr) • Trinn 3: 13,7% (725 051-980 100 kr) • Trinn 4: 16,8% (980 101-1 467 200 kr) • Trinn 5: 17,8% (over 1 467 200 kr)</p>
-                <p><strong>Minstefradrag:</strong> 46% av inntekt, maks 95 700 kr. Automatisk inkludert i beregningen.</p>
-                <p><strong>Trygdeavgift:</strong> 7,6% for lønnsinntekt (alder 17-69 år).</p>
-            </div>
-        </div>
-
-        <!-- Sources Box -->
-        <div class="sources-box">
-            <h4>Kilder:</h4>
-            <p>• <a href="https://www.skatteetaten.no/en/person/taxes/tax-calculator/" target="_blank" rel="noopener">Skatteetaten - Tax Calculator / Skattekalkulator</a></p>
-        </div>
-
-        <!-- SEO Content Article -->
-        <article class="seo-content">
-
-            <!-- INTRO SECTION -->
-            <section class="intro-section">
-                <h2>Slik beregner du skatten din i 2026</h2>
-
-                <p>Lurer du på hvor mye skatt du må betale i 2026? Vår <strong>gratis skattekalkulator</strong> gir deg et nøyaktig estimat basert på de offisielle skattesatsene fra Skatteetaten. Enten du er lønnsmottaker, frilanser eller selvstendig næringsdrivende, hjelper kalkulatoren deg med å forstå din totale skattebyrde.</p>
-
-                <p>I Norge har vi et <strong>progressivt skattesystem</strong>, som betyr at jo høyere inntekt du har, desto høyere prosent betaler du i skatt. Dette gjøres gjennom trinnskatt, som er delt inn i fem trinn med ulike satser.</p>
-            </section>
-
-            <!-- TRINNSKATT TABLE -->
-            <section class="trinnskatt-section">
-                <h2>Trinnskatt 2026 - Alle satser</h2>
-
-                <p>Trinnskatten er den progressive delen av inntektsskatten i Norge. Her er de oppdaterte satsene for 2026:</p>
-
-                <div class="table-wrapper">
-                    <table>
+                
+                <!-- Results Section -->
+                <div class="results-section" id="results">
+                    <table class="results-table">
                         <thead>
                             <tr>
-                                <th>Trinn</th>
-                                <th>Inntektsintervall</th>
-                                <th>Sats</th>
+                                <th>Beskrivelse</th>
+                                <th>Beløp</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Trinn 1</strong></td>
-                                <td>226 101 kr – 318 300 kr</td>
-                                <td>1,7%</td>
+                                <td>Bruttoinntekt</td>
+                                <td id="resultBrutto">0 kr</td>
                             </tr>
                             <tr>
-                                <td><strong>Trinn 2</strong></td>
-                                <td>318 301 kr – 725 050 kr</td>
-                                <td>4,0%</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Trinn 3</strong></td>
-                                <td>725 051 kr – 980 100 kr</td>
-                                <td>13,7%</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Trinn 4</strong></td>
-                                <td>980 101 kr – 1 467 200 kr</td>
-                                <td>16,8%</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Trinn 5</strong></td>
-                                <td>Over 1 467 200 kr</td>
-                                <td>17,8%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <p><strong>Merk:</strong> Trinnskatten beregnes kun på inntekt over hvert trinn. Hvis du tjener 400 000 kr, betaler du 1,7% på beløpet mellom 226 101 og 318 300 kr, og 4,0% på beløpet mellom 318 301 og 400 000 kr.</p>
-            </section>
-
-            <!-- SKATTEKOMPONENTER -->
-            <section class="komponenter-section">
-                <h2>Hva består skatten din av?</h2>
-
-                <p>Din totale skatt i Norge består av flere komponenter. Her er en oversikt over de viktigste:</p>
-
-                <h3>1. Trinnskatt (progressiv skatt)</h3>
-                <p>Som forklart over, er trinnskatten den progressive delen av inntektsskatten. Den sørger for at de med høyere inntekt betaler en større andel i skatt.</p>
-
-                <h3>2. Skatt på alminnelig inntekt (22%)</h3>
-                <p>Alle lønnsmottakere betaler 22% skatt på alminnelig inntekt. Dette er en flat sats som beregnes etter at minstefradrag og andre fradrag er trukket fra bruttoinntekten.</p>
-
-                <h3>3. Trygdeavgift (7,6%)</h3>
-                <p>Trygdeavgiften finansierer folketrygden og gir deg rett til sykepenger, dagpenger, pensjon og andre velferdsytelser. Satsen for lønnsmottakere mellom 17 og 69 år er 7,6%.</p>
-
-                <div class="info-box">
-                    <p><strong>Tips:</strong> Bruk vår <a href="brutto-netto.html">brutto/netto kalkulator</a> for å se nøyaktig hvor mye du får utbetalt etter skatt hver måned.</p>
-                </div>
-            </section>
-
-            <!-- MINSTEFRADRAG -->
-            <section class="minstefradrag-section">
-                <h2>Minstefradrag 2026</h2>
-
-                <p>Minstefradraget er et standardfradrag som alle lønnsmottakere automatisk får. Det reduserer din skattbare inntekt og dermed skatten du må betale.</p>
-
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Sats / Beløp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Minstefradrag i lønn</td>
-                                <td>46% av inntekt</td>
-                            </tr>
-                            <tr>
-                                <td>Maksimalt minstefradrag</td>
-                                <td>95 700 kr</td>
+                                <td>Minstefradrag</td>
+                                <td id="resultMinstefradrag">0 kr</td>
                             </tr>
                             <tr>
                                 <td>Personfradrag</td>
-                                <td>73 100 kr</td>
+                                <td id="resultPersonfradrag">0 kr</td>
+                            </tr>
+                            <tr>
+                                <td>Egne fradrag</td>
+                                <td id="resultEgneFradrag">0 kr</td>
+                            </tr>
+                            <tr>
+                                <td>Alminnelig inntekt</td>
+                                <td id="resultAlminnelig">0 kr</td>
+                            </tr>
+                            <tr class="tax-row">
+                                <td>Trinnskatt</td>
+                                <td id="resultTrinnskatt">0 kr</td>
+                            </tr>
+                            <tr class="tax-row">
+                                <td>Skatt på alminnelig inntekt (22%)</td>
+                                <td id="resultKommuneskatt">0 kr</td>
+                            </tr>
+                            <tr class="tax-row">
+                                <td>Trygdeavgift (7,6%)</td>
+                                <td id="resultTrygdeavgift">0 kr</td>
+                            </tr>
+                            <tr class="subtotal">
+                                <td>Total skatt</td>
+                                <td id="resultTotalSkatt">0 kr</td>
                             </tr>
                         </tbody>
                     </table>
+                    
+                    <!-- Rust Gradient Footer -->
+                    <div class="results-total">
+                        <div class="total-left">
+                            <div class="total-label">Netto årslønn</div>
+                            <div class="total-value" id="resultNettoAar">0 kr</div>
+                        </div>
+                        <div class="total-right">
+                            <div class="monthly-label">Per måned (før feriepenger)</div>
+                            <div class="monthly-value" id="resultNettoMaaned">0 kr</div>
+                        </div>
+                    </div>
                 </div>
-
-                <p><strong>Eksempel:</strong> Hvis du tjener 500 000 kr i året, blir minstefradraget ditt 46% × 500 000 = 230 000 kr. Men siden dette overstiger maksgrensen, får du kun 95 700 kr i minstefradrag.</p>
-            </section>
-
-            <!-- REGNEEKSEMPEL -->
-            <section class="eksempel-section">
-                <h2>Eksempel: Skatteberegning for 600 000 kr</h2>
-
-                <p>La oss se på et konkret eksempel med en årsinntekt på 600 000 kr:</p>
-
-                <div class="example-box">
-                    <p><strong>Bruttoinntekt:</strong> 600 000 kr</p>
-                    <p><strong>Minstefradrag:</strong> 95 700 kr (maks)</p>
-                    <p><strong>Alminnelig inntekt:</strong> 600 000 - 95 700 = 504 300 kr</p>
-
-                    <hr>
-
-                    <p><strong>Skatt på alminnelig inntekt:</strong> (504 300 - 73 100) × 22% = 94 864 kr</p>
-                    <p><strong>Trygdeavgift:</strong> 600 000 × 7,6% = 45 600 kr</p>
-                    <p><strong>Trinnskatt:</strong></p>
-                    <ul>
-                        <li>Trinn 1: (318 300 - 226 101) × 1,7% = 1 567 kr</li>
-                        <li>Trinn 2: (600 000 - 318 301) × 4,0% = 11 268 kr</li>
-                    </ul>
-
-                    <hr>
-
-                    <p class="result"><strong>Total skatt: ca. 153 300 kr</strong></p>
-                    <p class="result"><strong>Netto årsinntekt: ca. 446 700 kr</strong></p>
-                    <p><strong>Gjennomsnittlig skatteprosent: 25,6%</strong></p>
+            </div>
+            
+            <!-- Info Box -->
+            <div class="info-box">
+                <div class="info-box-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <h3>Om Skatteberegning 2026</h3>
                 </div>
+                <p><strong>Trinnskatt 2026:</strong> Trinn 1: 1,7% (226 101-318 300 kr) • Trinn 2: 4,0% (318 301-725 050 kr) • Trinn 3: 13,7% (725 051-980 100 kr) • Trinn 4: 16,8% (980 101-1 467 200 kr) • Trinn 5: 17,8% (over 1 467 200 kr)</p>
+                <p><strong>Minstefradrag:</strong> 46% av inntekt, maks 95 700 kr. Automatisk inkludert i beregningen.</p>
+                <p><strong>Trygdeavgift:</strong> 7,6% for lønnsinntekt (alder 17-69 år).</p>
+                <p style="margin-top: 16px;"><strong>Kilder:</strong></p>
+                <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+                    <li><a href="https://www.skatteetaten.no/en/person/taxes/tax-calculator/" target="_blank" rel="noopener">Skatteetaten - Tax Calculator</a></li>
+                    <li><a href="https://www.skatteetaten.no/satser/trinnskatt/" target="_blank" rel="noopener">Skatteetaten - Trinnskatt satser</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-                <p>Vil du vite hvor mye du får i <strong>feriepenger</strong> av denne lønnen? Prøv vår <a href="feriepenger.html">feriepengekalkulator</a>!</p>
-            </section>
+    <!-- SEO CONTENT SECTION -->
+    <section class="section" style="background: var(--color-surface);">
+        <div class="seo-content">
+            <h2>Slik beregner du skatten din i 2026</h2>
+            <p>Lurer du på hvor mye skatt du må betale i 2026? Vår <strong>gratis skattekalkulator</strong> gir deg et nøyaktig estimat basert på de offisielle skattesatsene fra Skatteetaten. Enten du er lønnsmottaker, frilanser eller selvstendig næringsdrivende, hjelper kalkulatoren deg med å forstå din totale skattebyrde.</p>
+            <p>I Norge har vi et <strong>progressivt skattesystem</strong>, som betyr at jo høyere inntekt du har, desto høyere prosent betaler du i skatt. Dette gjøres gjennom trinnskatt, som er delt inn i fem trinn med ulike satser.</p>
 
-            <!-- VIKTIGE DATOER -->
-            <section class="datoer-section">
-                <h2>Viktige skattedatoer i 2026</h2>
+            <h2>Trinnskatt 2026 - Alle satser</h2>
+            <p>Trinnskatten er den progressive delen av inntektsskatten i Norge. Her er de oppdaterte satsene for 2026:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Trinn</th>
+                        <th>Inntektsintervall</th>
+                        <th>Sats</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Trinn 1</strong></td>
+                        <td>226 101 kr – 318 300 kr</td>
+                        <td>1,7%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trinn 2</strong></td>
+                        <td>318 301 kr – 725 050 kr</td>
+                        <td>4,0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trinn 3</strong></td>
+                        <td>725 051 kr – 980 100 kr</td>
+                        <td>13,7%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trinn 4</strong></td>
+                        <td>980 101 kr – 1 467 200 kr</td>
+                        <td>16,8%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trinn 5</strong></td>
+                        <td>Over 1 467 200 kr</td>
+                        <td>17,8%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>Merk:</strong> Trinnskatten beregnes kun på inntekt over hvert trinn. Hvis du tjener 400 000 kr, betaler du 1,7% på beløpet mellom 226 101 og 318 300 kr, og 4,0% på beløpet mellom 318 301 og 400 000 kr.</p>
 
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Dato</th>
-                                <th>Hva skjer</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Januar 2026</strong></td>
-                                <td>Nytt skattekort tilgjengelig på Skatteetaten</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Mars/April 2026</strong></td>
-                                <td>Skattemeldingen (selvangivelsen) sendes ut</td>
-                            </tr>
-                            <tr>
-                                <td><strong>30. april 2026</strong></td>
-                                <td>Frist for å levere skattemeldingen</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Juni 2026</strong></td>
-                                <td>Skatteoppgjøret kommer - se om du får tilbake eller må betale</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <h2>Hva består skatten din av?</h2>
+            <p>Din totale skatt i Norge består av flere komponenter. Her er en oversikt over de viktigste:</p>
 
-            <!-- FAQ SECTION -->
-            <section class="faq-section">
-                <h2>Ofte stilte spørsmål om skatt i Norge</h2>
+            <h3>1. Trinnskatt (progressiv skatt)</h3>
+            <p>Som forklart over, er trinnskatten den progressive delen av inntektsskatten. Den sørger for at de med høyere inntekt betaler en større andel i skatt.</p>
 
-                <div class="faq-item">
-                    <h3>Hvor mye skatt betaler jeg på 500 000 kr i årslønn?</h3>
-                    <p>Med en årsinntekt på 500 000 kr i 2026, vil du betale omtrent 120 000 - 125 000 kr i skatt, avhengig av dine fradrag. Dette gir en gjennomsnittlig skatteprosent på ca. 24-25%. Bruk kalkulatoren over for et nøyaktig estimat.</p>
-                </div>
+            <h3>2. Skatt på alminnelig inntekt (22%)</h3>
+            <p>Alle lønnsmottakere betaler 22% skatt på alminnelig inntekt. Dette er en flat sats som beregnes etter at minstefradrag og andre fradrag er trukket fra bruttoinntekten.</p>
 
-                <div class="faq-item">
-                    <h3>Hva er forskjellen på bruttoskatt og nettoskatt?</h3>
-                    <p><strong>Bruttoskatt</strong> (skatt på alminnelig inntekt) beregnes på inntekten din etter fradrag. <strong>Nettoskatt</strong> er et begrep som ikke brukes offisielt i Norge, men mange refererer til dette som den totale skatten du faktisk betaler.</p>
-                </div>
+            <h3>3. Trygdeavgift (7,6%)</h3>
+            <p>Trygdeavgiften finansierer folketrygden og gir deg rett til sykepenger, dagpenger, pensjon og andre velferdsytelser. Satsen for lønnsmottakere mellom 17 og 69 år er 7,6%.</p>
+            
+            <p><strong>Tips:</strong> Bruk vår <a href="brutto-netto.html">brutto/netto kalkulator</a> for å se nøyaktig hvor mye du får utbetalt etter skatt hver måned.</p>
 
-                <div class="faq-item">
-                    <h3>Hvordan kan jeg redusere skatten min lovlig?</h3>
-                    <p>Det finnes flere lovlige måter å redusere skatten på:</p>
-                    <ul>
-                        <li><strong>Pendlerfradrag:</strong> Hvis du reiser langt til jobb, kan du få fradrag. <a href="pendlerfradrag.html">Beregn ditt pendlerfradrag her</a>.</li>
-                        <li><strong>Fagforeningskontingent:</strong> Du får fradrag for opptil 8 250 kr i fagforeningskontingent.</li>
-                        <li><strong>BSU (Boligsparing for ungdom):</strong> Inntil 27 500 kr gir 10% skattefradrag.</li>
-                        <li><strong>Renteutgifter:</strong> Renter på boliglån gir 22% fradrag.</li>
-                    </ul>
-                </div>
+            <h2>Minstefradrag 2026</h2>
+            <p>Minstefradraget er et standardfradrag som alle lønnsmottakere automatisk får. Det reduserer din skattbare inntekt og dermed skatten du må betale.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Sats / Beløp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Minstefradrag i lønn</td>
+                        <td>46% av inntekt</td>
+                    </tr>
+                    <tr>
+                        <td>Maksimalt minstefradrag</td>
+                        <td>95 700 kr</td>
+                    </tr>
+                    <tr>
+                        <td>Personfradrag</td>
+                        <td>73 100 kr</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>Eksempel:</strong> Hvis du tjener 500 000 kr i året, blir minstefradraget ditt 46% × 500 000 = 230 000 kr. Men siden dette overstiger maksgrensen, får du kun 95 700 kr i minstefradrag.</p>
 
-                <div class="faq-item">
-                    <h3>Når må jeg betale restskatt?</h3>
-                    <p>Hvis du har betalt for lite skatt gjennom året, må du betale restskatt. Skatteoppgjøret kommer vanligvis i juni. Hvis restskatten er under 1 000 kr, må du betale hele beløpet innen august. Høyere beløp kan deles opp i to terminer.</p>
-                </div>
+            <h2>Eksempel: Skatteberegning for 600 000 kr</h2>
+            <p>La oss se på et konkret eksempel med en årsinntekt på 600 000 kr:</p>
+            
+            <p><strong>Bruttoinntekt:</strong> 600 000 kr</p>
+            <p><strong>Minstefradrag:</strong> 95 700 kr (maks)</p>
+            <p><strong>Alminnelig inntekt:</strong> 600 000 - 95 700 = 504 300 kr</p>
+            <hr>
+            <p><strong>Skatt på alminnelig inntekt:</strong> (504 300 - 73 100) × 22% = 94 864 kr</p>
+            <p><strong>Trygdeavgift:</strong> 600 000 × 7,6% = 45 600 kr</p>
+            <p><strong>Trinnskatt:</strong></p>
+            <ul>
+                <li>Trinn 1: (318 300 - 226 101) × 1,7% = 1 567 kr</li>
+                <li>Trinn 2: (600 000 - 318 301) × 4,0% = 11 268 kr</li>
+            </ul>
+            <hr>
+            <p><strong>Total skatt: ca. 153 300 kr</strong></p>
+            <p><strong>Netto årsinntekt: ca. 446 700 kr</strong></p>
+            <p><strong>Gjennomsnittlig skatteprosent: 25,6%</strong></p>
+            
+            <p>Vil du vite hvor mye du får i <strong>feriepenger</strong> av denne lønnen? Prøv vår <a href="feriepenger.html">feriepengekalkulator</a>!</p>
 
-                <div class="faq-item">
-                    <h3>Betaler jeg skatt av feriepenger?</h3>
-                    <p>Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales (vanligvis i juni), fordi skatten allerede er fordelt over de andre månedene. <a href="feriepenger.html">Les mer om feriepenger her</a>.</p>
-                </div>
+            <h2>Viktige skattedatoer i 2026</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dato</th>
+                        <th>Hva skjer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Januar 2026</strong></td>
+                        <td>Nytt skattekort tilgjengelig på Skatteetaten</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mars/April 2026</strong></td>
+                        <td>Skattemeldingen (selvangivelsen) sendes ut</td>
+                    </tr>
+                    <tr>
+                        <td><strong>30. april 2026</strong></td>
+                        <td>Frist for å levere skattemeldingen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Juni 2026</strong></td>
+                        <td>Skatteoppgjøret kommer - se om du får tilbake eller må betale</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <div class="faq-item">
-                    <h3>Hva er marginalskatt?</h3>
-                    <p>Marginalskatt er skatten du betaler på den siste kronen du tjener. I Norge kan marginalskatten være opptil ca. 47% for de høyeste inntektene (trinnskatt trinn 5 + skatt på alminnelig inntekt + trygdeavgift). For de fleste vanlige lønnsmottakere ligger marginalskatten på 34-44%.</p>
-                </div>
-            </section>
+            <h2>Ofte stilte spørsmål om skatt i Norge</h2>
 
-            <!-- RELATERTE KALKULATORER -->
-            <section class="relaterte-section">
-                <h2>Relaterte kalkulatorer</h2>
+            <h3>Hvor mye skatt betaler jeg på 500 000 kr i årslønn?</h3>
+            <p>Med en årsinntekt på 500 000 kr i 2026, vil du betale omtrent 120 000 - 125 000 kr i skatt, avhengig av dine fradrag. Dette gir en gjennomsnittlig skatteprosent på ca. 24-25%. Bruk kalkulatoren over for et nøyaktig estimat.</p>
 
-                <p>Utforsk våre andre gratis kalkulatorer for å få full oversikt over din økonomi:</p>
+            <h3>Hva er forskjellen på bruttoskatt og nettoskatt?</h3>
+            <p><strong>Bruttoskatt</strong> (skatt på alminnelig inntekt) beregnes på inntekten din etter fradrag. <strong>Nettoskatt</strong> er et begrep som ikke brukes offisielt i Norge, men mange refererer til dette som den totale skatten du faktisk betaler.</p>
 
-                <div class="calculator-grid">
+            <h3>Hvordan kan jeg redusere skatten min lovlig?</h3>
+            <p>Det finnes flere lovlige måter å redusere skatten på:</p>
+            <ul>
+                <li><strong>Pendlerfradrag:</strong> Hvis du reiser langt til jobb, kan du få fradrag. <a href="pendlerfradrag.html">Beregn ditt pendlerfradrag her</a>.</li>
+                <li><strong>Fagforeningskontingent:</strong> Du får fradrag for opptil 8 250 kr i fagforeningskontingent.</li>
+                <li><strong>BSU (Boligsparing for ungdom):</strong> Inntil 27 500 kr gir 10% skattefradrag.</li>
+                <li><strong>Renteutgifter:</strong> Renter på boliglån gir 22% fradrag.</li>
+            </ul>
 
-                    <a href="brutto-netto.html" class="calculator-card">
-                        <h4>Brutto/Netto Kalkulator</h4>
-                        <p>Se hva du får utbetalt etter skatt</p>
-                    </a>
+            <h3>Når må jeg betale restskatt?</h3>
+            <p>Hvis du har betalt for lite skatt gjennom året, må du betale restskatt. Skatteoppgjøret kommer vanligvis i juni. Hvis restskatten er under 1 000 kr, må du betale hele beløpet innen august. Høyere beløp kan deles opp i to terminer.</p>
 
-                    <a href="feriepenger.html" class="calculator-card">
-                        <h4>Feriepengekalkulator</h4>
-                        <p>Beregn dine feriepenger for 2026</p>
-                    </a>
+            <h3>Betaler jeg skatt av feriepenger?</h3>
+            <p>Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales (vanligvis i juni), fordi skatten allerede er fordelt over de andre månedene. <a href="feriepenger.html">Les mer om feriepenger her</a>.</p>
 
-                    <a href="overtid.html" class="calculator-card">
-                        <h4>Overtidskalkulator</h4>
-                        <p>Beregn overtidsbetaling med riktig sats</p>
-                    </a>
+            <h3>Hva er marginalskatt?</h3>
+            <p>Marginalskatt er skatten du betaler på den siste kronen du tjener. I Norge kan marginalskatten være opptil ca. 47% for de høyeste inntektene (trinnskatt trinn 5 + skatt på alminnelig inntekt + trygdeavgift). For de fleste vanlige lønnsmottakere ligger marginalskatten på 34-44%.</p>
 
-                    <a href="pendlerfradrag.html" class="calculator-card">
-                        <h4>Pendlerfradrag</h4>
-                        <p>Få fradrag for lang arbeidsreise</p>
-                    </a>
+            <h2>Relaterte kalkulatorer</h2>
+            <p>Utforsk våre andre gratis kalkulatorer for å få full oversikt over din økonomi:</p>
+            
+            <div class="related-calculators">
+                <a href="brutto-netto.html" class="related-calc-card">
+                    <h4>Brutto/Netto Kalkulator</h4>
+                    <p>Se hva du får utbetalt etter skatt</p>
+                </a>
+                <a href="feriepenger.html" class="related-calc-card">
+                    <h4>Feriepengekalkulator</h4>
+                    <p>Beregn dine feriepenger for 2026</p>
+                </a>
+                <a href="overtid.html" class="related-calc-card">
+                    <h4>Overtidskalkulator</h4>
+                    <p>Beregn overtidsbetaling med riktig sats</p>
+                </a>
+                <a href="pendlerfradrag.html" class="related-calc-card">
+                    <h4>Pendlerfradrag</h4>
+                    <p>Få fradrag for lang arbeidsreise</p>
+                </a>
+            </div>
 
-                </div>
-            </section>
-
-            <!-- DISCLAIMER -->
-            <section class="disclaimer-section">
+            <div class="disclaimer-box">
                 <p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler og kan avvike fra din faktiske skatt. For nøyaktig skatteberegning, bruk <a href="https://www.skatteetaten.no/person/skatt/skattekort/skatteberegning/" target="_blank" rel="noopener">Skatteetatens offisielle kalkulator</a> eller kontakt en autorisert regnskapsfører.</p>
-            </section>
-
-        </article>
-
-        <!-- Bottom Navigation -->
-        <div class="bottom-nav">
-            <a href="index.html" class="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                Tilbake Hjem
-            </a>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-links">
-            <a href="personvern.html">Personvernerklæring</a>
-            <a href="https://github.com/qazi5313/kalkulatornorge" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://github.com/qazi5313/kalkulatornorge/issues" target="_blank" rel="noopener">Kontakt</a>
-        </div>
-        <div class="footer-text">
-            © 2026 Kalkulatornorge.no - Laget med ❤️ for norske brukere
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="footer-logo">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="8" fill="#C4533A"/>
+                            <text x="16" y="22" text-anchor="middle" fill="white" font-family="Inter" font-weight="700" font-size="14">kr</text>
+                        </svg>
+                        <span>Kalkulatornorge.no</span>
+                    </a>
+                    <p class="footer-tagline">Gratis norske kalkulatorer for skatt, lønn og personlig økonomi.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="personvern.html">Personvernerklæring</a>
+                    <a href="https://github.com/qazi5313/kalkulatornorge" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://github.com/qazi5313/kalkulatornorge/issues" target="_blank" rel="noopener">Kontakt</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Kalkulatornorge.no - Laget med ❤️ for norske brukere</p>
+            </div>
         </div>
     </footer>
 
     <!-- JavaScript -->
     <script>
-        let closeTimeout;
+        // Tax rates for 2026
+        const TAX_RATES = {
+            // Trinnskatt thresholds and rates
+            trinnskatt: [
+                { threshold: 226100, rate: 0 },
+                { threshold: 318300, rate: 0.017 },
+                { threshold: 725050, rate: 0.040 },
+                { threshold: 980100, rate: 0.137 },
+                { threshold: 1467200, rate: 0.168 },
+                { threshold: Infinity, rate: 0.178 }
+            ],
+            // Other rates
+            trygdeavgift: 0.076,
+            skattAlminneligInntekt: 0.22,
+            minstefradragRate: 0.46,
+            minstefradragMax: 95700,
+            personfradrag: 73100
+        };
 
-        function toggleDropdown() {
-            const dropdown = document.getElementById("dropdownMenu");
-            dropdown.classList.toggle("show");
-            clearTimeout(closeTimeout);
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('no-NO') + ' kr';
         }
 
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown-menu')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
+        function calculateTrinnskatt(income) {
+            let trinnskatt = 0;
+            const brackets = TAX_RATES.trinnskatt;
+            
+            for (let i = 1; i < brackets.length; i++) {
+                const lowerThreshold = brackets[i - 1].threshold;
+                const upperThreshold = brackets[i].threshold;
+                const rate = brackets[i].rate;
+                
+                if (income > lowerThreshold) {
+                    const taxableInThisBracket = Math.min(income, upperThreshold) - lowerThreshold;
+                    trinnskatt += taxableInThisBracket * rate;
                 }
             }
+            
+            return trinnskatt;
         }
 
-        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
-            closeTimeout = setTimeout(function() {
-                document.getElementById("dropdownMenu").classList.remove("show");
-            }, 500);
-        });
-
-        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
-            clearTimeout(closeTimeout);
-        });
-
-        function calculate() {
-            const rates = getRates();
-            const income = parseFloat(document.getElementById('income').value);
-            const deductions = parseFloat(document.getElementById('deductions').value) || 0;
-
-            if (!income || income <= 0) {
-                alert('Vennligst fyll inn en gyldig inntekt');
+        function calculateTax() {
+            const incomeInput = document.getElementById('income');
+            const deductionsInput = document.getElementById('deductions');
+            
+            const income = parseFloat(incomeInput.value) || 0;
+            const extraDeductions = parseFloat(deductionsInput.value) || 0;
+            
+            if (income <= 0) {
+                alert('Vennligst oppgi en gyldig årsinntekt');
                 return;
             }
-
-            const standardDeduction = calculateStandardDeduction(income);
-            const totalDeductions = standardDeduction + deductions;
-            const taxableIncome = Math.max(0, income - totalDeductions);
-
-            const bracketTax = calculateBracketTax(taxableIncome);
-            const municipalTax = taxableIncome * rates.municipalTax.rate;
-            const socialTax = calculateSocialSecurityTax(income - deductions);
-
-            const totalTax = bracketTax + municipalTax + socialTax;
-            const netIncome = income - totalTax;
-
-            document.getElementById('municipalRate').textContent = (rates.municipalTax.rate * 100).toFixed(1);
-            document.getElementById('socialRate').textContent = (rates.socialSecurityTax.lonnsinntekt.rate * 100).toFixed(1);
-
-            document.getElementById('grossIncome').textContent = income.toLocaleString('nb-NO') + ' kr';
-            document.getElementById('totalDeductions').textContent = totalDeductions.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('taxableIncome').textContent = taxableIncome.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('bracketTax').textContent = bracketTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('municipalTax').textContent = municipalTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('socialTax').textContent = socialTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('totalTax').textContent = totalTax.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('netIncome').textContent = netIncome.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-
-            document.getElementById('result').style.display = 'block';
+            
+            // Calculate minstefradrag (automatic deduction)
+            const minstefradrag = Math.min(income * TAX_RATES.minstefradragRate, TAX_RATES.minstefradragMax);
+            
+            // Calculate alminnelig inntekt (ordinary income)
+            const alminneligInntekt = Math.max(0, income - minstefradrag - extraDeductions);
+            
+            // Calculate skatt på alminnelig inntekt (after personfradrag)
+            const taxableAlminnelig = Math.max(0, alminneligInntekt - TAX_RATES.personfradrag);
+            const skattAlminnelig = taxableAlminnelig * TAX_RATES.skattAlminneligInntekt;
+            
+            // Calculate trinnskatt (based on gross income, not alminnelig inntekt)
+            const trinnskatt = calculateTrinnskatt(income);
+            
+            // Calculate trygdeavgift (based on gross income)
+            const trygdeavgift = income * TAX_RATES.trygdeavgift;
+            
+            // Total tax
+            const totalSkatt = skattAlminnelig + trinnskatt + trygdeavgift;
+            
+            // Net income
+            const nettoAar = income - totalSkatt;
+            const nettoMaaned = nettoAar / 12;
+            
+            // Update results
+            document.getElementById('resultBrutto').textContent = formatNumber(income);
+            document.getElementById('resultMinstefradrag').textContent = '-' + formatNumber(minstefradrag);
+            document.getElementById('resultPersonfradrag').textContent = '-' + formatNumber(TAX_RATES.personfradrag);
+            document.getElementById('resultEgneFradrag').textContent = extraDeductions > 0 ? '-' + formatNumber(extraDeductions) : '0 kr';
+            document.getElementById('resultAlminnelig').textContent = formatNumber(alminneligInntekt);
+            document.getElementById('resultTrinnskatt').textContent = formatNumber(trinnskatt);
+            document.getElementById('resultKommuneskatt').textContent = formatNumber(skattAlminnelig);
+            document.getElementById('resultTrygdeavgift').textContent = formatNumber(trygdeavgift);
+            document.getElementById('resultTotalSkatt').textContent = formatNumber(totalSkatt);
+            document.getElementById('resultNettoAar').textContent = formatNumber(nettoAar);
+            document.getElementById('resultNettoMaaned').textContent = formatNumber(nettoMaaned);
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        document.getElementById('income').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') calculate();
+        // Cookie banner functions
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookieBanner').style.display = 'none';
+            // Initialize Google Analytics here if needed
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookiesAccepted', 'false');
+            document.getElementById('cookieBanner').style.display = 'none';
+        }
+
+        // Check cookie preference on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cookiePreference = localStorage.getItem('cookiesAccepted');
+            if (cookiePreference !== null) {
+                document.getElementById('cookieBanner').style.display = 'none';
+            }
         });
 
+        // Navigation toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.getElementById('navToggle');
+            const navDropdown = document.getElementById('navDropdown');
+            const navClose = document.getElementById('navClose');
+            
+            if (navToggle && navDropdown) {
+                navToggle.addEventListener('click', function() {
+                    navDropdown.classList.toggle('active');
+                });
+                
+                if (navClose) {
+                    navClose.addEventListener('click', function() {
+                        navDropdown.classList.remove('active');
+                    });
+                }
+                
+                // Close on outside click
+                document.addEventListener('click', function(e) {
+                    if (!navToggle.contains(e.target) && !navDropdown.contains(e.target)) {
+                        navDropdown.classList.remove('active');
+                    }
+                });
+            }
+        });
+
+        // Allow Enter key to trigger calculation
+        document.getElementById('income').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateTax();
+            }
+        });
+        
         document.getElementById('deductions').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') calculate();
+            if (e.key === 'Enter') {
+                calculateTax();
+            }
         });
     </script>
 </body>
