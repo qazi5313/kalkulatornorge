@@ -27,461 +27,1001 @@
     <meta property="og:url" content="https://kalkulatornorge.no/skatt.html">
     
     <style>
-        /* Results Table Styles */
-        .results-section { 
-            margin-top: 24px; 
+        /* Calculator Page Layout */
+        .calc-page {
+            background: var(--color-background);
+            min-height: 100vh;
+        }
+        
+        .calc-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px 20px;
+        }
+        
+        /* Back Button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            transition: color 0.2s;
+        }
+        
+        .back-link:hover {
+            color: var(--color-primary);
+        }
+        
+        /* Calculator Header */
+        .calc-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .calc-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--color-primary-light);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        
+        .calc-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .calc-header h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0 0 8px 0;
+        }
+        
+        .calc-header p {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        /* Calculator Box */
+        .calc-box {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+        
+        .form-hint {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            margin-top: 6px;
+        }
+        
+        .calc-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        
+        .calc-btn:hover {
+            background: var(--color-primary-hover);
+        }
+        
+        .calc-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Results Section */
+        .results-section {
+            margin-top: 24px;
             display: none;
         }
-
+        
         .results-table {
             width: 100%;
             border-collapse: collapse;
             background: var(--color-surface);
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            border-radius: 12px 12px 0 0;
             overflow: hidden;
             border: 1px solid var(--color-border);
             border-bottom: none;
         }
-
+        
         .results-table thead {
             background: var(--color-primary);
             color: white;
         }
-
+        
         .results-table th {
             padding: 14px 20px;
             text-align: left;
             font-weight: 600;
             font-size: 0.9rem;
         }
-
-        .results-table th:last-child { text-align: right; }
-
+        
+        .results-table th:last-child {
+            text-align: right;
+        }
+        
         .results-table td {
             padding: 14px 20px;
             font-size: 0.9rem;
             border-bottom: 1px solid var(--color-border);
         }
-
-        .results-table td:first-child { color: var(--color-text-secondary); }
-
+        
+        .results-table td:first-child {
+            color: var(--color-text-secondary);
+        }
+        
         .results-table td:last-child {
             text-align: right;
             font-weight: 600;
             color: var(--color-text);
         }
-
-        .results-table tbody tr:hover { background: var(--color-background); }
-
-        .results-table tr.tax-row td { background: rgba(196, 83, 58, 0.04); }
-        .results-table tr.tax-row td:last-child { color: var(--color-primary); }
-
+        
+        .results-table tbody tr:hover {
+            background: var(--color-background);
+        }
+        
+        .results-table tr.tax-row td {
+            background: rgba(196, 83, 58, 0.04);
+        }
+        
+        .results-table tr.tax-row td:last-child {
+            color: var(--color-primary);
+        }
+        
         .results-table tr.subtotal td {
             font-weight: 600;
             background: var(--color-background);
-            border-top: 1px solid var(--color-border);
+            border-top: 2px solid var(--color-border);
         }
-
+        
         /* Rust Gradient Footer */
         .results-total {
             background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%);
-            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            border-radius: 0 0 12px 12px;
             padding: 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: white;
         }
-
-        .results-total .total-label {
+        
+        .total-label {
             font-size: 0.9rem;
             opacity: 0.9;
             margin-bottom: 4px;
         }
-
-        .results-total .total-value {
+        
+        .total-value {
             font-family: var(--font-display);
             font-size: 2rem;
             font-weight: 700;
         }
-
-        .results-total .monthly-label {
+        
+        .monthly-label {
             font-size: 0.8rem;
             opacity: 0.8;
             margin-bottom: 4px;
         }
-
-        .results-total .monthly-value {
+        
+        .monthly-value {
             font-family: var(--font-display);
             font-size: 1.25rem;
             font-weight: 600;
         }
-
-        .results-total .total-right { text-align: right; }
-
+        
+        .total-right {
+            text-align: right;
+        }
+        
         @media (max-width: 480px) {
             .results-total {
                 flex-direction: column;
                 text-align: center;
                 gap: 16px;
             }
-            .results-total .total-right { text-align: center; }
-            .results-total .total-value { font-size: 1.75rem; }
+            .total-right {
+                text-align: center;
+            }
+            .total-value {
+                font-size: 1.75rem;
+            }
         }
-
-        /* SEO Content Styles */
+        
+        /* Info Box */
+        .info-box {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .info-box-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .info-box-header svg {
+            color: var(--color-primary);
+        }
+        
+        .info-box-header h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin: 0;
+        }
+        
+        .info-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0 0 12px 0;
+        }
+        
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-box a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        
+        .info-box a:hover {
+            text-decoration: underline;
+        }
+        
+        .info-box ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        
+        .info-box li {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+        
+        /* ===================== */
+        /* SEO CONTENT STYLES    */
+        /* ===================== */
+        
         .seo-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 48px 24px;
+            margin-top: 48px;
         }
-
+        
         .seo-content h2 {
             font-family: var(--font-display);
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             color: var(--color-text);
-            margin: 48px 0 16px 0;
+            margin: 40px 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
+        
         .seo-content h2:first-child {
             margin-top: 0;
         }
-
+        
         .seo-content h3 {
             font-family: var(--font-display);
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: var(--color-text);
-            margin: 32px 0 12px 0;
+            margin: 24px 0 12px 0;
         }
-
+        
         .seo-content p {
             color: var(--color-text-secondary);
             line-height: 1.7;
             margin-bottom: 16px;
         }
-
+        
         .seo-content a {
             color: var(--color-primary);
             text-decoration: none;
         }
-
+        
         .seo-content a:hover {
             text-decoration: underline;
         }
-
-        .seo-content table {
+        
+        /* Callout Boxes */
+        .callout {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            display: flex;
+            gap: 16px;
+        }
+        
+        .callout-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .callout-content {
+            flex: 1;
+        }
+        
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--color-text);
+        }
+        
+        .callout-text {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .callout.tip {
+            background: #E8F5E9;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .callout.tip .callout-icon {
+            color: #4CAF50;
+        }
+        
+        .callout.warning {
+            background: #FFF3E0;
+            border-left: 4px solid #FF9800;
+        }
+        
+        .callout.warning .callout-icon {
+            color: #FF9800;
+        }
+        
+        .callout.info {
+            background: rgba(196, 83, 58, 0.08);
+            border-left: 4px solid var(--color-primary);
+        }
+        
+        .callout.info .callout-icon {
+            color: var(--color-primary);
+        }
+        
+        /* Visual Tax Table */
+        .tax-visual-table {
             width: 100%;
             border-collapse: collapse;
             margin: 24px 0;
             background: var(--color-surface);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--color-border);
         }
-
-        .seo-content th,
-        .seo-content td {
-            padding: 12px 16px;
+        
+        .tax-visual-table th {
+            background: var(--color-primary);
+            color: white;
+            padding: 14px 16px;
             text-align: left;
-            border-bottom: 1px solid var(--color-border);
+            font-weight: 600;
+            font-size: 0.9rem;
         }
-
-        .seo-content th {
+        
+        .tax-visual-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.9rem;
+        }
+        
+        .tax-visual-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .tax-visual-table .rate-badge {
+            display: inline-block;
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        
+        .tax-visual-table tr:hover td {
             background: var(--color-background);
+        }
+        
+        /* Collapsible Sections */
+        .collapsible {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+        
+        .collapsible-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+        }
+        
+        .collapsible-header:hover {
+            background: var(--color-background);
+        }
+        
+        .collapsible-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
             font-weight: 600;
             color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
-        .seo-content td {
+        
+        .collapsible-icon {
+            transition: transform 0.3s;
             color: var(--color-text-secondary);
         }
-
-        .seo-content ul, .seo-content ol {
+        
+        .collapsible.open .collapsible-icon {
+            transform: rotate(180deg);
+        }
+        
+        .collapsible-content {
+            display: none;
+            padding: 0 24px 24px 24px;
+        }
+        
+        .collapsible.open .collapsible-content {
+            display: block;
+        }
+        
+        .collapsible-content p {
             color: var(--color-text-secondary);
+            font-size: 0.9rem;
             line-height: 1.7;
-            margin: 16px 0;
-            padding-left: 24px;
+            margin: 0 0 12px 0;
         }
-
-        .seo-content li {
+        
+        .collapsible-content ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        
+        .collapsible-content li {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
             margin-bottom: 8px;
+            line-height: 1.5;
         }
-
-        .seo-content strong {
-            color: var(--color-text);
-        }
-
-        .seo-content hr {
-            border: none;
-            border-top: 1px solid var(--color-border);
-            margin: 24px 0;
-        }
-
-        /* Related Calculators Grid */
-        .related-calculators {
+        
+        /* Related Calculators */
+        .related-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
             margin: 24px 0;
         }
-
-        .related-calc-card {
+        
+        .related-card {
             background: var(--color-surface);
             border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             padding: 20px;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
         }
-
-        .related-calc-card:hover {
+        
+        .related-card:hover {
             border-color: var(--color-primary);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-
-        .related-calc-card h4 {
-            font-family: var(--font-display);
+        
+        .related-card-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .related-card-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .related-card-text h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
             color: var(--color-text);
             margin: 0 0 4px 0;
-            font-size: 1rem;
         }
-
-        .related-calc-card p {
+        
+        .related-card-text p {
+            font-size: 0.8rem;
             color: var(--color-text-secondary);
-            font-size: 0.85rem;
             margin: 0;
         }
-
-        /* Disclaimer Box */
-        .disclaimer-box {
-            background: rgba(196, 83, 58, 0.08);
-            border-left: 3px solid var(--color-primary);
+        
+        /* Disclaimer */
+        .disclaimer {
+            background: rgba(196, 83, 58, 0.06);
+            border-left: 4px solid var(--color-primary);
             padding: 16px 20px;
-            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            border-radius: 0 8px 8px 0;
             margin: 32px 0;
         }
-
-        .disclaimer-box p {
+        
+        .disclaimer p {
             margin: 0;
             color: var(--color-text);
+            font-size: 0.9rem;
+        }
+        
+        /* Dropdown Menu for Calculator Pages */
+        .dropdown-menu {
+            position: relative;
+        }
+        
+        .dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text);
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        
+        .dropdown-btn:hover {
+            border-color: var(--color-primary);
+            background: var(--color-background);
+        }
+        
+        .dropdown-btn svg:last-child {
+            transition: transform 0.2s;
+        }
+        
+        .dropdown-menu.open .dropdown-btn svg:last-child {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-content {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s;
+            z-index: 1000;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .dropdown-menu.open .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-category {
+            padding: 12px 16px 6px 16px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-secondary);
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            text-decoration: none;
+            color: var(--color-text);
+            font-size: 0.9rem;
+            transition: background 0.15s;
+        }
+        
+        .dropdown-item:hover {
+            background: var(--color-background);
+        }
+        
+        .dropdown-item.active {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+        
+        .dropdown-item-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--color-primary-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dropdown-item-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .dropdown-item.active .dropdown-item-icon {
+            background: var(--color-primary);
+        }
+        
+        .dropdown-item.active .dropdown-item-icon svg path {
+            fill: white;
+        }
+        
+        /* Header for Calculator Pages */
+        .calc-page .header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .calc-page .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
         }
     </style>
 </head>
-<body>
-    <!-- Cookie Banner -->
-    <div class="cookie-banner" id="cookieBanner">
-        <p>Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen. <a href="personvern.html">Les mer</a></p>
-        <div class="cookie-buttons">
-            <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Aksepter</button>
-            <button class="btn btn-secondary btn-sm" onclick="declineCookies()">Avslå</button>
-        </div>
-    </div>
-
+<body class="calc-page">
+    
     <!-- HEADER -->
     <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="#C4533A"/>
-                    <text x="16" y="22" text-anchor="middle" fill="white" font-family="Inter" font-weight="700" font-size="16">kr</text>
-                </svg>
-                <span class="logo-text">Kalkulatornorge.no</span>
-            </a>
-            <nav class="nav-menu">
-                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="nav-dropdown" id="navDropdown">
-                    <div class="nav-dropdown-header">
-                        <span>Andre Kalkulatorer</span>
-                        <button class="nav-close" id="navClose" aria-label="Close menu">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
+                        </svg>
                     </div>
-                    <div class="nav-grid">
-                        <div class="nav-category">
-                            <h4>Jobb & Lønn</h4>
-                            <a href="skatt.html" class="active">Skattekalkulator</a>
-                            <a href="brutto-netto.html">Brutto/Netto Lønn</a>
-                            <a href="feriepenger.html">Feriepengekalkulator</a>
-                            <a href="overtid.html">Overtidsbetaling</a>
-                            <a href="arbeidsgiveravgift.html">Arbeidsgiveravgift</a>
-                        </div>
-                        <div class="nav-category">
-                            <h4>Husholdning</h4>
-                            <a href="stromkostnad.html">Strømkostnad</a>
-                            <a href="bilkostnad.html">Bilkostnad</a>
-                        </div>
-                        <div class="nav-category">
-                            <h4>Familie & Helse</h4>
-                            <a href="barnebidrag.html">Barnebidrag</a>
-                            <a href="sykepenger.html">Sykepenger</a>
-                        </div>
-                        <div class="nav-category">
-                            <h4>Transport</h4>
-                            <a href="pendlerfradrag.html">Pendlerfradrag</a>
-                            <a href="tilhengervekt.html">Tilhengervekt</a>
-                        </div>
-                        <div class="nav-category">
-                            <h4>Næring</h4>
-                            <a href="timelonn-frilanser.html">Timelønn for Frilansere</a>
-                        </div>
+                    <span class="logo-text">Kalkulatornorge.no</span>
+                </a>
+                
+                <!-- Dropdown Menu -->
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button class="dropdown-btn" onclick="toggleDropdown()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                        </svg>
+                        Andre Kalkulatorer
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-category">Jobb & Lønn</div>
+                        <a href="skatt.html" class="dropdown-item active">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg>
+                            </span>
+                            Skattekalkulator
+                        </a>
+                        <a href="brutto-netto.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg>
+                            </span>
+                            Brutto/Netto Lønn
+                        </a>
+                        <a href="feriepenger.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg>
+                            </span>
+                            Feriepenger
+                        </a>
+                        <a href="overtid.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 18 18" fill="none"><path d="M8.72852 2.25098C12.9078 2.25098 16.2957 5.63911 16.2959 9.81836C16.2959 11.4898 15.7526 13.0338 14.835 14.2861L16.832 16.2402L15.2783 17.7588L13.3193 15.832C12.0458 16.806 10.4555 17.3867 8.72852 17.3867C6.99424 17.3867 5.3973 16.8017 4.12109 15.8203L2.16992 17.7402L0.617188 16.2217L2.60938 14.2695C1.6992 13.0202 1.16113 11.4823 1.16113 9.81836C1.16133 5.63915 4.54928 2.25104 8.72852 2.25098ZM7.89746 10.0791L10.6318 12.7197L11.752 11.6055L9.6543 9.49805V5.44141H7.89746V10.0791ZM14.2393 0C16.0265 0 17.4755 1.44908 17.4756 3.23633C17.4756 3.98175 17.2204 4.66576 16.7969 5.21289C15.7242 3.28619 13.9834 1.78306 11.8857 1.01953C12.4758 0.393233 13.3109 0.000102796 14.2393 0ZM3.23633 0C4.16225 0 4.9951 0.3913 5.58496 1.01465C3.48612 1.7749 1.74256 3.27476 0.666992 5.19922C0.250188 4.65446 0 3.97523 0 3.23633C0 1.44908 1.44906 0 3.23633 0Z" fill="#C4533A"/></svg>
+                            </span>
+                            Overtid
+                        </a>
+                        <a href="arbeidsgiveravgift.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/></svg>
+                            </span>
+                            Arbeidsgiveravgift
+                        </a>
+                        
+                        <div class="dropdown-category">Husholdning</div>
+                        <a href="stromkostnad.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 16 18" fill="none"><path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/></svg>
+                            </span>
+                            Strømkostnad
+                        </a>
+                        <a href="bilkostnad.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg>
+                            </span>
+                            Bilkostnad
+                        </a>
+                        
+                        <div class="dropdown-category">Familie & Helse</div>
+                        <a href="barnebidrag.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 16 18" fill="none"><path d="M1.5 15C2.32843 15 3 15.6716 3 16.5C3 17.3284 2.32843 18 1.5 18C0.671573 18 0 17.3284 0 16.5C0 15.6716 0.671573 15 1.5 15ZM12.5 15C13.3284 15 14 15.6716 14 16.5C14 17.3284 13.3284 18 12.5 18C11.6716 18 11 17.3284 11 16.5C11 15.6716 11.6716 15 12.5 15ZM16 6H14V14H0V7H12.5V4.5H16V6ZM8.5 6H0.5C0.5 2.68629 3.18629 0 6.5 0H8.5V6Z" fill="#C4533A"/></svg>
+                            </span>
+                            Barnebidrag
+                        </a>
+                        <a href="sykepenger.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 18 16" fill="none"><path d="M14 4.2666H18V16H0V4.2666H4V0H14V4.2666ZM7.5 11V15H10.5V11H7.5ZM2 11.9951H4V9.99512H2V11.9951ZM14 11.9951H16V9.99512H14V11.9951ZM2 7.99512H4V5.99512H2V7.99512ZM14 7.99512H16V5.99512H14V7.99512ZM8.25 3.95117H6.25V5.45117H8.25V7.45117H9.75V5.45117H11.75V3.95117H9.75V1.95117H8.25V3.95117Z" fill="#C4533A"/></svg>
+                            </span>
+                            Sykepenger
+                        </a>
+                        
+                        <div class="dropdown-category">Transport</div>
+                        <a href="pendlerfradrag.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg>
+                            </span>
+                            Pendlerfradrag
+                        </a>
+                        <a href="tilhengervekt.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg>
+                            </span>
+                            Tilhengervekt
+                        </a>
+                        
+                        <div class="dropdown-category">Næring</div>
+                        <a href="timelonn-frilanser.html" class="dropdown-item">
+                            <span class="dropdown-item-icon">
+                                <svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg>
+                            </span>
+                            Timelønn Frilansere
+                        </a>
                     </div>
                 </div>
-            </nav>
+            </div>
         </div>
     </header>
-
-    <!-- CALCULATOR SECTION -->
-    <section class="section" style="background: var(--color-background);">
-        <div class="calculator-page">
-            <!-- Back button -->
-            <a href="index.html" class="back-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+    
+    <!-- MAIN CONTENT -->
+    <main class="calc-container">
+        
+        <!-- Back Link -->
+        <a href="index.html" class="back-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Tilbake til alle kalkulatorer
+        </a>
+        
+        <!-- Calculator Header -->
+        <div class="calc-header">
+            <div class="calc-icon">
+                <svg viewBox="0 0 17 16" fill="none">
+                    <path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/>
                 </svg>
-                Tilbake Hjem
-            </a>
-            
-            <!-- Header with icon -->
-            <div class="calculator-header">
-                <h1>
-                    <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M24 4C19.5 4 16 7.5 16 11V14H12C10.9 14 10 14.9 10 16V42C10 43.1 10.9 44 12 44H36C37.1 44 38 43.1 38 42V16C38 14.9 37.1 14 36 14H32V11C32 7.5 28.5 4 24 4ZM24 8C26.2 8 28 9.8 28 12V14H20V12C20 9.8 21.8 8 24 8ZM14 18H34V40H14V18Z" fill="#C4533A"/>
-                        <circle cx="24" cy="28" r="3" fill="#C4533A"/>
-                    </svg>
-                    Skattekalkulator 2026
-                </h1>
-                <p>Beregn din skatt basert på offisielle satser fra Skatteetaten. Se trinnskatt, trygdeavgift og netto utbetaling.</p>
+            </div>
+            <h1>Skattekalkulator 2026</h1>
+            <p>Beregn skatten din basert på offisielle satser fra Skatteetaten</p>
+        </div>
+        
+        <!-- Calculator Box -->
+        <div class="calc-box">
+            <div class="form-group">
+                <label class="form-label" for="income">Årlig bruttoinntekt (kr)</label>
+                <input type="number" class="form-input" id="income" placeholder="f.eks. 550000" min="0" step="1000">
             </div>
             
-            <!-- Calculator Form -->
-            <div class="calculator-box">
-                <div class="form-group">
-                    <label class="form-label" for="income">Årlig bruttoinntekt (kr)</label>
-                    <input type="number" class="form-input" id="income" placeholder="f.eks. 550000" min="0" step="1000">
-                </div>
+            <div class="form-group">
+                <label class="form-label" for="deductions">Egne fradrag utover minstefradrag (kr)</label>
+                <input type="number" class="form-input" id="deductions" placeholder="Valgfritt" min="0" step="1000" value="0">
+                <span class="form-hint">Renteutgifter, fagforeningskontingent, pendlerfradrag etc.</span>
+            </div>
+            
+            <button class="calc-btn" onclick="calculateTax()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="2" width="16" height="20" rx="2"/>
+                    <line x1="8" y1="6" x2="16" y2="6"/>
+                    <line x1="8" y1="10" x2="16" y2="10"/>
+                    <line x1="8" y1="14" x2="12" y2="14"/>
+                </svg>
+                Beregn Skatt
+            </button>
+            
+            <!-- Results Section -->
+            <div class="results-section" id="results">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Beskrivelse</th>
+                            <th>Beløp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bruttoinntekt</td>
+                            <td id="resultBrutto">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Minstefradrag (46%, maks 95 700 kr)</td>
+                            <td id="resultMinstefradrag">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Personfradrag</td>
+                            <td id="resultPersonfradrag">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Egne fradrag</td>
+                            <td id="resultEgneFradrag">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Alminnelig inntekt</td>
+                            <td id="resultAlminnelig">0 kr</td>
+                        </tr>
+                        <tr class="tax-row">
+                            <td>Trinnskatt</td>
+                            <td id="resultTrinnskatt">0 kr</td>
+                        </tr>
+                        <tr class="tax-row">
+                            <td>Skatt på alminnelig inntekt (22%)</td>
+                            <td id="resultKommuneskatt">0 kr</td>
+                        </tr>
+                        <tr class="tax-row">
+                            <td>Trygdeavgift (7,6%)</td>
+                            <td id="resultTrygdeavgift">0 kr</td>
+                        </tr>
+                        <tr class="subtotal">
+                            <td>Total skatt</td>
+                            <td id="resultTotalSkatt">0 kr</td>
+                        </tr>
+                    </tbody>
+                </table>
                 
-                <div class="form-group">
-                    <label class="form-label" for="deductions">Egne fradrag utover minstefradrag (kr)</label>
-                    <input type="number" class="form-input" id="deductions" placeholder="f.eks. 50000 (valgfritt)" min="0" step="1000" value="0">
-                    <span class="form-hint">Renteutgifter, fagforeningskontingent, pendlerfradrag etc.</span>
-                </div>
-                
-                <button class="btn btn-primary btn-full" onclick="calculateTax()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="4" y="2" width="16" height="20" rx="2"/>
-                        <line x1="8" y1="6" x2="16" y2="6"/>
-                        <line x1="8" y1="10" x2="16" y2="10"/>
-                        <line x1="8" y1="14" x2="12" y2="14"/>
-                    </svg>
-                    Beregn Skatt
-                </button>
-                
-                <!-- Results Section -->
-                <div class="results-section" id="results">
-                    <table class="results-table">
-                        <thead>
-                            <tr>
-                                <th>Beskrivelse</th>
-                                <th>Beløp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Bruttoinntekt</td>
-                                <td id="resultBrutto">0 kr</td>
-                            </tr>
-                            <tr>
-                                <td>Minstefradrag</td>
-                                <td id="resultMinstefradrag">0 kr</td>
-                            </tr>
-                            <tr>
-                                <td>Personfradrag</td>
-                                <td id="resultPersonfradrag">0 kr</td>
-                            </tr>
-                            <tr>
-                                <td>Egne fradrag</td>
-                                <td id="resultEgneFradrag">0 kr</td>
-                            </tr>
-                            <tr>
-                                <td>Alminnelig inntekt</td>
-                                <td id="resultAlminnelig">0 kr</td>
-                            </tr>
-                            <tr class="tax-row">
-                                <td>Trinnskatt</td>
-                                <td id="resultTrinnskatt">0 kr</td>
-                            </tr>
-                            <tr class="tax-row">
-                                <td>Skatt på alminnelig inntekt (22%)</td>
-                                <td id="resultKommuneskatt">0 kr</td>
-                            </tr>
-                            <tr class="tax-row">
-                                <td>Trygdeavgift (7,6%)</td>
-                                <td id="resultTrygdeavgift">0 kr</td>
-                            </tr>
-                            <tr class="subtotal">
-                                <td>Total skatt</td>
-                                <td id="resultTotalSkatt">0 kr</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <!-- Rust Gradient Footer -->
-                    <div class="results-total">
-                        <div class="total-left">
-                            <div class="total-label">Netto årslønn</div>
-                            <div class="total-value" id="resultNettoAar">0 kr</div>
-                        </div>
-                        <div class="total-right">
-                            <div class="monthly-label">Per måned (før feriepenger)</div>
-                            <div class="monthly-value" id="resultNettoMaaned">0 kr</div>
-                        </div>
+                <div class="results-total">
+                    <div class="total-left">
+                        <div class="total-label">Netto årslønn</div>
+                        <div class="total-value" id="resultNettoAar">0 kr</div>
+                    </div>
+                    <div class="total-right">
+                        <div class="monthly-label">Per måned</div>
+                        <div class="monthly-value" id="resultNettoMaaned">0 kr</div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Info Box -->
-            <div class="info-box">
-                <div class="info-box-header">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="16" x2="12" y2="12"/>
-                        <line x1="12" y1="8" x2="12.01" y2="8"/>
-                    </svg>
-                    <h3>Om Skatteberegning 2026</h3>
-                </div>
-                <p><strong>Trinnskatt 2026:</strong> Trinn 1: 1,7% (226 101-318 300 kr) • Trinn 2: 4,0% (318 301-725 050 kr) • Trinn 3: 13,7% (725 051-980 100 kr) • Trinn 4: 16,8% (980 101-1 467 200 kr) • Trinn 5: 17,8% (over 1 467 200 kr)</p>
-                <p><strong>Minstefradrag:</strong> 46% av inntekt, maks 95 700 kr. Automatisk inkludert i beregningen.</p>
-                <p><strong>Trygdeavgift:</strong> 7,6% for lønnsinntekt (alder 17-69 år).</p>
-                <p style="margin-top: 16px;"><strong>Kilder:</strong></p>
-                <ul style="margin: 8px 0 0 0; padding-left: 20px;">
-                    <li><a href="https://www.skatteetaten.no/en/person/taxes/tax-calculator/" target="_blank" rel="noopener">Skatteetaten - Tax Calculator</a></li>
-                    <li><a href="https://www.skatteetaten.no/satser/trinnskatt/" target="_blank" rel="noopener">Skatteetaten - Trinnskatt satser</a></li>
-                </ul>
-            </div>
         </div>
-    </section>
-
-    <!-- SEO CONTENT SECTION -->
-    <section class="section" style="background: var(--color-surface);">
+        
+        <!-- Info Box -->
+        <div class="info-box">
+            <div class="info-box-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <h3>Om Skatteberegning 2026</h3>
+            </div>
+            <p><strong>Trinnskatt 2026:</strong> Trinn 1: 1,7% (226 101-318 300 kr) • Trinn 2: 4,0% (318 301-725 050 kr) • Trinn 3: 13,7% (725 051-980 100 kr) • Trinn 4: 16,8% (980 101-1 467 200 kr) • Trinn 5: 17,8% (over 1 467 200 kr)</p>
+            <p><strong>Kilder:</strong></p>
+            <ul>
+                <li><a href="https://www.skatteetaten.no/satser/trinnskatt/" target="_blank" rel="noopener">Skatteetaten - Trinnskatt satser</a></li>
+                <li><a href="https://www.skatteetaten.no/en/person/taxes/tax-calculator/" target="_blank" rel="noopener">Skatteetaten - Tax Calculator</a></li>
+            </ul>
+        </div>
+        
+        <!-- ==================== -->
+        <!-- SEO CONTENT          -->
+        <!-- ==================== -->
         <div class="seo-content">
-            <h2>Slik beregner du skatten din i 2026</h2>
-            <p>Lurer du på hvor mye skatt du må betale i 2026? Vår <strong>gratis skattekalkulator</strong> gir deg et nøyaktig estimat basert på de offisielle skattesatsene fra Skatteetaten. Enten du er lønnsmottaker, frilanser eller selvstendig næringsdrivende, hjelper kalkulatoren deg med å forstå din totale skattebyrde.</p>
-            <p>I Norge har vi et <strong>progressivt skattesystem</strong>, som betyr at jo høyere inntekt du har, desto høyere prosent betaler du i skatt. Dette gjøres gjennom trinnskatt, som er delt inn i fem trinn med ulike satser.</p>
-
-            <h2>Trinnskatt 2026 - Alle satser</h2>
-            <p>Trinnskatten er den progressive delen av inntektsskatten i Norge. Her er de oppdaterte satsene for 2026:</p>
             
-            <table>
+            <h2>📊 Slik beregner du skatten din i 2026</h2>
+            
+            <p>Lurer du på hvor mye skatt du må betale i 2026? Vår <strong>gratis skattekalkulator</strong> gir deg et nøyaktig estimat basert på de offisielle skattesatsene fra Skatteetaten.</p>
+            
+            <div class="callout info">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <div class="callout-content">
+                    <div class="callout-title">Progressivt skattesystem</div>
+                    <p class="callout-text">I Norge betaler du høyere prosent i skatt jo mer du tjener. Dette gjøres gjennom trinnskatten som har fem ulike satser.</p>
+                </div>
+            </div>
+            
+            <h2>📈 Trinnskatt 2026 - Alle satser</h2>
+            
+            <p>Trinnskatten er den progressive delen av inntektsskatten. Her er de offisielle satsene for 2026:</p>
+            
+            <table class="tax-visual-table">
                 <thead>
                     <tr>
                         <th>Trinn</th>
@@ -493,209 +1033,244 @@
                     <tr>
                         <td><strong>Trinn 1</strong></td>
                         <td>226 101 kr – 318 300 kr</td>
-                        <td>1,7%</td>
+                        <td><span class="rate-badge">1,7%</span></td>
                     </tr>
                     <tr>
                         <td><strong>Trinn 2</strong></td>
                         <td>318 301 kr – 725 050 kr</td>
-                        <td>4,0%</td>
+                        <td><span class="rate-badge">4,0%</span></td>
                     </tr>
                     <tr>
                         <td><strong>Trinn 3</strong></td>
                         <td>725 051 kr – 980 100 kr</td>
-                        <td>13,7%</td>
+                        <td><span class="rate-badge">13,7%</span></td>
                     </tr>
                     <tr>
                         <td><strong>Trinn 4</strong></td>
                         <td>980 101 kr – 1 467 200 kr</td>
-                        <td>16,8%</td>
+                        <td><span class="rate-badge">16,8%</span></td>
                     </tr>
                     <tr>
                         <td><strong>Trinn 5</strong></td>
                         <td>Over 1 467 200 kr</td>
-                        <td>17,8%</td>
+                        <td><span class="rate-badge">17,8%</span></td>
                     </tr>
                 </tbody>
             </table>
             
-            <p><strong>Merk:</strong> Trinnskatten beregnes kun på inntekt over hvert trinn. Hvis du tjener 400 000 kr, betaler du 1,7% på beløpet mellom 226 101 og 318 300 kr, og 4,0% på beløpet mellom 318 301 og 400 000 kr.</p>
-
-            <h2>Hva består skatten din av?</h2>
-            <p>Din totale skatt i Norge består av flere komponenter. Her er en oversikt over de viktigste:</p>
-
-            <h3>1. Trinnskatt (progressiv skatt)</h3>
-            <p>Som forklart over, er trinnskatten den progressive delen av inntektsskatten. Den sørger for at de med høyere inntekt betaler en større andel i skatt.</p>
-
-            <h3>2. Skatt på alminnelig inntekt (22%)</h3>
-            <p>Alle lønnsmottakere betaler 22% skatt på alminnelig inntekt. Dette er en flat sats som beregnes etter at minstefradrag og andre fradrag er trukket fra bruttoinntekten.</p>
-
-            <h3>3. Trygdeavgift (7,6%)</h3>
-            <p>Trygdeavgiften finansierer folketrygden og gir deg rett til sykepenger, dagpenger, pensjon og andre velferdsytelser. Satsen for lønnsmottakere mellom 17 og 69 år er 7,6%.</p>
+            <div class="callout tip">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+                <div class="callout-content">
+                    <div class="callout-title">Slik fungerer trinnskatt</div>
+                    <p class="callout-text">Trinnskatten beregnes kun på inntekt <em>over</em> hvert trinn. Hvis du tjener 400 000 kr, betaler du 1,7% kun på beløpet mellom 226 101 og 318 300 kr, og 4,0% på beløpet mellom 318 301 og 400 000 kr.</p>
+                </div>
+            </div>
             
-            <p><strong>Tips:</strong> Bruk vår <a href="brutto-netto.html">brutto/netto kalkulator</a> for å se nøyaktig hvor mye du får utbetalt etter skatt hver måned.</p>
-
-            <h2>Minstefradrag 2026</h2>
-            <p>Minstefradraget er et standardfradrag som alle lønnsmottakere automatisk får. Det reduserer din skattbare inntekt og dermed skatten du må betale.</p>
+            <h2>🧩 Hva består skatten din av?</h2>
             
-            <table>
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Sats / Beløp</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Minstefradrag i lønn</td>
-                        <td>46% av inntekt</td>
-                    </tr>
-                    <tr>
-                        <td>Maksimalt minstefradrag</td>
-                        <td>95 700 kr</td>
-                    </tr>
-                    <tr>
-                        <td>Personfradrag</td>
-                        <td>73 100 kr</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Collapsible: Trinnskatt -->
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        1. Trinnskatt (progressiv skatt)
+                    </span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Trinnskatten sørger for at de med høyere inntekt betaler en større andel i skatt. Du betaler <strong>ingen trinnskatt</strong> på de første 226 100 kronene du tjener.</p>
+                    <p>For en gjennomsnittlig norsk lønn på ca. 600 000 kr, utgjør trinnskatten rundt 12 800 kr.</p>
+                </div>
+            </div>
             
-            <p><strong>Eksempel:</strong> Hvis du tjener 500 000 kr i året, blir minstefradraget ditt 46% × 500 000 = 230 000 kr. Men siden dette overstiger maksgrensen, får du kun 95 700 kr i minstefradrag.</p>
-
-            <h2>Eksempel: Skatteberegning for 600 000 kr</h2>
-            <p>La oss se på et konkret eksempel med en årsinntekt på 600 000 kr:</p>
+            <!-- Collapsible: Skatt alminnelig inntekt -->
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        2. Skatt på alminnelig inntekt (22%)
+                    </span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Alle lønnsmottakere betaler <strong>22% flat skatt</strong> på alminnelig inntekt. Dette beregnes etter at minstefradrag og personfradrag er trukket fra bruttoinntekten.</p>
+                    <p>Denne skatten går til kommunen din (ca. 11%) og staten (ca. 11%).</p>
+                </div>
+            </div>
             
-            <p><strong>Bruttoinntekt:</strong> 600 000 kr</p>
-            <p><strong>Minstefradrag:</strong> 95 700 kr (maks)</p>
-            <p><strong>Alminnelig inntekt:</strong> 600 000 - 95 700 = 504 300 kr</p>
-            <hr>
-            <p><strong>Skatt på alminnelig inntekt:</strong> (504 300 - 73 100) × 22% = 94 864 kr</p>
-            <p><strong>Trygdeavgift:</strong> 600 000 × 7,6% = 45 600 kr</p>
-            <p><strong>Trinnskatt:</strong></p>
-            <ul>
-                <li>Trinn 1: (318 300 - 226 101) × 1,7% = 1 567 kr</li>
-                <li>Trinn 2: (600 000 - 318 301) × 4,0% = 11 268 kr</li>
-            </ul>
-            <hr>
-            <p><strong>Total skatt: ca. 153 300 kr</strong></p>
-            <p><strong>Netto årsinntekt: ca. 446 700 kr</strong></p>
-            <p><strong>Gjennomsnittlig skatteprosent: 25,6%</strong></p>
+            <!-- Collapsible: Trygdeavgift -->
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        3. Trygdeavgift (7,6%)
+                    </span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Trygdeavgiften finansierer folketrygden og gir deg rett til:</p>
+                    <ul>
+                        <li>Sykepenger når du er syk</li>
+                        <li>Dagpenger ved arbeidsledighet</li>
+                        <li>Pensjon når du blir eldre</li>
+                        <li>Foreldrepenger ved barn</li>
+                    </ul>
+                    <p>Satsen er <strong>7,6%</strong> for lønnsmottakere mellom 17 og 69 år.</p>
+                </div>
+            </div>
             
-            <p>Vil du vite hvor mye du får i <strong>feriepenger</strong> av denne lønnen? Prøv vår <a href="feriepenger.html">feriepengekalkulator</a>!</p>
-
-            <h2>Viktige skattedatoer i 2026</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Dato</th>
-                        <th>Hva skjer</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Januar 2026</strong></td>
-                        <td>Nytt skattekort tilgjengelig på Skatteetaten</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Mars/April 2026</strong></td>
-                        <td>Skattemeldingen (selvangivelsen) sendes ut</td>
-                    </tr>
-                    <tr>
-                        <td><strong>30. april 2026</strong></td>
-                        <td>Frist for å levere skattemeldingen</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Juni 2026</strong></td>
-                        <td>Skatteoppgjøret kommer - se om du får tilbake eller må betale</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2>Ofte stilte spørsmål om skatt i Norge</h2>
-
-            <h3>Hvor mye skatt betaler jeg på 500 000 kr i årslønn?</h3>
-            <p>Med en årsinntekt på 500 000 kr i 2026, vil du betale omtrent 120 000 - 125 000 kr i skatt, avhengig av dine fradrag. Dette gir en gjennomsnittlig skatteprosent på ca. 24-25%. Bruk kalkulatoren over for et nøyaktig estimat.</p>
-
-            <h3>Hva er forskjellen på bruttoskatt og nettoskatt?</h3>
-            <p><strong>Bruttoskatt</strong> (skatt på alminnelig inntekt) beregnes på inntekten din etter fradrag. <strong>Nettoskatt</strong> er et begrep som ikke brukes offisielt i Norge, men mange refererer til dette som den totale skatten du faktisk betaler.</p>
-
-            <h3>Hvordan kan jeg redusere skatten min lovlig?</h3>
-            <p>Det finnes flere lovlige måter å redusere skatten på:</p>
-            <ul>
-                <li><strong>Pendlerfradrag:</strong> Hvis du reiser langt til jobb, kan du få fradrag. <a href="pendlerfradrag.html">Beregn ditt pendlerfradrag her</a>.</li>
-                <li><strong>Fagforeningskontingent:</strong> Du får fradrag for opptil 8 250 kr i fagforeningskontingent.</li>
-                <li><strong>BSU (Boligsparing for ungdom):</strong> Inntil 27 500 kr gir 10% skattefradrag.</li>
-                <li><strong>Renteutgifter:</strong> Renter på boliglån gir 22% fradrag.</li>
-            </ul>
-
-            <h3>Når må jeg betale restskatt?</h3>
-            <p>Hvis du har betalt for lite skatt gjennom året, må du betale restskatt. Skatteoppgjøret kommer vanligvis i juni. Hvis restskatten er under 1 000 kr, må du betale hele beløpet innen august. Høyere beløp kan deles opp i to terminer.</p>
-
-            <h3>Betaler jeg skatt av feriepenger?</h3>
-            <p>Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales (vanligvis i juni), fordi skatten allerede er fordelt over de andre månedene. <a href="feriepenger.html">Les mer om feriepenger her</a>.</p>
-
-            <h3>Hva er marginalskatt?</h3>
-            <p>Marginalskatt er skatten du betaler på den siste kronen du tjener. I Norge kan marginalskatten være opptil ca. 47% for de høyeste inntektene (trinnskatt trinn 5 + skatt på alminnelig inntekt + trygdeavgift). For de fleste vanlige lønnsmottakere ligger marginalskatten på 34-44%.</p>
-
-            <h2>Relaterte kalkulatorer</h2>
-            <p>Utforsk våre andre gratis kalkulatorer for å få full oversikt over din økonomi:</p>
+            <!-- Collapsible: Minstefradrag -->
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+                        4. Minstefradrag (automatisk)
+                    </span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Minstefradraget er et standardfradrag som alle lønnsmottakere automatisk får. Det reduserer din skattbare inntekt.</p>
+                    <ul>
+                        <li><strong>Sats:</strong> 46% av lønnsinntekt</li>
+                        <li><strong>Maksimalt:</strong> 95 700 kr</li>
+                        <li><strong>Personfradrag:</strong> 73 100 kr (trekkes fra alminnelig inntekt)</li>
+                    </ul>
+                </div>
+            </div>
             
-            <div class="related-calculators">
-                <a href="brutto-netto.html" class="related-calc-card">
-                    <h4>Brutto/Netto Kalkulator</h4>
-                    <p>Se hva du får utbetalt etter skatt</p>
+            <h2>💡 Hvordan redusere skatten lovlig?</h2>
+            
+            <div class="callout warning">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <div class="callout-content">
+                    <div class="callout-title">Viktig å vite</div>
+                    <p class="callout-text">Mange nordmenn går glipp av fradrag de har krav på! Sjekk om du kvalifiserer for noen av disse:</p>
+                </div>
+            </div>
+            
+            <!-- Collapsible: Fradrag -->
+            <div class="collapsible open" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        Vanlige fradrag du kan ha krav på
+                    </span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <ul>
+                        <li><strong>Pendlerfradrag:</strong> Reiser du over 50 km til jobb? <a href="pendlerfradrag.html">Beregn her →</a></li>
+                        <li><strong>Fagforeningskontingent:</strong> Fradrag for opptil 8 250 kr</li>
+                        <li><strong>BSU (under 34 år):</strong> Inntil 27 500 kr gir 10% skattefradrag</li>
+                        <li><strong>Renteutgifter:</strong> Renter på boliglån gir 22% fradrag</li>
+                        <li><strong>Foreldrefradrag:</strong> Utgifter til barnehage og SFO</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>❓ Ofte stilte spørsmål</h2>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">Hvor mye skatt på 500 000 kr i årslønn?</span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Med 500 000 kr i årsinntekt betaler du ca. <strong>120 000 - 125 000 kr</strong> i skatt, avhengig av dine fradrag. Dette gir en gjennomsnittlig skatteprosent på ca. 24-25%.</p>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">Hva er marginalskatt?</span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Marginalskatt er skatten du betaler på den <em>siste</em> kronen du tjener. I Norge kan marginalskatten være opptil ca. <strong>47%</strong> for de høyeste inntektene. For de fleste vanlige lønnsmottakere ligger den på 34-44%.</p>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <span class="collapsible-title">Betaler jeg skatt av feriepenger?</span>
+                    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales (vanligvis i juni), fordi skatten allerede er fordelt over de andre månedene.</p>
+                    <p><a href="feriepenger.html">Les mer om feriepenger →</a></p>
+                </div>
+            </div>
+            
+            <h2>🔗 Relaterte kalkulatorer</h2>
+            
+            <div class="related-grid">
+                <a href="brutto-netto.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Brutto/Netto Kalkulator</h4>
+                        <p>Se hva du får utbetalt etter skatt</p>
+                    </div>
                 </a>
-                <a href="feriepenger.html" class="related-calc-card">
-                    <h4>Feriepengekalkulator</h4>
-                    <p>Beregn dine feriepenger for 2026</p>
+                <a href="feriepenger.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Feriepengekalkulator</h4>
+                        <p>Beregn feriepenger for 2026</p>
+                    </div>
                 </a>
-                <a href="overtid.html" class="related-calc-card">
-                    <h4>Overtidskalkulator</h4>
-                    <p>Beregn overtidsbetaling med riktig sats</p>
+                <a href="pendlerfradrag.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Pendlerfradrag</h4>
+                        <p>Fradrag for lang arbeidsreise</p>
+                    </div>
                 </a>
-                <a href="pendlerfradrag.html" class="related-calc-card">
-                    <h4>Pendlerfradrag</h4>
-                    <p>Få fradrag for lang arbeidsreise</p>
+                <a href="overtid.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 18 18" fill="none"><path d="M8.72852 2.25098C12.9078 2.25098 16.2957 5.63911 16.2959 9.81836C16.2959 11.4898 15.7526 13.0338 14.835 14.2861L16.832 16.2402L15.2783 17.7588L13.3193 15.832C12.0458 16.806 10.4555 17.3867 8.72852 17.3867C6.99424 17.3867 5.3973 16.8017 4.12109 15.8203L2.16992 17.7402L0.617188 16.2217L2.60938 14.2695C1.6992 13.0202 1.16113 11.4823 1.16113 9.81836C1.16133 5.63915 4.54928 2.25104 8.72852 2.25098ZM7.89746 10.0791L10.6318 12.7197L11.752 11.6055L9.6543 9.49805V5.44141H7.89746V10.0791ZM14.2393 0C16.0265 0 17.4755 1.44908 17.4756 3.23633C17.4756 3.98175 17.2204 4.66576 16.7969 5.21289C15.7242 3.28619 13.9834 1.78306 11.8857 1.01953C12.4758 0.393233 13.3109 0.000102796 14.2393 0ZM3.23633 0C4.16225 0 4.9951 0.3913 5.58496 1.01465C3.48612 1.7749 1.74256 3.27476 0.666992 5.19922C0.250188 4.65446 0 3.97523 0 3.23633C0 1.44908 1.44906 0 3.23633 0Z" fill="#C4533A"/></svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Overtidskalkulator</h4>
+                        <p>Beregn overtidsbetaling</p>
+                    </div>
                 </a>
             </div>
-
-            <div class="disclaimer-box">
-                <p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler og kan avvike fra din faktiske skatt. For nøyaktig skatteberegning, bruk <a href="https://www.skatteetaten.no/person/skatt/skattekort/skatteberegning/" target="_blank" rel="noopener">Skatteetatens offisielle kalkulator</a> eller kontakt en autorisert regnskapsfører.</p>
+            
+            <div class="disclaimer">
+                <p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler. For nøyaktig skatteberegning, bruk <a href="https://www.skatteetaten.no/person/skatt/skattekort/skatteberegning/" target="_blank" rel="noopener">Skatteetatens offisielle kalkulator</a> eller kontakt en autorisert regnskapsfører.</p>
             </div>
+            
         </div>
-    </section>
-
+    </main>
+    
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <a href="index.html" class="footer-logo">
-                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-                            <rect width="32" height="32" rx="8" fill="#C4533A"/>
-                            <text x="16" y="22" text-anchor="middle" fill="white" font-family="Inter" font-weight="700" font-size="14">kr</text>
-                        </svg>
-                        <span>Kalkulatornorge.no</span>
-                    </a>
-                    <p class="footer-tagline">Gratis norske kalkulatorer for skatt, lønn og personlig økonomi.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="personvern.html">Personvernerklæring</a>
-                    <a href="https://github.com/qazi5313/kalkulatornorge" target="_blank" rel="noopener">GitHub</a>
-                    <a href="https://github.com/qazi5313/kalkulatornorge/issues" target="_blank" rel="noopener">Kontakt</a>
-                </div>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Alle kalkulatorer</a>
+                <a href="personvern.html" class="footer-link">Personvern</a>
+                <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
             </div>
-            <div class="footer-bottom">
-                <p>© 2026 Kalkulatornorge.no - Laget med ❤️ for norske brukere</p>
-            </div>
+            <p class="footer-copyright">© 2026 Kalkulatornorge.no - Laget med <span class="heart">❤️</span> for norske brukere</p>
         </div>
     </footer>
-
+    
     <!-- JavaScript -->
     <script>
         // Tax rates for 2026
         const TAX_RATES = {
-            // Trinnskatt thresholds and rates
             trinnskatt: [
                 { threshold: 226100, rate: 0 },
                 { threshold: 318300, rate: 0.017 },
@@ -704,7 +1279,6 @@
                 { threshold: 1467200, rate: 0.168 },
                 { threshold: Infinity, rate: 0.178 }
             ],
-            // Other rates
             trygdeavgift: 0.076,
             skattAlminneligInntekt: 0.22,
             minstefradragRate: 0.46,
@@ -735,41 +1309,24 @@
         }
 
         function calculateTax() {
-            const incomeInput = document.getElementById('income');
-            const deductionsInput = document.getElementById('deductions');
-            
-            const income = parseFloat(incomeInput.value) || 0;
-            const extraDeductions = parseFloat(deductionsInput.value) || 0;
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const extraDeductions = parseFloat(document.getElementById('deductions').value) || 0;
             
             if (income <= 0) {
                 alert('Vennligst oppgi en gyldig årsinntekt');
                 return;
             }
             
-            // Calculate minstefradrag (automatic deduction)
             const minstefradrag = Math.min(income * TAX_RATES.minstefradragRate, TAX_RATES.minstefradragMax);
-            
-            // Calculate alminnelig inntekt (ordinary income)
             const alminneligInntekt = Math.max(0, income - minstefradrag - extraDeductions);
-            
-            // Calculate skatt på alminnelig inntekt (after personfradrag)
             const taxableAlminnelig = Math.max(0, alminneligInntekt - TAX_RATES.personfradrag);
             const skattAlminnelig = taxableAlminnelig * TAX_RATES.skattAlminneligInntekt;
-            
-            // Calculate trinnskatt (based on gross income, not alminnelig inntekt)
             const trinnskatt = calculateTrinnskatt(income);
-            
-            // Calculate trygdeavgift (based on gross income)
             const trygdeavgift = income * TAX_RATES.trygdeavgift;
-            
-            // Total tax
             const totalSkatt = skattAlminnelig + trinnskatt + trygdeavgift;
-            
-            // Net income
             const nettoAar = income - totalSkatt;
             const nettoMaaned = nettoAar / 12;
             
-            // Update results
             document.getElementById('resultBrutto').textContent = formatNumber(income);
             document.getElementById('resultMinstefradrag').textContent = '-' + formatNumber(minstefradrag);
             document.getElementById('resultPersonfradrag').textContent = '-' + formatNumber(TAX_RATES.personfradrag);
@@ -782,70 +1339,34 @@
             document.getElementById('resultNettoAar').textContent = formatNumber(nettoAar);
             document.getElementById('resultNettoMaaned').textContent = formatNumber(nettoMaaned);
             
-            // Show results
             document.getElementById('results').style.display = 'block';
-            
-            // Scroll to results
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // Cookie banner functions
-        function acceptCookies() {
-            localStorage.setItem('cookiesAccepted', 'true');
-            document.getElementById('cookieBanner').style.display = 'none';
-            // Initialize Google Analytics here if needed
+        // Dropdown toggle
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('open');
         }
 
-        function declineCookies() {
-            localStorage.setItem('cookiesAccepted', 'false');
-            document.getElementById('cookieBanner').style.display = 'none';
-        }
-
-        // Check cookie preference on load
-        document.addEventListener('DOMContentLoaded', function() {
-            const cookiePreference = localStorage.getItem('cookiesAccepted');
-            if (cookiePreference !== null) {
-                document.getElementById('cookieBanner').style.display = 'none';
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
             }
         });
 
-        // Navigation toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const navToggle = document.getElementById('navToggle');
-            const navDropdown = document.getElementById('navDropdown');
-            const navClose = document.getElementById('navClose');
-            
-            if (navToggle && navDropdown) {
-                navToggle.addEventListener('click', function() {
-                    navDropdown.classList.toggle('active');
-                });
-                
-                if (navClose) {
-                    navClose.addEventListener('click', function() {
-                        navDropdown.classList.remove('active');
-                    });
-                }
-                
-                // Close on outside click
-                document.addEventListener('click', function(e) {
-                    if (!navToggle.contains(e.target) && !navDropdown.contains(e.target)) {
-                        navDropdown.classList.remove('active');
-                    }
-                });
-            }
-        });
+        // Collapsible sections
+        function toggleCollapsible(element) {
+            element.classList.toggle('open');
+        }
 
-        // Allow Enter key to trigger calculation
+        // Enter key to calculate
         document.getElementById('income').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculateTax();
-            }
+            if (e.key === 'Enter') calculateTax();
         });
-        
         document.getElementById('deductions').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculateTax();
-            }
+            if (e.key === 'Enter') calculateTax();
         });
     </script>
 </body>
