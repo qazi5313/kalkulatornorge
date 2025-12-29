@@ -1,245 +1,453 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reisefradrag Kalkulator 2026 - Beregn pendlerfradrag | Kalkulatornorge.no</title>
+    <meta name="description" content="Gratis reisefradragskalkulator for 2026. Beregn skattefradrag for reise til jobb med nye satser: 1,90 kr/km og kun 12 000 kr i bunnfradrag.">
+    <meta name="keywords" content="reisefradrag, pendlerfradrag, reisefradrag 2026, skattefradrag, kilometer fradrag, arbeidsreise, pendler">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://kalkulatornorge.no/pendlerfradrag.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Reisefradrag Kalkulator 2026 | Kalkulatornorge.no">
+    <meta property="og:description" content="Beregn skattefradrag for reise til jobb. Nye 2026-satser: 1,90 kr/km, kun 12 000 kr bunnfradrag.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kalkulatornorge.no/pendlerfradrag.html">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendlerfradrag Kalkulator 2026 - Kalkulatornorge.no</title>
-    <meta name="description" content="Beregn pendlerfradrag med vår pendlerfradragskalkulator. Se hvor mye du kan trekke fra for reisevei til jobb.">
-    <meta name="keywords" content="pendlerfradrag, pendlerfradrag 2026, reisefradrag, skattefradrag reise, lange reisevei">
-    <meta name="author" content="Kalkulatornorge.no">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LJB1LYD72"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-    </script>
-
-    <script src="tax-rates-config.js"></script>
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Får jeg reisefradrag selv om jeg sykler til jobb?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Ja, reisefradraget gis uavhengig av transportmiddel. Du får fradrag basert på avstanden mellom hjem og jobb, uansett om du sykler, går, kjører bil eller tar kollektivt."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Hvor mye kan jeg få i reisefradrag i 2026?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "I 2026 er satsen 1,90 kr per km med et bunnfradrag på 12 000 kr. Maksimalt fradrag er 120 000 kr. En person som bor 35 km fra jobb og jobber 230 dager kan få ca. 18 590 kr i fradrag."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Får begge ektefeller fradrag hvis de kjører sammen?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Ja, hvis to personer kjører sammen til jobb, får begge fullt reisefradrag. Dette gjelder også for ektefeller og samboere."
+                }
+            }
+        ]
+    }
+    </script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
+    </script>
 </head>
 <body>
-    <div id="cookieConsent" class="cookie-consent">
-        <div class="cookie-content">
-            <p>Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen. <a href="/personvern.html">Les mer</a></p>
-            <div class="cookie-buttons">
-                <button onclick="acceptCookies()" class="btn btn-primary btn-sm">Aksepter</button>
-                <button onclick="declineCookies()" class="btn btn-secondary btn-sm">Avslå</button>
+    
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">Kalkulatornorge.no</span>
+                </a>
+                <nav class="nav-links">
+                    <a href="index.html#kalkulatorer" class="nav-link">Alle kalkulatorer</a>
+                    <a href="personvern.html" class="nav-link">Personvern</a>
+                </nav>
             </div>
         </div>
-    </div>
-
-    <script>
-        if (!localStorage.getItem('cookieConsent')) document.getElementById('cookieConsent').style.display = 'flex';
-        function acceptCookies() { localStorage.setItem('cookieConsent', 'accepted'); document.getElementById('cookieConsent').style.display = 'none'; window['ga-disable-G-1LJB1LYD72'] = false; }
-        function declineCookies() { localStorage.setItem('cookieConsent', 'declined'); document.getElementById('cookieConsent').style.display = 'none'; window['ga-disable-G-1LJB1LYD72'] = true; }
-        if (localStorage.getItem('cookieConsent') === 'declined') window['ga-disable-G-1LJB1LYD72'] = true;
-    </script>
-
-    <div class="calculator-page">
-        <div class="calc-nav">
+    </header>
+    
+    <!-- CALCULATOR SECTION -->
+    <section class="section" style="background: var(--color-background); min-height: calc(100vh - 200px);">
+        <div class="calculator-page">
+            
+            <!-- Back Button -->
             <a href="index.html" class="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Tilbake Hjem
-            </a>
-            <div class="dropdown">
-                <button class="dropdown-btn" onclick="toggleDropdown()">
-                    <svg width="20" height="20" viewBox="0 0 100 100" fill="currentColor"><rect x="10" y="15" width="30" height="30" rx="5"/><rect x="55" y="15" width="30" height="30" rx="5"/><rect x="10" y="55" width="30" height="30" rx="5"/><rect x="55" y="55" width="30" height="30" rx="5"/></svg>
-                    Andre Kalkulatorer
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                </button>
-                <div id="dropdownMenu" class="dropdown-menu">
-                    <div class="dropdown-category">Jobb & Lønn</div>
-                    <a href="skatt.html" class="dropdown-item">Skattekalkulator</a>
-                    <a href="brutto-netto.html" class="dropdown-item">Brutto/Netto Lønn</a>
-                    <a href="feriepenger.html" class="dropdown-item">Feriepengekalkulator</a>
-                    <a href="overtid.html" class="dropdown-item">Overtidsbetaling</a>
-                    <a href="arbeidsgiveravgift.html" class="dropdown-item">Arbeidsgiveravgift</a>
-                    <div class="dropdown-category">Husholdning</div>
-                    <a href="stromkostnad.html" class="dropdown-item">Strømkostnad</a>
-                    <a href="bilkostnad.html" class="dropdown-item">Bilkostnad</a>
-                    <div class="dropdown-category">Familie & Helse</div>
-                    <a href="barnebidrag.html" class="dropdown-item">Barnebidrag</a>
-                    <a href="sykepenger.html" class="dropdown-item">Sykepenger</a>
-                    <div class="dropdown-category">Transport</div>
-                    <a href="pendlerfradrag.html" class="dropdown-item active">Pendlerfradrag</a>
-                    <a href="tilhengervekt.html" class="dropdown-item">Tilhengervekt</a>
-                    <div class="dropdown-category">Næring</div>
-                    <a href="timelonn-frilanser.html" class="dropdown-item">Timelønn for Frilansere</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="calculator-header">
-            <div class="calc-icon-large">
-                <svg viewBox="0 0 100 100" fill="currentColor">
-                    <rect x="20" y="35" width="60" height="35" rx="8" fill="none" stroke="currentColor" stroke-width="4"/>
-                    <circle cx="35" cy="70" r="8" fill="none" stroke="currentColor" stroke-width="3"/>
-                    <circle cx="65" cy="70" r="8" fill="none" stroke="currentColor" stroke-width="3"/>
-                    <path d="M30 35 L40 20 L60 20 L70 35" stroke="currentColor" stroke-width="3" fill="none"/>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
-            </div>
-            <h1>Pendlerfradrag Kalkulator 2026</h1>
-            <p class="calc-subtitle">Beregn skattefradrag for lang reisevei til jobb</p>
-        </div>
-
-        <div class="calculator-box">
-            <div class="form-group">
-                <label for="distance" class="form-label">Avstand til jobb (én vei, km)</label>
-                <input type="number" id="distance" class="form-input" placeholder="f.eks. 60" min="0" step="0.1">
-            </div>
-
-            <div class="form-group">
-                <label for="days" class="form-label">Antall pendledager per år</label>
-                <input type="number" id="days" class="form-input" placeholder="f.eks. 230" min="1" value="230">
-            </div>
-
-            <div class="form-group">
-                <label for="transport" class="form-label">Transportmiddel</label>
-                <select id="transport" class="form-select">
-                    <option value="car">Bil (standardsats)</option>
-                    <option value="public">Kollektivtransport (faktiske kostnader)</option>
-                </select>
-            </div>
-
-            <button class="btn btn-primary btn-large" onclick="calculate()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>
-                Beregn Pendlerfradrag
-            </button>
-        </div>
-
-        <div id="result" class="result-box" style="display: none;">
-            <h3 class="result-title">Ditt Pendlerfradrag</h3>
-            <div class="result-grid">
-                <div class="result-item">
-                    <span class="result-label">Daglig reiseavstand (t/r)</span>
-                    <span class="result-value" id="dailyDistance">0 km</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Årlig reiseavstand</span>
-                    <span class="result-value" id="yearlyDistance">0 km</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Fradragsberettiget avstand</span>
-                    <span class="result-value" id="deductibleDistance">0 km</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Sats</span>
-                    <span class="result-value" id="rate">0 kr/km</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Egenandel</span>
-                    <span class="result-value" id="deductible">0 kr</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Maksimalt fradrag</span>
-                    <span class="result-value" id="maxDeduction">0 kr</span>
-                </div>
-            </div>
-            <div class="result-total">
-                <div class="total-label">Totalt pendlerfradrag</div>
-                <div class="total-value" id="totalDeduction">0 kr</div>
-            </div>
-        </div>
-
-        <div class="info-box">
-            <div class="info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg>
-            </div>
-            <div class="info-content">
-                <h3>Om Pendlerfradrag i Norge</h3>
-                <p><strong>Grense:</strong> Du må bo minst 50 km fra arbeidsstedet (én vei) for å få fradrag.</p>
-                <p><strong>Beregning:</strong> Kun kilometer over 50 km-grensen gir fradrag. Hvis du bor 70 km unna, får du fradrag for 20 km × 2 (tur/retur).</p>
-                <p><strong>Egenandel:</strong> Det er en egenandel på ca. 14 000 kr som trekkes fra før du får fradrag.</p>
-                <p><strong>Kollektivtransport:</strong> For kollektivtransport kan du kreve fradrag for faktiske kostnader (billettutgifter).</p>
-            </div>
-        </div>
-
-        <div class="sources-box">
-            <h4>Kilder:</h4>
-            <p>• <a href="https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/arbeid-trygd-og-pensjon/fradrag/reise-til-og-fra-jobb/" target="_blank" rel="noopener">Skatteetaten - Reise til og fra jobb</a></p>
-        </div>
-
-        <div class="bottom-nav">
-            <a href="index.html" class="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Tilbake Hjem
+                Tilbake
             </a>
+            
+            <!-- Calculator Header -->
+            <div class="calculator-header">
+                <h1>
+                    <svg width="32" height="26" viewBox="0 0 20 16" fill="none">
+                        <path d="M18 12.8V10C18 9.44772 17.5523 9 17 9H16.6C16.2687 9 15.9506 8.86826 15.7163 8.63388L14.3662 7.28376C14.1319 7.04943 13.8138 6.91772 13.4825 6.91772H7.51749C7.18622 6.91772 6.86806 7.04943 6.63373 7.28376L5.28361 8.63388C5.04938 8.86826 4.73127 9 4.4 9H3C2.44772 9 2 9.44772 2 10V12.8C2 13.3523 2.44772 13.8 3 13.8H4.2C4.75229 13.8 5.2 14.2477 5.2 14.8C5.2 15.3523 5.64772 15.8 6.2 15.8C6.75229 15.8 7.2 15.3523 7.2 14.8C7.2 14.2477 7.64772 13.8 8.2 13.8H11.8C12.3523 13.8 12.8 14.2477 12.8 14.8C12.8 15.3523 13.2477 15.8 13.8 15.8C14.3523 15.8 14.8 15.3523 14.8 14.8C14.8 14.2477 15.2477 13.8 15.8 13.8H17C17.5523 13.8 18 13.3523 18 12.8ZM5.5 11.5C5.22386 11.5 5 11.2761 5 11C5 10.7239 5.22386 10.5 5.5 10.5C5.77614 10.5 6 10.7239 6 11C6 11.2761 5.77614 11.5 5.5 11.5ZM14.5 11.5C14.2239 11.5 14 11.2761 14 11C14 10.7239 14.2239 10.5 14.5 10.5C14.7761 10.5 15 10.7239 15 11C15 11.2761 14.7761 11.5 14.5 11.5ZM10 0.0999756L14.9 5.00003H5.09998L10 0.0999756Z" fill="#C4533A"/>
+                    </svg>
+                    Reisefradrag Kalkulator 2026
+                </h1>
+                <p>Beregn skattefradrag for reise mellom hjem og jobb. Oppdatert med nye 2026-satser.</p>
+            </div>
+            
+            <!-- Calculator Box -->
+            <div class="calculator-box">
+                
+                <div class="form-group">
+                    <label class="form-label">Avstand til jobb (én vei, km)</label>
+                    <input type="number" class="form-input" id="distance" placeholder="f.eks. 35" min="0" step="0.1">
+                    <span class="form-hint">Korteste reiseavstand fra bolig til arbeidssted</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Antall arbeidsdager per år</label>
+                    <input type="number" class="form-input" id="workdays" placeholder="230" value="230" min="0" max="365">
+                    <span class="form-hint">Standard er 230 dager. Trekk fra hjemmekontor-dager.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Ekstra bom/ferge (valgfritt)</label>
+                    <input type="number" class="form-input" id="extraCosts" placeholder="0" value="0" min="0">
+                    <span class="form-hint">Årlige utgifter til bom/ferge over 3 300 kr (krever 2 timer spart vs. kollektiv)</span>
+                </div>
+                
+                <button class="btn btn-primary btn-block" onclick="calculateDeduction()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <rect x="4" y="2" width="16" height="20" rx="2"/>
+                        <line x1="8" y1="6" x2="16" y2="6"/>
+                        <line x1="8" y1="10" x2="16" y2="10"/>
+                        <line x1="8" y1="14" x2="12" y2="14"/>
+                    </svg>
+                    Beregn Reisefradrag
+                </button>
+                
+                <!-- Results Section (hidden by default) -->
+                <div class="results-section" id="results" style="display: none;">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Beskrivelse</th>
+                                <th>Beløp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Reiseavstand per dag (tur/retur)</td>
+                                <td id="dailyDistance">0 km</td>
+                            </tr>
+                            <tr>
+                                <td>Årlig reiseavstand</td>
+                                <td id="yearlyDistance">0 km</td>
+                            </tr>
+                            <tr>
+                                <td>Reisekostnad (1,90 kr/km)</td>
+                                <td id="travelCost">0 kr</td>
+                            </tr>
+                            <tr id="extraCostsRow" style="display: none;">
+                                <td>Ekstra bom/ferge</td>
+                                <td id="extraCostsResult">0 kr</td>
+                            </tr>
+                            <tr>
+                                <td>Sum reisekostnader</td>
+                                <td id="totalCost">0 kr</td>
+                            </tr>
+                            <tr class="tax-row">
+                                <td>Bunnfradrag (egenandel)</td>
+                                <td id="threshold">-12 000 kr</td>
+                            </tr>
+                            <tr class="subtotal">
+                                <td>Ditt reisefradrag</td>
+                                <td id="deduction">0 kr</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="results-total">
+                        <div class="total-left">
+                            <div class="total-label">Skattebesparelse (22%)</div>
+                            <div class="total-value" id="taxSavings">0 kr</div>
+                        </div>
+                        <div class="total-right">
+                            <div class="monthly-label">Per måned</div>
+                            <div class="monthly-value" id="monthlySavings">0 kr</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- No Deduction Message -->
+                <div class="callout callout-warning" id="noDeductionMsg" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <div>
+                        <strong>Ingen fradrag</strong>
+                        <p>Dine reisekostnader er under bunnfradraget på 12 000 kr. Du trenger ca. 27 km daglig reiseavstand (tur/retur) for å få fradrag.</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Info Section -->
+            <div class="info-section">
+                
+                <!-- 2026 Rates Table -->
+                <div class="info-box">
+                    <div class="info-box-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        <h3>Reisefradrag 2026 – Nye satser</h3>
+                    </div>
+                    <table class="info-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>2025</th>
+                                <th>2026</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Kilometersats</td>
+                                <td>1,83 kr</td>
+                                <td><strong>1,90 kr</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Bunnfradrag</td>
+                                <td>15 250 kr</td>
+                                <td><strong>12 000 kr</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Maksimalt fradrag</td>
+                                <td>100 880 kr</td>
+                                <td><strong>120 000 kr</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Minsteavstand</td>
+                                <td>2,5 km</td>
+                                <td>2,5 km</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Tip Callout -->
+                <div class="callout callout-tip">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                    </svg>
+                    <div>
+                        <strong>Nytt i 2026!</strong>
+                        <p>Med lavere bunnfradrag (12 000 kr mot 15 250 kr) trenger du bare ca. 27 km daglig reiseavstand for å få fradrag. I 2025 var grensen 36 km.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Section -->
+                <div class="faq-section">
+                    <h2 class="faq-title">Ofte stilte spørsmål</h2>
+                    
+                    <details class="faq-item">
+                        <summary class="faq-question">Får jeg fradrag selv om jeg sykler til jobb?</summary>
+                        <div class="faq-answer">
+                            <p>Ja! Reisefradraget gis uavhengig av transportmiddel. Selv om du sykler eller går, får du fradrag basert på avstanden mellom hjem og jobb. Du trenger ikke dokumentere faktiske utgifter.</p>
+                        </div>
+                    </details>
+                    
+                    <details class="faq-item">
+                        <summary class="faq-question">Hva hvis jeg har to jobber?</summary>
+                        <div class="faq-answer">
+                            <p>Du får fradrag for begge arbeidsreisene. Beregn reisekostnad for hver jobb separat (avstand × 2 × dager × 1,90 kr), og legg dem sammen før du trekker fra bunnfradraget på 12 000 kr.</p>
+                        </div>
+                    </details>
+                    
+                    <details class="faq-item">
+                        <summary class="faq-question">Får begge fradrag hvis vi kjører sammen?</summary>
+                        <div class="faq-answer">
+                            <p>Ja! Hvis to personer kjører sammen til jobb, får begge fullt reisefradrag. Dette gjelder også ektefeller. Fradraget beregnes ut fra avstanden, ikke faktiske utgifter.</p>
+                        </div>
+                    </details>
+                    
+                    <details class="faq-item">
+                        <summary class="faq-question">Hva med hjemmekontor-dager?</summary>
+                        <div class="faq-answer">
+                            <p>Dager med hjemmekontor skal trekkes fra antall arbeidsdager. Standard er 230 dager. Er du borte mer enn 15 dager (ferie, sykdom, hjemmekontor), må du beregne etter faktiske arbeidsdager.</p>
+                        </div>
+                    </details>
+                </div>
+                
+                <!-- Related Calculators -->
+                <div class="related-section">
+                    <h3 class="related-title">Relaterte kalkulatorer</h3>
+                    <div class="related-grid">
+                        <a href="skatt.html" class="related-card">
+                            <div class="related-icon">
+                                <svg width="24" height="22" viewBox="0 0 17 16" fill="none">
+                                    <path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/>
+                                </svg>
+                            </div>
+                            <span>Skattekalkulator</span>
+                        </a>
+                        <a href="brutto-netto.html" class="related-card">
+                            <div class="related-icon">
+                                <svg width="24" height="20" viewBox="0 0 18 15" fill="none">
+                                    <path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/>
+                                </svg>
+                            </div>
+                            <span>Brutto/Netto</span>
+                        </a>
+                        <a href="bilkostnad.html" class="related-card">
+                            <div class="related-icon">
+                                <svg width="24" height="20" viewBox="0 0 20 16" fill="none">
+                                    <path d="M18 12.8V10C18 9.44772 17.5523 9 17 9H16.6C16.2687 9 15.9506 8.86826 15.7163 8.63388L14.3662 7.28376C14.1319 7.04943 13.8138 6.91772 13.4825 6.91772H7.51749C7.18622 6.91772 6.86806 7.04943 6.63373 7.28376L5.28361 8.63388C5.04938 8.86826 4.73127 9 4.4 9H3C2.44772 9 2 9.44772 2 10V12.8C2 13.3523 2.44772 13.8 3 13.8H4.2C4.75229 13.8 5.2 14.2477 5.2 14.8C5.2 15.3523 5.64772 15.8 6.2 15.8C6.75229 15.8 7.2 15.3523 7.2 14.8C7.2 14.2477 7.64772 13.8 8.2 13.8H11.8C12.3523 13.8 12.8 14.2477 12.8 14.8C12.8 15.3523 13.2477 15.8 13.8 15.8C14.3523 15.8 14.8 15.3523 14.8 14.8C14.8 14.2477 15.2477 13.8 15.8 13.8H17C17.5523 13.8 18 13.3523 18 12.8ZM5.5 11.5C5.22386 11.5 5 11.2761 5 11C5 10.7239 5.22386 10.5 5.5 10.5C5.77614 10.5 6 10.7239 6 11C6 11.2761 5.77614 11.5 5.5 11.5ZM14.5 11.5C14.2239 11.5 14 11.2761 14 11C14 10.7239 14.2239 10.5 14.5 10.5C14.7761 10.5 15 10.7239 15 11C15 11.2761 14.7761 11.5 14.5 11.5ZM10 0.0999756L14.9 5.00003H5.09998L10 0.0999756Z" fill="#C4533A"/>
+                                </svg>
+                            </div>
+                            <span>Bilkostnad</span>
+                        </a>
+                        <a href="arbeidsgiveravgift.html" class="related-card">
+                            <div class="related-icon">
+                                <svg width="24" height="20" viewBox="0 0 18 15" fill="none">
+                                    <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/>
+                                </svg>
+                            </div>
+                            <span>Arbeidsgiveravgift</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Source Link -->
+                <div class="source-link">
+                    <a href="https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/arbeid-trygd-og-pensjon/reise/reise-mellom-hjem-og-arbeid/" target="_blank" rel="noopener">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        Skatteetaten – Reisefradrag
+                    </a>
+                </div>
+                
+            </div>
+            
         </div>
-    </div>
-
+    </section>
+    
+    <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-links">
-            <a href="personvern.html">Personvernerklæring</a>
-            <a href="https://github.com/qazi5313/kalkulatornorge" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://github.com/qazi5313/kalkulatornorge/issues" target="_blank" rel="noopener">Kontakt</a>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html#kalkulatorer" class="footer-link">Alle kalkulatorer</a>
+                <a href="personvern.html" class="footer-link">Personvern</a>
+                <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            <p class="footer-copyright">© 2026 Kalkulatornorge.no - Laget med <span class="heart">❤️</span> for norske brukere</p>
         </div>
-        <div class="footer-text">© 2026 Kalkulatornorge.no - Laget med ❤️ for norske brukere</div>
     </footer>
-
+    
+    <!-- Calculator JavaScript -->
     <script>
-        let closeTimeout;
-        function toggleDropdown() { document.getElementById("dropdownMenu").classList.toggle("show"); clearTimeout(closeTimeout); }
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown-menu')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('show')) dropdowns[i].classList.remove('show'); }
-            }
+        // 2026 Rates
+        const RATE_PER_KM = 1.90;
+        const THRESHOLD = 12000;
+        const MAX_DEDUCTION = 120000;
+        const TAX_RATE = 0.22;
+        
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('nb-NO');
         }
-        document.querySelector('.dropdown').addEventListener('mouseleave', function() { closeTimeout = setTimeout(function() { document.getElementById("dropdownMenu").classList.remove("show"); }, 500); });
-        document.querySelector('.dropdown').addEventListener('mouseenter', function() { clearTimeout(closeTimeout); });
-
-        const rates = getRates();
-        function calculate() {
-            const distance = parseFloat(document.getElementById('distance').value);
-            const days = parseInt(document.getElementById('days').value);
-            const transport = document.getElementById('transport').value;
-
-            if (!distance || distance <= 0) { alert('Vennligst fyll inn en gyldig avstand'); return; }
-
-            const dailyDistance = distance * 2;
-            const yearlyDistance = dailyDistance * days;
-
-            let deduction = 0, rateText = '', deductibleAmount = 0;
-
-            if (transport === 'car') {
-                const threshold = 50;
-                if (distance > threshold) {
-                    const deductibleKm = (distance - threshold) * 2 * days;
-                    const rate = rates.commuterDeduction.ratePerKm;
-                    const grossDeduction = deductibleKm * rate;
-                    deductibleAmount = rates.commuterDeduction.egenandel;
-                    deduction = Math.max(0, grossDeduction - deductibleAmount);
-                    deduction = Math.min(deduction, rates.commuterDeduction.maxAmount);
-                    rateText = rate.toFixed(2) + ' kr/km';
-                } else {
-                    deduction = 0;
-                    rateText = '0 kr (under 50 km grense)';
-                }
+        
+        function calculateDeduction() {
+            // Get inputs
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const workdays = parseInt(document.getElementById('workdays').value) || 230;
+            const extraCosts = parseFloat(document.getElementById('extraCosts').value) || 0;
+            
+            // Calculate
+            const dailyDistance = distance * 2; // Round trip
+            const yearlyDistance = dailyDistance * workdays;
+            const travelCost = yearlyDistance * RATE_PER_KM;
+            const totalCost = travelCost + extraCosts;
+            
+            // Calculate deduction (with threshold and max)
+            let deduction = Math.max(0, totalCost - THRESHOLD);
+            deduction = Math.min(deduction, MAX_DEDUCTION);
+            
+            // Tax savings
+            const taxSavings = deduction * TAX_RATE;
+            const monthlySavings = taxSavings / 12;
+            
+            // Update UI
+            document.getElementById('dailyDistance').textContent = formatNumber(dailyDistance) + ' km';
+            document.getElementById('yearlyDistance').textContent = formatNumber(yearlyDistance) + ' km';
+            document.getElementById('travelCost').textContent = formatNumber(travelCost) + ' kr';
+            document.getElementById('totalCost').textContent = formatNumber(totalCost) + ' kr';
+            document.getElementById('deduction').textContent = formatNumber(deduction) + ' kr';
+            document.getElementById('taxSavings').textContent = formatNumber(taxSavings) + ' kr';
+            document.getElementById('monthlySavings').textContent = formatNumber(monthlySavings) + ' kr';
+            
+            // Show/hide extra costs row
+            const extraCostsRow = document.getElementById('extraCostsRow');
+            if (extraCosts > 0) {
+                extraCostsRow.style.display = 'table-row';
+                document.getElementById('extraCostsResult').textContent = formatNumber(extraCosts) + ' kr';
             } else {
-                deduction = 0;
-                rateText = 'Faktiske kostnader';
+                extraCostsRow.style.display = 'none';
             }
-
-            const deductibleDistance = transport === 'car' && distance > 50 ? (distance - 50) * 2 * days : 0;
-
-            document.getElementById('dailyDistance').textContent = dailyDistance.toLocaleString('nb-NO', {maximumFractionDigits: 1}) + ' km';
-            document.getElementById('yearlyDistance').textContent = yearlyDistance.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' km';
-            document.getElementById('deductibleDistance').textContent = deductibleDistance.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' km';
-            document.getElementById('rate').textContent = rateText;
-            document.getElementById('deductible').textContent = deductibleAmount.toLocaleString('nb-NO') + ' kr';
-            document.getElementById('maxDeduction').textContent = rates.commuterDeduction.maxAmount.toLocaleString('nb-NO') + ' kr';
-            document.getElementById('totalDeduction').textContent = deduction.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-
-            document.getElementById('result').style.display = 'block';
+            
+            // Show results or no-deduction message
+            const resultsSection = document.getElementById('results');
+            const noDeductionMsg = document.getElementById('noDeductionMsg');
+            
+            if (deduction > 0) {
+                resultsSection.style.display = 'block';
+                noDeductionMsg.style.display = 'none';
+            } else {
+                resultsSection.style.display = 'none';
+                noDeductionMsg.style.display = 'flex';
+            }
+            
+            // Scroll to results
+            setTimeout(() => {
+                const target = deduction > 0 ? resultsSection : noDeductionMsg;
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
         }
-        document.getElementById('distance').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+        
+        // Enter key to calculate
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculateDeduction();
+                }
+            });
+        });
     </script>
+    
 </body>
 </html>
