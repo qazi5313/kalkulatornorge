@@ -1,591 +1,504 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strømkostnad Kalkulator 2026 - Beregn strømregningen | Kalkulatornorge.no</title>
+    <meta name="description" content="Gratis strømkostnadskalkulator. Beregn strømregningen basert på forbruk, spotpris og nettleie. Se strømstøtte og Norgespris-alternativet.">
+    <meta name="keywords" content="strømkostnad, strømkalkulator, strømpris, strømregning, nettleie, strømstøtte, Norgespris, kWh pris">
+    <link rel="canonical" href="https://kalkulatornorge.no/stromkostnad.html">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strømkostnad Kalkulator 2026 - Kalkulatornorge.no</title>
-
-    <meta name="description" content="Beregn strømkostnader og strømforbruk - Kalkulator for månedlig og årlig strømutgift basert på strømpris og forbruk.">
-    <meta name="keywords" content="strømkostnad, strømkalkulator, strømpris, strømforbruk, strømregning, kwh pris">
-    <meta name="author" content="Kalkulatornorge.no">
-
-    <meta property="og:title" content="Strømkostnad Kalkulator 2026 - Kalkulatornorge.no">
-    <meta property="og:description" content="Beregn strømkostnader basert på forbruk og strømpris - Månedlig og årlig strømutgift.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kalkulatornorge.no/stromkostnad.html">
-    <meta property="og:image" content="https://kalkulatornorge.no/favicon.ico">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LJB1LYD72"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-1LJB1LYD72', { 'anonymize_ip': true });
-
-    </script>
-
-    <script src="tax-rates-config.js"></script>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #FAF9F7;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .top-nav {
-            max-width: 1200px;
-            margin: 0 auto 20px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .back-button {
-            background: white;
-            color: #C4533A;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            background: #f8f9fa;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-button {
-            background: white;
-            color: #C4533A;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1em;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .dropdown-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            background: #f8f9fa;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background: white;
-            min-width: 280px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            z-index: 1000;
-            margin-top: 5px;
-            overflow: hidden;
-        }
-
-        .dropdown-content.show {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dropdown-category {
-            padding: 12px 20px;
-            background: #f8f9fa;
-            font-weight: 700;
-            color: #333;
-            font-size: 0.9em;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .dropdown-content a {
-            color: #333;
-            padding: 12px 20px;
-            text-decoration: none;
-            display: block;
-            transition: background 0.2s;
-            font-size: 0.95em;
-        }
-
-        .dropdown-content a:hover {
-            background: #f0f4ff;
-            color: #C4533A;
-        }
-
-        .dropdown-content a.current {
-            background: #C4533A;
-            color: white;
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: #FAF9F7;
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 40px 30px;
-        }
-
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #C4533A;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 18px;
-            background: #FAF9F7;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .result {
-            display: none;
-            margin-top: 30px;
-            padding: 30px;
-            background: #FAF9F7;
-            border-radius: 15px;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-title {
-            font-size: 1.3em;
-            color: #333;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .result-value {
-            color: #C4533A;
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
-        .total-box {
-            margin-top: 20px;
-            padding: 25px;
-            background: white;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .total-value {
-            font-size: 2.5em;
-            color: #C4533A;
-            font-weight: 700;
-        }
-
-        .info-box {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f0f4ff;
-            border-left: 4px solid #C4533A;
-            border-radius: 5px;
-        }
-
-        .info-box h3 {
-            color: #C4533A;
-            margin-bottom: 10px;
-        }
-
-        .info-box p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        .sources-box {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .sources-box h4 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1em;
-        }
-
-        .sources-box a {
-            color: #C4533A;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .sources-box a:hover {
-            text-decoration: underline;
-        }
-
-        .bottom-nav {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .content {
-                padding: 30px 20px;
-            }
-
-            .total-value {
-                font-size: 2em;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="seo-content.css">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
+    <meta property="og:title" content="Strømkostnad Kalkulator 2026 | Kalkulatornorge.no">
+    <meta property="og:description" content="Beregn strømregningen basert på forbruk, spotpris og nettleie.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kalkulatornorge.no/stromkostnad.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "Hva er Norgespris på strøm?", "acceptedAnswer": {"@type": "Answer", "text": "Norgespris er en valgfri ordning fra oktober 2025 hvor du betaler fast 50 øre/kWh (inkl. mva) uansett spotpris. Bindingstiden er ut 2026. Ordningen passer best for husholdninger i Sør-Norge hvor spotprisen ofte er høyere."}},
+        {"@type": "Question", "name": "Hvor mye strøm bruker en gjennomsnittlig norsk husholdning?", "acceptedAnswer": {"@type": "Answer", "text": "En gjennomsnittlig norsk husholdning bruker ca. 16 000 kWh per år. Forbruket varierer med boligtype: leiligheter bruker 8 000-12 000 kWh, mens eneboliger bruker 18 000-25 000 kWh årlig."}},
+        {"@type": "Question", "name": "Hvordan fungerer strømstøtten i 2025?", "acceptedAnswer": {"@type": "Answer", "text": "Strømstøtten dekker 90% av spotprisen som overstiger 75 øre/kWh (eks. mva). Støtten beregnes time for time og trekkes automatisk fra på nettleiefakturaen. Maks støttet forbruk er 5 000 kWh per måned."}}
+      ]
+    }
+    </script>
+    <style>
+        .calc-page { background: var(--color-background); min-height: 100vh; }
+        .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
+        .back-link:hover { color: var(--color-primary); }
+        .calc-header { text-align: center; margin-bottom: 32px; }
+        .calc-icon { width: 64px; height: 64px; background: var(--color-primary-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+        .calc-icon svg { width: 32px; height: 32px; }
+        .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
+        .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
+        .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
+        .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
+        .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
+        .calc-btn:hover { background: var(--color-primary-hover); }
+        .calc-btn:active { transform: scale(0.98); }
+        .results-section { margin-top: 24px; display: none; }
+        .results-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--color-border); border-bottom: none; }
+        .results-table thead { background: var(--color-primary); color: white; }
+        .results-table th { padding: 14px 20px; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .results-table th:last-child { text-align: right; }
+        .results-table td { padding: 14px 20px; font-size: 0.9rem; border-bottom: 1px solid var(--color-border); }
+        .results-table td:first-child { color: var(--color-text-secondary); }
+        .results-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text); }
+        .results-table tbody tr:hover { background: var(--color-background); }
+        .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
+        .results-table tr.highlight td:last-child { color: var(--color-primary); }
+        .results-table tr.support td { background: #E8F5E9; }
+        .results-table tr.support td:last-child { color: #4CAF50; }
+        .results-total { background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
+        .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
+        .total-sub { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+        .total-right { text-align: right; }
+        .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
+        .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
+        @media (max-width: 480px) { .results-total { flex-direction: column; text-align: center; gap: 16px; } .total-right { text-align: center; } .total-value { font-size: 1.75rem; } }
+        .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .info-box-header svg { color: var(--color-primary); }
+        .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
+        .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
+        .info-box p:last-child { margin-bottom: 0; }
+        .info-box a { color: var(--color-primary); text-decoration: none; }
+        .info-box a:hover { text-decoration: underline; }
+        .seo-content { margin-top: 48px; }
+        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .seo-content h2:first-child { margin-top: 0; }
+        .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+        .seo-content a { color: var(--color-primary); text-decoration: none; }
+        .seo-content a:hover { text-decoration: underline; }
+        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
+        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
+        .callout-content { flex: 1; }
+        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
+        .callout-text { margin: 0; font-size: 0.9rem; }
+        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
+        .callout.tip .callout-icon { color: #4CAF50; }
+        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
+        .callout.warning .callout-icon { color: #FF9800; }
+        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.info .callout-icon { color: var(--color-primary); }
+        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
+        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+        .info-table tr:hover td { background: var(--color-background); }
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
+        .collapsible-header { width: 100%; padding: 18px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: inherit; text-align: left; }
+        .collapsible-header:hover { background: var(--color-background); }
+        .collapsible-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 10px; }
+        .collapsible-icon { transition: transform 0.3s; color: var(--color-text-secondary); }
+        .collapsible.open .collapsible-icon { transform: rotate(180deg); }
+        .collapsible-content { display: none; padding: 0 24px 24px 24px; }
+        .collapsible.open .collapsible-content { display: block; }
+        .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
+        .collapsible-content ul, .collapsible-content ol { margin: 12px 0; padding-left: 20px; }
+        .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
+        .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
+        .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+        .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .related-card-icon svg { width: 20px; height: 20px; }
+        .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
+        .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
+        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
+        .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
+        .dropdown-menu { position: relative; }
+        .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .dropdown-btn:hover { border-color: var(--color-primary); }
+        .dropdown-content { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.12); min-width: 260px; z-index: 1000; padding: 8px; max-height: 70vh; overflow-y: auto; }
+        .dropdown-menu.open .dropdown-content { display: block; }
+        .dropdown-category { font-size: 0.75rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 12px 6px 12px; }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--color-text); text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: background 0.15s; }
+        .dropdown-item:hover { background: var(--color-background); }
+        .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
+        .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .dropdown-item-icon svg { width: 16px; height: 16px; }
+        .section-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--color-primary); }
+        .checkbox-group label { font-size: 0.95rem; color: var(--color-text); cursor: pointer; }
+    </style>
 </head>
-<body>
-    <div id="cookieConsent" style="position: fixed; bottom: 0; left: 0; right: 0; background: #FAF9F7; color: white; padding: 20px; text-align: center; z-index: 9999; display: none;">
-        <p style="margin: 0 0 10px 0;">
-            Dette nettstedet bruker cookies fra Google Analytics for å forbedre brukeropplevelsen. 
-            <a href="/personvern.html" style="color: #C4533A;">Les mer</a>
-        </p>
-        <button onclick="acceptCookies()" style="background: #C4533A; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px;">
-            Aksepter
-        </button>
-        <button onclick="declineCookies()" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 0 5px;">
-            Avslå
-        </button>
-    </div>
-
-    <script>
-        // Show banner if user hasn't chosen
-        if (!localStorage.getItem('cookieConsent')) {
-            document.getElementById('cookieConsent').style.display = 'block';
-        }
-
-        function acceptCookies() {
-            localStorage.setItem('cookieConsent', 'accepted');
-            document.getElementById('cookieConsent').style.display = 'none';
-            // Enable Google Analytics
-            window['ga-disable-G-1LJB1LYD72'] = false;
-        }
-
-        function declineCookies() {
-            localStorage.setItem('cookieConsent', 'declined');
-            document.getElementById('cookieConsent').style.display = 'none';
-            // Disable Google Analytics
-            window['ga-disable-G-1LJB1LYD72'] = true;
-        }
-
-        // Check if declined
-        if (localStorage.getItem('cookieConsent') === 'declined') {
-            window['ga-disable-G-1LJB1LYD72'] = true;
-        }
-    </script>
-    <div class="top-nav">
-        <a href="index.html" class="back-button">← Tilbake Hjem</a>
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown()">📊 Andre Kalkulatorer ▼</button>
-            <div id="dropdownMenu" class="dropdown-content">
-                <div class="dropdown-category">💼 Jobb & Lønn</div>
-                <a href="skatt.html">Skattekalkulator</a>
-                <a href="brutto-netto.html">Brutto/Netto Lønn</a>
-                <a href="feriepenger.html">Feriepengekalkulator</a>
-                <a href="overtid.html">Overtidsbetaling</a>
-                <a href="arbeidsgiveravgift.html">Arbeidsgiveravgift</a>
-                <div class="dropdown-category">🏠 Husholdning</div>
-                <a href="stromkostnad.html" class="current">Strømkostnad</a>
-                <a href="bilkostnad.html">Bilkostnad</a>
-                <div class="dropdown-category">👨‍👩‍👧 Familie & Helse</div>
-                <a href="barnebidrag.html">Barnebidrag</a>
-                <a href="sykepenger.html">Sykepenger</a>
-                <div class="dropdown-category">🚗 Transport</div>
-                <a href="pendlerfradrag.html">Pendlerfradrag</a>
-                <a href="tilhengervekt.html">Tilhengervekt</a>
-                <div class="dropdown-category">💰 Næring</div>
-                <a href="timelonn-frilanser.html">Timelønn for Frilansere</a>
+<body class="calc-page">
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">Kalkulatornorge.no</span>
+                </a>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button class="dropdown-btn" onclick="toggleDropdown()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        Andre Kalkulatorer
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-category">Jobb & Lønn</div>
+                        <a href="skatt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></span>Skattekalkulator</a>
+                        <a href="brutto-netto.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Brutto/Netto Lønn</a>
+                        <a href="feriepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg></span>Feriepenger</a>
+                        <a href="overtid.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M8.72852 2.25098C12.9078 2.25098 16.2957 5.63911 16.2959 9.81836C16.2959 11.4898 15.7526 13.0338 14.835 14.2861L16.832 16.2402L15.2783 17.7588L13.3193 15.832C12.0458 16.806 10.4555 17.3867 8.72852 17.3867C6.99424 17.3867 5.3973 16.8017 4.12109 15.8203L2.16992 17.7402L0.617188 16.2217L2.60938 14.2695C1.6992 13.0202 1.16113 11.4823 1.16113 9.81836C1.16133 5.63915 4.54928 2.25104 8.72852 2.25098ZM7.89746 10.0791L10.6318 12.7197L11.752 11.6055L9.6543 9.49805V5.44141H7.89746V10.0791ZM14.2393 0C16.0265 0 17.4755 1.44908 17.4756 3.23633C17.4756 3.98175 17.2204 4.66576 16.7969 5.21289C15.7242 3.28619 13.9834 1.78306 11.8857 1.01953C12.4758 0.393233 13.3109 0.000102796 14.2393 0ZM3.23633 0C4.16225 0 4.9951 0.3913 5.58496 1.01465C3.48612 1.7749 1.74256 3.27476 0.666992 5.19922C0.250188 4.65446 0 3.97523 0 3.23633C0 1.44908 1.44906 0 3.23633 0Z" fill="#C4533A"/></svg></span>Overtid</a>
+                        <a href="arbeidsgiveravgift.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/></svg></span>Arbeidsgiveravgift</a>
+                        <div class="dropdown-category">Husholdning</div>
+                        <a href="stromkostnad.html" class="dropdown-item active"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/></svg></span>Strømkostnad</a>
+                        <a href="bilkostnad.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></span>Bilkostnad</a>
+                        <div class="dropdown-category">Familie & Helse</div>
+                        <a href="barnebidrag.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M1.5 15C2.32843 15 3 15.6716 3 16.5C3 17.3284 2.32843 18 1.5 18C0.671573 18 0 17.3284 0 16.5C0 15.6716 0.671573 15 1.5 15ZM12.5 15C13.3284 15 14 15.6716 14 16.5C14 17.3284 13.3284 18 12.5 18C11.6716 18 11 17.3284 11 16.5C11 15.6716 11.6716 15 12.5 15ZM16 6H14V14H0V7H12.5V4.5H16V6ZM8.5 6H0.5C0.5 2.68629 3.18629 0 6.5 0H8.5V6Z" fill="#C4533A"/></svg></span>Barnebidrag</a>
+                        <a href="sykepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M14 4.2666H18V16H0V4.2666H4V0H14V4.2666ZM7.5 11V15H10.5V11H7.5ZM2 11.9951H4V9.99512H2V11.9951ZM14 11.9951H16V9.99512H14V11.9951ZM2 7.99512H4V5.99512H2V7.99512ZM14 7.99512H16V5.99512H14V7.99512ZM8.25 3.95117H6.25V5.45117H8.25V7.45117H9.75V5.45117H11.75V3.95117H9.75V1.95117H8.25V3.95117Z" fill="#C4533A"/></svg></span>Sykepenger</a>
+                        <div class="dropdown-category">Transport</div>
+                        <a href="pendlerfradrag.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></span>Pendlerfradrag</a>
+                        <a href="tilhengervekt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg></span>Tilhengervekt</a>
+                        <div class="dropdown-category">Næring</div>
+                        <a href="timelonn-frilanser.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Timelønn Frilansere</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <div class="header">
-            <h1>⚡ Strømkostnad Kalkulator 2026</h1>
-            <p>Beregn strømregningen din</p>
+    </header>
+    
+    <main class="calc-container">
+        <a href="index.html" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
+        
+        <div class="calc-header">
+            <div class="calc-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/></svg></div>
+            <h1>Strømkostnad Kalkulator 2026</h1>
+            <p>Beregn strømregningen basert på forbruk, spotpris og nettleie</p>
         </div>
-
-        <div class="content">
-            <div class="input-group">
-                <label for="consumption">Forbruk (kWh per måned):</label>
-                <input type="number" id="consumption" placeholder="f.eks. 800" min="0">
-            </div>
-
-            <div class="input-group">
-                <label for="spotPrice">Spotpris (øre per kWh):</label>
-                <input type="number" id="spotPrice" placeholder="f.eks. 85" min="0" step="0.1">
-            </div>
-
-            <div class="input-group">
-                <label for="markup">Påslag fra strømleverandør (øre per kWh):</label>
-                <input type="number" id="markup" value="5" min="0" step="0.1">
-            </div>
-
-            <div class="input-group">
-                <label for="fixedCost">Fast månedsbeløp (kr):</label>
-                <input type="number" id="fixedCost" value="50" min="0">
-            </div>
-
-            <button class="btn" onclick="calculate()">Beregn Strømkostnad</button>
-
-            <div id="result" class="result">
-                <div class="result-title">📊 Din Strømregning</div>
-                <div class="result-item">
-                    <span>Forbruk</span>
-                    <span class="result-value" id="usageDisplay">0 kWh</span>
+        
+        <div class="calc-box">
+            <div class="section-title">Forbruk og priser</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="consumption">Månedlig forbruk (kWh)</label>
+                    <input type="number" class="form-input" id="consumption" placeholder="f.eks. 1500" value="1500" min="0">
+                    <span class="form-hint">Snitt enebolig: 1 500-2 000 kWh/mnd</span>
                 </div>
-                <div class="result-item">
-                    <span>Spotpris</span>
-                    <span class="result-value" id="spotDisplay">0 øre/kWh</span>
-                </div>
-                <div class="result-item">
-                    <span>Påslag</span>
-                    <span class="result-value" id="markupDisplay">0 øre/kWh</span>
-                </div>
-                <div class="result-item">
-                    <span>Energikostnad</span>
-                    <span class="result-value" id="energyCost">0 kr</span>
-                </div>
-                <div class="result-item">
-                    <span>Fast månedsbeløp</span>
-                    <span class="result-value" id="fixedDisplay">0 kr</span>
-                </div>
-                <div class="result-item">
-                    <span id="vatLabel">MVA (25%)</span>
-                    <span class="result-value" id="vat">0 kr</span>
-                </div>
-                <div class="total-box">
-                    <div style="color: #666; font-size: 0.9em; margin-bottom: 10px;">Total strømregning per måned</div>
-                    <div class="total-value" id="totalCost">0 kr</div>
+                <div class="form-group">
+                    <label class="form-label" for="spotPrice">Spotpris (øre/kWh)</label>
+                    <input type="number" class="form-input" id="spotPrice" placeholder="f.eks. 80" value="80" min="0" step="1">
+                    <span class="form-hint">Eks. mva. Sjekk din strømleverandør</span>
                 </div>
             </div>
-
-            <div class="info-box">
-                <h3>ℹ️ Om Strømkostnader i Norge</h3>
-                <p><strong>Hva påvirker strømregningen?</strong></p>
-                <p>• <strong>Spotpris:</strong> Varierer fra time til time basert på tilbud og etterspørsel</p>
-                <p>• <strong>Påslag:</strong> Strømleverandørens margin (vanligvis 3-10 øre/kWh)</p>
-                <p>• <strong>Nettleie:</strong> Fast kostnad til nettselskapet (ca. 30-70 kr/måned)</p>
-                <p>• <strong>MVA:</strong> 25% på hele strømregningen</p>
-                <p style="margin-top: 10px;"><strong>Tips:</strong> Sammenlign strømleverandører regelmessig og vurder fastprisavtale vs. spotpris basert på ditt forbruk.</p>
+            
+            <div class="section-title">Nettleie</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="gridVariable">Nettleie variabel (øre/kWh)</label>
+                    <input type="number" class="form-input" id="gridVariable" placeholder="f.eks. 35" value="35" min="0" step="1">
+                    <span class="form-hint">Typisk 33-40 øre/kWh</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="gridFixed">Nettleie fast (kr/mnd)</label>
+                    <input type="number" class="form-input" id="gridFixed" placeholder="f.eks. 350" value="350" min="0">
+                    <span class="form-hint">Typisk 300-400 kr/mnd</span>
+                </div>
             </div>
-
-            <div class="sources-box">
-                <h4>📚 Kilder:</h4>
-                <p>• <a href="https://www.nve.no/energi/analyser-og-statistikk/langsiktig-kraftmarkedsanalyse/" target="_blank" rel="noopener">NVE - Langsiktig kraftmarkedsanalyse</a></p>
-                <p>• <a href="https://www.hvakosterstrommen.no/" target="_blank" rel="noopener">Hva koster strømmen</a></p>
+            
+            <div class="section-title">Region og støtte</div>
+            
+            <div class="form-group">
+                <label class="form-label" for="region">Prisområde</label>
+                <select class="form-select" id="region">
+                    <option value="south">Sør-Norge (NO1, NO2, NO5) — MVA 25%</option>
+                    <option value="mid">Midt-Norge (NO3) — MVA 25%</option>
+                    <option value="north">Nord-Norge (NO4) — MVA-fritak</option>
+                </select>
+                <span class="form-hint">Nord-Norge har fritak for mva på strøm</span>
             </div>
-
-            <div class="bottom-nav">
-                <a href="index.html" class="back-button">← Tilbake Hjem</a>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="useNorgespris" onchange="toggleNorgespris()">
+                <label for="useNorgespris">Bruk Norgespris (fast 50 øre/kWh inkl. mva)</label>
+            </div>
+            
+            <button class="calc-btn" onclick="calculate()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Beregn strømkostnad
+            </button>
+            
+            <div class="results-section" id="results">
+                <table class="results-table">
+                    <thead><tr><th>Kostnadspost</th><th>Beløp</th></tr></thead>
+                    <tbody>
+                        <tr><td>Kraftpris (<span id="priceTypeLabel">spotpris</span>)</td><td id="resultPower">0 kr</td></tr>
+                        <tr><td>Nettleie (variabel)</td><td id="resultGridVar">0 kr</td></tr>
+                        <tr><td>Nettleie (fast)</td><td id="resultGridFixed">0 kr</td></tr>
+                        <tr><td>Forbruksavgift (4,18 øre/kWh)</td><td id="resultTax">0 kr</td></tr>
+                        <tr><td>Enova-avgift (1 øre/kWh)</td><td id="resultEnova">0 kr</td></tr>
+                        <tr class="highlight"><td>Sum før mva</td><td id="resultSubtotal">0 kr</td></tr>
+                        <tr><td>MVA (<span id="mvaLabel">25%</span>)</td><td id="resultMva">0 kr</td></tr>
+                        <tr class="support" id="rowSupport" style="display: none;"><td>− Strømstøtte (90% over terskel)</td><td id="resultSupport">0 kr</td></tr>
+                    </tbody>
+                </table>
+                <div class="results-total">
+                    <div class="total-left">
+                        <div class="total-label">Din strømregning</div>
+                        <div class="total-value" id="resultTotal">0 kr</div>
+                        <div class="total-sub" id="resultPerKwh">0 øre/kWh totalt</div>
+                    </div>
+                    <div class="total-right">
+                        <div class="monthly-label">Årlig kostnad</div>
+                        <div class="monthly-value" id="resultYearly">0 kr</div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <script>
-        let closeTimeout;
-
-        function toggleDropdown() {
-            const dropdown = document.getElementById("dropdownMenu");
-            dropdown.classList.toggle("show");
-            clearTimeout(closeTimeout);
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropdown-button') && !event.target.closest('.dropdown-content')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    if (dropdowns[i].classList.contains('show')) {
-                        dropdowns[i].classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
-            closeTimeout = setTimeout(function() {
-                document.getElementById("dropdownMenu").classList.remove("show");
-            }, 500);
-        });
-
-        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
-            clearTimeout(closeTimeout);
-        });
-
-        const rates = getRates();
-
-        function calculate() {
-            const consumption = parseFloat(document.getElementById('consumption').value);
-            const spotPrice = parseFloat(document.getElementById('spotPrice').value);
-            const markup = parseFloat(document.getElementById('markup').value);
-            const fixedCost = parseFloat(document.getElementById('fixedCost').value);
-
-            if (!consumption || consumption <= 0) {
-                alert('Vennligst fyll inn forbruk');
-                return;
-            }
-
-            if (!spotPrice || spotPrice < 0) {
-                alert('Vennligst fyll inn spotpris');
-                return;
-            }
-
-            const totalPricePerKwh = spotPrice + markup;
-            const energyCost = (consumption * totalPricePerKwh) / 100;
-            const subtotal = energyCost + fixedCost;
-            const vat = subtotal * rates.vat.standard;
-            const totalCost = subtotal + vat;
-
-            document.getElementById('usageDisplay').textContent = consumption.toLocaleString('nb-NO') + ' kWh';
-            document.getElementById('spotDisplay').textContent = spotPrice.toLocaleString('nb-NO', {maximumFractionDigits: 1}) + ' øre/kWh';
-            document.getElementById('markupDisplay').textContent = markup.toLocaleString('nb-NO', {maximumFractionDigits: 1}) + ' øre/kWh';
-            document.getElementById('energyCost').textContent = energyCost.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('fixedDisplay').textContent = fixedCost.toLocaleString('nb-NO') + ' kr';
-            document.getElementById('vatLabel').textContent = 'MVA (' + rates.vat.standardPercent + ')';
-            document.getElementById('vat').textContent = vat.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-            document.getElementById('totalCost').textContent = totalCost.toLocaleString('nb-NO', {maximumFractionDigits: 0}) + ' kr';
-
-            document.getElementById('result').style.display = 'block';
-        }
-    </script>
-    <footer style="margin-top: 50px; padding: 30px 20px; background: rgba(255,255,255,0.1); text-align: center; color: white;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <div style="margin-bottom: 15px;">
-                <a href="personvern.html" style="color: white; text-decoration: none; margin: 0 15px; font-weight: 500;">Personvernerklæring</a>
-                <a href="https://github.com/qazi5313/kalkulatornorge" target="_blank" style="color: white; text-decoration: none; margin: 0 15px; font-weight: 500;">GitHub</a>
-                <a href="https://github.com/qazi5313/kalkulatornorge/issues" target="_blank" style="color: white; text-decoration: none; margin: 0 15px; font-weight: 500;">Kontakt</a>
+        
+        <div class="info-box">
+            <div class="info-box-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><h3>Om beregningen</h3></div>
+            <p>Strømregningen består av <strong>kraftpris</strong>, <strong>nettleie</strong> og <strong>avgifter</strong>. Strømstøtte gis automatisk når spotprisen overstiger 75 øre/kWh (eks. mva).</p>
+            <p><strong>Kilde:</strong> <a href="https://www.nve.no/reguleringsmyndigheten/stromkunde/strom-og-nettleiepriser/" target="_blank" rel="noopener">NVE – Strøm og nettleiepriser</a></p>
+        </div>
+        
+        <div class="seo-content">
+            <h2>⚡ Slik fungerer strømregningen</h2>
+            <p>Strømregningen består av tre hoveddeler: kraftpris, nettleie og avgifter. I tillegg kan du få strømstøtte eller velge Norgespris for mer forutsigbare kostnader. Vår kalkulator hjelper deg å forstå og beregne strømutgiftene dine.</p>
+            
+            <div class="callout info">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Norgespris — nytt fra oktober 2025!</div>
+                    <p class="callout-text">Du kan velge fast strømpris på <strong>50 øre/kWh</strong> (inkl. mva) ut 2026. Bestilles via minside.elhub.no. Passer best for deg i Sør-Norge hvor spotprisen ofte er høyere.</p>
+                </div>
             </div>
-            <div style="font-size: 0.9em; opacity: 0.8;">
-                © 2026 Kalkulatornorge.no - Laget med ❤️ for norske brukere
+            
+            <h2>📊 Strømprisens oppbygging</h2>
+            <table class="info-table">
+                <thead><tr><th>Komponent</th><th>Typisk pris</th><th>Andel</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Kraftpris (spotpris)</strong></td><td>50-80 øre/kWh</td><td><span class="rate-badge">40-45%</span></td></tr>
+                    <tr><td><strong>Nettleie (variabel)</strong></td><td>33-40 øre/kWh</td><td>25-30%</td></tr>
+                    <tr><td><strong>Nettleie (fast)</strong></td><td>300-400 kr/mnd</td><td>—</td></tr>
+                    <tr><td><strong>Forbruksavgift</strong></td><td>4,18 øre/kWh</td><td>3-5%</td></tr>
+                    <tr><td><strong>Enova-avgift</strong></td><td>1,00 øre/kWh</td><td>1%</td></tr>
+                    <tr><td><strong>MVA (25%)</strong></td><td>På alt</td><td>20%</td></tr>
+                </tbody>
+            </table>
+            
+            <h2>🏠 Gjennomsnittlig strømforbruk</h2>
+            <table class="info-table">
+                <thead><tr><th>Boligtype</th><th>Årlig forbruk</th><th>Månedlig snitt</th></tr></thead>
+                <tbody>
+                    <tr><td>Leilighet (50-70 m²)</td><td>8 000-12 000 kWh</td><td>670-1 000 kWh</td></tr>
+                    <tr><td>Rekkehus (100-120 m²)</td><td>15 000-18 000 kWh</td><td>1 250-1 500 kWh</td></tr>
+                    <tr><td>Enebolig (120-150 m²)</td><td>18 000-25 000 kWh</td><td>1 500-2 100 kWh</td></tr>
+                    <tr><td>Stor enebolig (200+ m²)</td><td>25 000-35 000 kWh</td><td>2 100-2 900 kWh</td></tr>
+                </tbody>
+            </table>
+            
+            <div class="callout warning">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Velg riktig for din situasjon</div>
+                    <p class="callout-text">Norgespris lønner seg i Sør-Norge (NO1, NO2, NO5) hvor prisene ofte er over 50 øre. I Nord-Norge (NO3, NO4) er spotprisen ofte lavere, så vanlig strømstøtte kan være bedre.</p>
+                </div>
             </div>
+            
+            <h2>🧩 Strømstøtte og Norgespris</h2>
+            <div class="collapsible open" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Slik fungerer strømstøtten</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content">
+                    <ul>
+                        <li><strong>Time-for-time:</strong> Støtten beregnes for hver time hvor spotprisen overstiger terskelen</li>
+                        <li><strong>Automatisk:</strong> Du trenger ikke søke — støtten trekkes fra på nettleiefakturaen</li>
+                        <li><strong>Maks forbruk:</strong> 5 000 kWh/mnd for bolig, 1 000 kWh/mnd for fritidsbolig</li>
+                        <li><strong>Terskel:</strong> 75 øre/kWh (eks. mva) = 93,75 øre/kWh (inkl. mva)</li>
+                        <li><strong>Støttesats:</strong> 90% av prisen over terskelen</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Tips for å spare strøm</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content">
+                    <ul>
+                        <li>Senk innetemperaturen 1-2 grader (sparer 5-10%)</li>
+                        <li>Bruk varmepumpe i stedet for panelovner</li>
+                        <li>Vask klær på 30-40 grader</li>
+                        <li>Slå av lys i rom du ikke bruker</li>
+                        <li>Bruk spareprogrammer på oppvaskmaskin</li>
+                        <li>Dusjkort — varmtvann er en stor strømtyv</li>
+                        <li>Tørk klær utendørs i stedet for tørketrommel</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>❓ Ofte stilte spørsmål</h2>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Hva er forskjellen på Norgespris og vanlig strømstøtte?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Med Norgespris betaler du fast 50 øre/kWh uansett spotpris, med bindingstid ut 2026. Vanlig strømstøtte gir deg 90% dekket av det som overstiger 75 øre/kWh, men du betaler spotpris resten.</p></div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Hvor mye strøm bruker en gjennomsnittlig husholdning?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>En gjennomsnittlig norsk husholdning bruker ca. <strong>16 000 kWh per år</strong>, eller ca. 1 333 kWh per måned. Dette varierer mye med boligtype, isolasjon og vaner.</p></div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Må jeg betale mva på strøm i Nord-Norge?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>I Nordland, Troms og Finnmark er det <strong>fritak for mva på strøm</strong>. I Finnmark og Nord-Troms slipper du også forbruksavgiften.</p></div>
+            </div>
+            
+            <div class="callout tip">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Sjekk prisområdet ditt</div>
+                    <p class="callout-text">Norge har 5 prisområder (NO1-NO5). Sør-Norge (NO1, NO2, NO5) har ofte høyere priser enn Midt- og Nord-Norge (NO3, NO4).</p>
+                </div>
+            </div>
+            
+            <h2>🔗 Relaterte kalkulatorer</h2>
+            <div class="related-grid">
+                <a href="bilkostnad.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Bilkostnad</h4><p>For elbil-lading hjemme</p></div></a>
+                <a href="brutto-netto.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Brutto/Netto Kalkulator</h4><p>Se hva du har til strømregningen</p></div></a>
+                <a href="skatt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Skattekalkulator</h4><p>Detaljert skatteberegning</p></div></a>
+                <a href="feriepenger.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Feriepenger</h4><p>Beregn feriepengeoppgjør</p></div></a>
+            </div>
+            
+            <div class="disclaimer"><p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat. Faktiske kostnader avhenger av din strømleverandør, nettselskap og timepriser. Strømstøtten beregnes time-for-time og kan variere betydelig.</p></div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Alle kalkulatorer</a>
+                <a href="personvern.html" class="footer-link">Personvern</a>
+                <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
+            </div>
+            <p class="footer-copyright">© 2026 Kalkulatornorge.no - Laget med <span class="heart">❤️</span> for norske brukere</p>
         </div>
     </footer>
+    
+    <script>
+        // Constants
+        const CONSUMPTION_TAX = 0.0418; // 4.18 øre/kWh
+        const ENOVA_TAX = 0.01; // 1 øre/kWh
+        const SUPPORT_THRESHOLD = 75; // øre/kWh eks. mva
+        const SUPPORT_RATE = 0.90; // 90% over terskel
+        const NORGESPRIS = 50; // øre/kWh inkl. mva (= 40 øre eks. mva)
+
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('nb-NO');
+        }
+        
+        function toggleNorgespris() {
+            const useNorgespris = document.getElementById('useNorgespris').checked;
+            document.getElementById('spotPrice').disabled = useNorgespris;
+            if (useNorgespris) {
+                document.getElementById('spotPrice').value = '40'; // 50 øre inkl mva = 40 øre eks mva
+            }
+        }
+
+        function calculate() {
+            const consumption = parseFloat(document.getElementById('consumption').value) || 0;
+            const spotPrice = parseFloat(document.getElementById('spotPrice').value) || 0;
+            const gridVariable = parseFloat(document.getElementById('gridVariable').value) || 0;
+            const gridFixed = parseFloat(document.getElementById('gridFixed').value) || 0;
+            const region = document.getElementById('region').value;
+            const useNorgespris = document.getElementById('useNorgespris').checked;
+            
+            if (consumption <= 0) {
+                alert('Vennligst oppgi forbruk i kWh');
+                return;
+            }
+            
+            // Calculate MVA rate based on region
+            const mvaRate = region === 'north' ? 0 : 0.25;
+            document.getElementById('mvaLabel').textContent = region === 'north' ? '0% (fritak)' : '25%';
+            
+            // Price type label
+            document.getElementById('priceTypeLabel').textContent = useNorgespris ? 'Norgespris' : 'spotpris';
+            
+            // Calculate costs in kroner
+            const powerCost = consumption * (spotPrice / 100); // øre to kr
+            const gridVarCost = consumption * (gridVariable / 100);
+            const taxCost = consumption * CONSUMPTION_TAX;
+            const enovaCost = consumption * ENOVA_TAX;
+            
+            const subtotal = powerCost + gridVarCost + gridFixed + taxCost + enovaCost;
+            const mvaCost = subtotal * mvaRate;
+            const totalBeforeSupport = subtotal + mvaCost;
+            
+            // Calculate strømstøtte (only if not using Norgespris and spotprice > threshold)
+            let supportAmount = 0;
+            const rowSupport = document.getElementById('rowSupport');
+            
+            if (!useNorgespris && spotPrice > SUPPORT_THRESHOLD) {
+                const overThreshold = spotPrice - SUPPORT_THRESHOLD;
+                supportAmount = consumption * (overThreshold / 100) * SUPPORT_RATE * (1 + mvaRate);
+                rowSupport.style.display = '';
+            } else {
+                rowSupport.style.display = 'none';
+            }
+            
+            const total = totalBeforeSupport - supportAmount;
+            const perKwh = consumption > 0 ? (total / consumption) * 100 : 0;
+            const yearly = total * 12;
+            
+            // Update results
+            document.getElementById('resultPower').textContent = formatNumber(powerCost) + ' kr';
+            document.getElementById('resultGridVar').textContent = formatNumber(gridVarCost) + ' kr';
+            document.getElementById('resultGridFixed').textContent = formatNumber(gridFixed) + ' kr';
+            document.getElementById('resultTax').textContent = formatNumber(taxCost) + ' kr';
+            document.getElementById('resultEnova').textContent = formatNumber(enovaCost) + ' kr';
+            document.getElementById('resultSubtotal').textContent = formatNumber(subtotal) + ' kr';
+            document.getElementById('resultMva').textContent = formatNumber(mvaCost) + ' kr';
+            document.getElementById('resultSupport').textContent = '−' + formatNumber(supportAmount) + ' kr';
+            document.getElementById('resultTotal').textContent = formatNumber(total) + ' kr';
+            document.getElementById('resultPerKwh').textContent = perKwh.toFixed(0) + ' øre/kWh totalt';
+            document.getElementById('resultYearly').textContent = formatNumber(yearly) + ' kr';
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('open');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+        
+        function toggleCollapsible(element) {
+            element.classList.toggle('open');
+        }
+        
+        // Enter key to calculate
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+        });
+    </script>
 </body>
-
 </html>
-
-
-
-
-
-
