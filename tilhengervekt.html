@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilhengervekt Kalkulator 2026 - Sjekk hva du kan trekke | Kalkulatornorge.no</title>
+    <meta name="description" content="Gratis tilhengervekt kalkulator. Sjekk om du kan trekke tilhenger lovlig med førerkort klasse B, B96 eller BE. Beregn maks hengervekt for din bil.">
+    <meta name="keywords" content="tilhengervekt, tilhengerkalkulator, førerkort B, klasse BE, campingvogn, hengervekt, vogntogvekt, tillatt totalvekt">
+    <link rel="canonical" href="https://kalkulatornorge.no/tilhengervekt.html">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/components.css">
+    <meta property="og:title" content="Tilhengervekt Kalkulator 2026 | Kalkulatornorge.no">
+    <meta property="og:description" content="Sjekk om du kan trekke tilhenger lovlig med førerkort klasse B, B96 eller BE.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kalkulatornorge.no/tilhengervekt.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "Hvor tung tilhenger kan jeg trekke med vanlig førerkort klasse B?", "acceptedAnswer": {"@type": "Answer", "text": "Med klasse B kan du alltid trekke tilhenger med tillatt totalvekt opptil 750 kg. Du kan også trekke tyngre tilhenger hvis samlet tillatt totalvekt for bil og tilhenger ikke overstiger 3 500 kg (campingvognregelen)."}},
+        {"@type": "Question", "name": "Hva er forskjellen på klasse B96 og BE?", "acceptedAnswer": {"@type": "Answer", "text": "Klasse B96 gir rett til vogntog opptil 4 250 kg samlet og krever kun 7 timer kurs. Klasse BE gir rett til tilhenger opptil 3 500 kg uansett bilens vekt, men krever full opplæring og oppkjøring."}},
+        {"@type": "Question", "name": "Hvor fort kan jeg kjøre med tilhenger?", "acceptedAnswer": {"@type": "Answer", "text": "Standard fartsgrense med tilhenger er 80 km/t. Tilhengere med Tempo 100-godkjenning kan kjøre 100 km/t på veier med høyere fartsgrense. Tilhenger uten brems under 300 kg har grense på 60 km/t."}}
+      ]
+    }
+    </script>
+    <style>
+        .calc-page { background: var(--color-background); min-height: 100vh; }
+        .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
+        .back-link:hover { color: var(--color-primary); }
+        .calc-header { text-align: center; margin-bottom: 32px; }
+        .calc-icon { width: 64px; height: 64px; background: var(--color-primary-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+        .calc-icon svg { width: 32px; height: 32px; }
+        .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
+        .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
+        .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
+        .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
+        .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
+        .calc-btn:hover { background: var(--color-primary-hover); }
+        .calc-btn:active { transform: scale(0.98); }
+        .results-section { margin-top: 24px; display: none; }
+        .result-card { background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+        .result-card.success { border-color: #4CAF50; background: #E8F5E9; }
+        .result-card.warning { border-color: #FF9800; background: #FFF3E0; }
+        .result-card.error { border-color: #F44336; background: #FFEBEE; }
+        .result-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .result-card-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .result-card.success .result-card-icon { background: #4CAF50; color: white; }
+        .result-card.warning .result-card-icon { background: #FF9800; color: white; }
+        .result-card.error .result-card-icon { background: #F44336; color: white; }
+        .result-card-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--color-text); }
+        .result-card-subtitle { font-size: 0.9rem; color: var(--color-text-secondary); }
+        .result-details { display: grid; gap: 12px; }
+        .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .result-row:last-child { border-bottom: none; }
+        .result-row-label { color: var(--color-text-secondary); font-size: 0.9rem; }
+        .result-row-value { font-weight: 600; color: var(--color-text); }
+        .license-requirements { margin-top: 16px; padding: 16px; background: rgba(255,255,255,0.5); border-radius: 10px; }
+        .license-requirements h4 { font-size: 0.9rem; font-weight: 600; color: var(--color-text); margin: 0 0 12px 0; }
+        .license-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-right: 8px; margin-bottom: 8px; }
+        .license-badge.ok { background: #4CAF50; color: white; }
+        .license-badge.needed { background: var(--color-text-secondary); color: white; }
+        .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .info-box-header svg { color: var(--color-primary); }
+        .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
+        .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
+        .info-box p:last-child { margin-bottom: 0; }
+        .info-box a { color: var(--color-primary); text-decoration: none; }
+        .info-box a:hover { text-decoration: underline; }
+        .seo-content { margin-top: 48px; }
+        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .seo-content h2:first-child { margin-top: 0; }
+        .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+        .seo-content a { color: var(--color-primary); text-decoration: none; }
+        .seo-content a:hover { text-decoration: underline; }
+        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
+        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
+        .callout-content { flex: 1; }
+        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
+        .callout-text { margin: 0; font-size: 0.9rem; }
+        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
+        .callout.tip .callout-icon { color: #4CAF50; }
+        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
+        .callout.warning .callout-icon { color: #FF9800; }
+        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.info .callout-icon { color: var(--color-primary); }
+        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
+        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+        .info-table tr:hover td { background: var(--color-background); }
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
+        .collapsible-header { width: 100%; padding: 18px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: inherit; text-align: left; }
+        .collapsible-header:hover { background: var(--color-background); }
+        .collapsible-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 10px; }
+        .collapsible-icon { transition: transform 0.3s; color: var(--color-text-secondary); }
+        .collapsible.open .collapsible-icon { transform: rotate(180deg); }
+        .collapsible-content { display: none; padding: 0 24px 24px 24px; }
+        .collapsible.open .collapsible-content { display: block; }
+        .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
+        .collapsible-content ul, .collapsible-content ol { margin: 12px 0; padding-left: 20px; }
+        .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
+        .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
+        .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+        .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .related-card-icon svg { width: 20px; height: 20px; }
+        .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
+        .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
+        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
+        .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
+        .dropdown-menu { position: relative; }
+        .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .dropdown-btn:hover { border-color: var(--color-primary); }
+        .dropdown-content { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.12); min-width: 260px; z-index: 1000; padding: 8px; max-height: 70vh; overflow-y: auto; }
+        .dropdown-menu.open .dropdown-content { display: block; }
+        .dropdown-category { font-size: 0.75rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 12px 6px 12px; }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--color-text); text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: background 0.15s; }
+        .dropdown-item:hover { background: var(--color-background); }
+        .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
+        .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .dropdown-item-icon svg { width: 16px; height: 16px; }
+        .section-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
+    </style>
+</head>
+<body class="calc-page">
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">Kalkulatornorge.no</span>
+                </a>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button class="dropdown-btn" onclick="toggleDropdown()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        Andre Kalkulatorer
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-category">Jobb & Lønn</div>
+                        <a href="skatt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></span>Skattekalkulator</a>
+                        <a href="brutto-netto.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Brutto/Netto Lønn</a>
+                        <a href="feriepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg></span>Feriepenger</a>
+                        <a href="overtid.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M8.72852 2.25098C12.9078 2.25098 16.2957 5.63911 16.2959 9.81836C16.2959 11.4898 15.7526 13.0338 14.835 14.2861L16.832 16.2402L15.2783 17.7588L13.3193 15.832C12.0458 16.806 10.4555 17.3867 8.72852 17.3867C6.99424 17.3867 5.3973 16.8017 4.12109 15.8203L2.16992 17.7402L0.617188 16.2217L2.60938 14.2695C1.6992 13.0202 1.16113 11.4823 1.16113 9.81836C1.16133 5.63915 4.54928 2.25104 8.72852 2.25098ZM7.89746 10.0791L10.6318 12.7197L11.752 11.6055L9.6543 9.49805V5.44141H7.89746V10.0791ZM14.2393 0C16.0265 0 17.4755 1.44908 17.4756 3.23633C17.4756 3.98175 17.2204 4.66576 16.7969 5.21289C15.7242 3.28619 13.9834 1.78306 11.8857 1.01953C12.4758 0.393233 13.3109 0.000102796 14.2393 0ZM3.23633 0C4.16225 0 4.9951 0.3913 5.58496 1.01465C3.48612 1.7749 1.74256 3.27476 0.666992 5.19922C0.250188 4.65446 0 3.97523 0 3.23633C0 1.44908 1.44906 0 3.23633 0Z" fill="#C4533A"/></svg></span>Overtid</a>
+                        <a href="arbeidsgiveravgift.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/></svg></span>Arbeidsgiveravgift</a>
+                        <div class="dropdown-category">Husholdning</div>
+                        <a href="stromkostnad.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/></svg></span>Strømkostnad</a>
+                        <a href="bilkostnad.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></span>Bilkostnad</a>
+                        <div class="dropdown-category">Familie & Helse</div>
+                        <a href="barnebidrag.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M1.5 15C2.32843 15 3 15.6716 3 16.5C3 17.3284 2.32843 18 1.5 18C0.671573 18 0 17.3284 0 16.5C0 15.6716 0.671573 15 1.5 15ZM12.5 15C13.3284 15 14 15.6716 14 16.5C14 17.3284 13.3284 18 12.5 18C11.6716 18 11 17.3284 11 16.5C11 15.6716 11.6716 15 12.5 15ZM16 6H14V14H0V7H12.5V4.5H16V6ZM8.5 6H0.5C0.5 2.68629 3.18629 0 6.5 0H8.5V6Z" fill="#C4533A"/></svg></span>Barnebidrag</a>
+                        <a href="sykepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M14 4.2666H18V16H0V4.2666H4V0H14V4.2666ZM7.5 11V15H10.5V11H7.5ZM2 11.9951H4V9.99512H2V11.9951ZM14 11.9951H16V9.99512H14V11.9951ZM2 7.99512H4V5.99512H2V7.99512ZM14 7.99512H16V5.99512H14V7.99512ZM8.25 3.95117H6.25V5.45117H8.25V7.45117H9.75V5.45117H11.75V3.95117H9.75V1.95117H8.25V3.95117Z" fill="#C4533A"/></svg></span>Sykepenger</a>
+                        <div class="dropdown-category">Transport</div>
+                        <a href="pendlerfradrag.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></span>Pendlerfradrag</a>
+                        <a href="tilhengervekt.html" class="dropdown-item active"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg></span>Tilhengervekt</a>
+                        <div class="dropdown-category">Næring</div>
+                        <a href="timelonn-frilanser.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Timelønn Frilansere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="calc-container">
+        <a href="index.html" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
+        
+        <div class="calc-header">
+            <div class="calc-icon"><svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg></div>
+            <h1>Tilhengervekt Kalkulator</h1>
+            <p>Sjekk om du kan trekke tilhengeren lovlig med ditt førerkort</p>
+        </div>
+        
+        <div class="calc-box">
+            <div class="section-title">Ditt førerkort</div>
+            
+            <div class="form-group">
+                <label class="form-label" for="license">Førerkortklasse</label>
+                <select class="form-select" id="license">
+                    <option value="B">Klasse B — Standard personbil</option>
+                    <option value="B96">Klasse B96 — Utvidet (7t kurs)</option>
+                    <option value="BE">Klasse BE — Full tilhengerrett</option>
+                </select>
+                <span class="form-hint">Sjekk baksiden av førerkortet ditt</span>
+            </div>
+            
+            <div class="section-title">Din bil (fra vognkort)</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="carWeight">Bilens tillatte totalvekt (kg)</label>
+                    <input type="number" class="form-input" id="carWeight" placeholder="f.eks. 2200" min="0">
+                    <span class="form-hint">Vognkort felt F.1</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="maxTrailerWeight">Tillatt hengervekt m/brems (kg)</label>
+                    <input type="number" class="form-input" id="maxTrailerWeight" placeholder="f.eks. 1800" min="0">
+                    <span class="form-hint">Vognkort — maks tilhenger</span>
+                </div>
+            </div>
+            
+            <div class="section-title">Tilhengeren</div>
+            
+            <div class="form-group">
+                <label class="form-label" for="trailerWeight">Tilhengerens tillatte totalvekt (kg)</label>
+                <input type="number" class="form-input" id="trailerWeight" placeholder="f.eks. 1500" min="0">
+                <span class="form-hint">Maks vekt tilhenger kan ha (inkl. last)</span>
+            </div>
+            
+            <button class="calc-btn" onclick="calculate()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                Sjekk om kombinasjonen er lovlig
+            </button>
+            
+            <div class="results-section" id="results">
+                <div class="result-card" id="resultCard">
+                    <div class="result-card-header">
+                        <div class="result-card-icon" id="resultIcon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>
+                        </div>
+                        <div>
+                            <div class="result-card-title" id="resultTitle">Resultat</div>
+                            <div class="result-card-subtitle" id="resultSubtitle">Vurdering</div>
+                        </div>
+                    </div>
+                    <div class="result-details">
+                        <div class="result-row">
+                            <span class="result-row-label">Bilens tillatte totalvekt</span>
+                            <span class="result-row-value" id="resultCarWeight">0 kg</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-row-label">Tilhengerens tillatte totalvekt</span>
+                            <span class="result-row-value" id="resultTrailerWeight">0 kg</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-row-label">Samlet tillatt totalvekt</span>
+                            <span class="result-row-value" id="resultCombined">0 kg</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-row-label">Vognkort maks hengervekt</span>
+                            <span class="result-row-value" id="resultMaxTrailer">0 kg</span>
+                        </div>
+                    </div>
+                    <div class="license-requirements">
+                        <h4>Førerkort som tillater denne kombinasjonen:</h4>
+                        <div id="licenseBadges"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <div class="info-box-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><h3>Om beregningen</h3></div>
+            <p>Kalkulatoren sjekker om kombinasjonen av bil og tilhenger er lovlig basert på førerkortklasse og vognkortets spesifikasjoner. <strong>Vognkortet trumfer alltid førerkortet</strong> — selv om førerkortet tillater det, kan bilens vognkort ha lavere grenser.</p>
+            <p><strong>Kilde:</strong> <a href="https://www.vegvesen.no/forerkort/ta-forerkort/forerkortklasser/" target="_blank" rel="noopener">Statens vegvesen – Førerkortklasser</a></p>
+        </div>
+        
+        <div class="seo-content">
+            <h2>🚚 Kan du trekke tilhengeren lovlig?</h2>
+            <p>Kan du trekke den tilhengeren lovlig? Det avhenger av førerkortet ditt og bilens vognkort. Vår kalkulator hjelper deg å finne ut om kombinasjonen av bil og tilhenger er innenfor lovlige grenser.</p>
+            
+            <div class="callout info">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Campingvognregelen</div>
+                    <p class="callout-text">Med vanlig klasse B kan du trekke tilhenger over 750 kg, så lenge bilens og tilhengerens <strong>samlede tillatte totalvekt ikke overstiger 3 500 kg</strong>. Dette gjelder alle tilhengere, ikke bare campingvogner.</p>
+                </div>
+            </div>
+            
+            <h2>📊 Førerkortklasser og vektgrenser</h2>
+            <table class="info-table">
+                <thead><tr><th>Førerkort</th><th>Bil maks</th><th>Tilhenger maks</th><th>Samlet maks</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Klasse B</strong></td><td>3 500 kg</td><td>750 kg</td><td><span class="rate-badge">4 250 kg</span>*</td></tr>
+                    <tr><td><strong>Klasse B</strong></td><td>3 500 kg</td><td>>750 kg</td><td><span class="rate-badge">3 500 kg</span>**</td></tr>
+                    <tr><td><strong>Klasse B96</strong></td><td>3 500 kg</td><td>>750 kg</td><td><span class="rate-badge">4 250 kg</span></td></tr>
+                    <tr><td><strong>Klasse BE</strong></td><td>3 500 kg</td><td>3 500 kg</td><td><span class="rate-badge">7 000 kg</span></td></tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.85rem; color: var(--color-text-secondary);">*Når tilhenger ≤750 kg. **Campingvognregelen: kan trekke >750 kg hvis samlet ≤3 500 kg</p>
+            
+            <div class="callout warning">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Sjekk ALLTID bilens vognkort!</div>
+                    <p class="callout-text">Selv om førerkortet tillater det, kan bilens vognkort ha lavere tillatt hengervekt. Vognkortet trumfer alltid førerkortet.</p>
+                </div>
+            </div>
+            
+            <h2>📖 Viktige begreper</h2>
+            <table class="info-table">
+                <thead><tr><th>Begrep</th><th>Forklaring</th><th>Hvor finner du det</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Tillatt totalvekt</strong></td><td>Maks vekt kjøretøy kan ha (inkl. last)</td><td>Vognkort felt F.1</td></tr>
+                    <tr><td><strong>Egenvekt</strong></td><td>Kjøretøyets vekt uten last</td><td>Vognkort felt G</td></tr>
+                    <tr><td><strong>Tillatt hengervekt</strong></td><td>Maks vekt på tilhenger bilen kan trekke</td><td>Vognkort (med/uten brems)</td></tr>
+                    <tr><td><strong>Tillatt vogntogvekt</strong></td><td>Maks samlet vekt bil + tilhenger</td><td>Vognkort</td></tr>
+                </tbody>
+            </table>
+            
+            <h2>🧩 Detaljerte regler</h2>
+            <div class="collapsible open" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>Klasse B — detaljerte regler</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content">
+                    <p><strong>Tilhenger ≤750 kg:</strong> Kan alltid trekkes med klasse B. Samlet tillatt totalvekt kan være opptil 4 250 kg. Eksempel: Bil 3 500 kg + tilhenger 750 kg = 4 250 kg ✅</p>
+                    <p><strong>Tilhenger >750 kg (campingvognregelen):</strong> Samlet tillatt totalvekt MÅ være ≤3 500 kg. Eksempel: Bil 2 000 kg + tilhenger 1 400 kg = 3 400 kg ✅. Men: Bil 2 500 kg + tilhenger 1 200 kg = 3 700 kg ❌</p>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>Klasse B96 og BE</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content">
+                    <p><strong>Klasse B96:</strong> Krever 7 timer obligatorisk opplæring (ingen oppkjøring). Samlet tillatt totalvekt opptil 4 250 kg. Tilhenger kan være over 750 kg.</p>
+                    <p><strong>Klasse BE:</strong> Krever full opplæring og oppkjøring. Tilhenger kan ha tillatt totalvekt opptil 3 500 kg. Kun bilens vognkort begrenser. BE før 19. jan 2013: Ingen vektgrense på tilhenger (kun vognkort).</p>
+                </div>
+            </div>
+            
+            <h2>❓ Ofte stilte spørsmål</h2>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Hva er forskjellen på tillatt totalvekt og aktuell totalvekt?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Tillatt totalvekt er maksimal vekt kjøretøyet er registrert for (står i vognkortet). Aktuell totalvekt er faktisk vekt i øyeblikket. Du kan aldri laste mer enn at aktuell vekt overstiger tillatt totalvekt.</p></div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Trenger jeg BE for å trekke båthenger?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Det kommer an på båthengerens vekt og din bils spesifikasjoner. Hvis samlet tillatt totalvekt for bil og henger er under 3 500 kg, holder vanlig klasse B. Over dette trenger du B96 eller BE.</p></div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Hvor fort kan jeg kjøre med tilhenger?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Standard fartsgrense med tilhenger er <strong>80 km/t</strong>. Tilhengere med Tempo 100-godkjenning kan kjøre 100 km/t på veier med høyere fartsgrense. Tilhenger uten brems under 300 kg: 60 km/t.</p></div>
+            </div>
+            
+            <div class="callout tip">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Bruk Statens vegvesens tilhengerkalkulator</div>
+                    <p class="callout-text">Tast inn registreringsnummer på bil og tilhenger, og førerkortklasse. Da får du umiddelbart svar på om kombinasjonen er lovlig: <a href="https://www.vegvesen.no/kjoretoy/eie-og-vedlikeholde/tilhenger/tilhengerkalkulator/" target="_blank" rel="noopener">vegvesen.no/tilhengerkalkulator</a></p>
+                </div>
+            </div>
+            
+            <h2>🔗 Relaterte kalkulatorer</h2>
+            <div class="related-grid">
+                <a href="bilkostnad.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Bilkostnad</h4><p>Beregn årlige bilutgifter</p></div></a>
+                <a href="pendlerfradrag.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Pendlerfradrag</h4><p>Reisefradrag til jobb</p></div></a>
+                <a href="brutto-netto.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Brutto/Netto</h4><p>Se hva du får utbetalt</p></div></a>
+                <a href="skatt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Skattekalkulator</h4><p>Detaljert skatteberegning</p></div></a>
+            </div>
+            
+            <div class="disclaimer"><p><strong>Viktig:</strong> Denne kalkulatoren gir veiledende informasjon. Sjekk alltid bilens vognkort for nøyaktige grenser. For offisiell bekreftelse, bruk Statens vegvesens tilhengerkalkulator med registreringsnummer.</p></div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Alle kalkulatorer</a>
+                <a href="personvern.html" class="footer-link">Personvern</a>
+                <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
+            </div>
+            <p class="footer-copyright">© 2026 Kalkulatornorge.no - Laget med <span class="heart">❤️</span> for norske brukere</p>
+        </div>
+    </footer>
+    
+    <script>
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('nb-NO');
+        }
+
+        function calculate() {
+            const license = document.getElementById('license').value;
+            const carWeight = parseFloat(document.getElementById('carWeight').value) || 0;
+            const maxTrailerWeight = parseFloat(document.getElementById('maxTrailerWeight').value) || 0;
+            const trailerWeight = parseFloat(document.getElementById('trailerWeight').value) || 0;
+            
+            if (carWeight <= 0 || trailerWeight <= 0) {
+                alert('Vennligst fyll ut alle vektfelt');
+                return;
+            }
+            
+            const combinedWeight = carWeight + trailerWeight;
+            
+            // Check various conditions
+            let isLegalWithB = false;
+            let isLegalWithB96 = false;
+            let isLegalWithBE = false;
+            let limitingFactor = '';
+            
+            // Check vognkort limit first (always applies)
+            const vognkortOk = trailerWeight <= maxTrailerWeight;
+            
+            // Klasse B rules
+            if (trailerWeight <= 750) {
+                // Small trailer - always ok with B (up to 4250 kg combined)
+                isLegalWithB = vognkortOk && combinedWeight <= 4250;
+            } else {
+                // Campingvogn rule - trailer >750kg, combined must be ≤3500
+                isLegalWithB = vognkortOk && combinedWeight <= 3500;
+            }
+            
+            // Klasse B96 rules - combined up to 4250 kg
+            isLegalWithB96 = vognkortOk && combinedWeight <= 4250;
+            
+            // Klasse BE rules - trailer up to 3500 kg
+            isLegalWithBE = vognkortOk && trailerWeight <= 3500;
+            
+            // Determine result based on selected license
+            let isLegal = false;
+            let resultClass = '';
+            let title = '';
+            let subtitle = '';
+            
+            if (license === 'B') {
+                isLegal = isLegalWithB;
+            } else if (license === 'B96') {
+                isLegal = isLegalWithB96;
+            } else {
+                isLegal = isLegalWithBE;
+            }
+            
+            // Determine limiting factor
+            if (!vognkortOk) {
+                limitingFactor = 'Tilhengeren overstiger bilens tillatte hengervekt (vognkort)';
+            } else if (license === 'B' && trailerWeight > 750 && combinedWeight > 3500) {
+                limitingFactor = 'Samlet vekt overstiger 3 500 kg (campingvognregelen)';
+            } else if (license === 'B96' && combinedWeight > 4250) {
+                limitingFactor = 'Samlet vekt overstiger 4 250 kg';
+            } else if (license === 'BE' && trailerWeight > 3500) {
+                limitingFactor = 'Tilhenger overstiger 3 500 kg';
+            }
+            
+            // Set result display
+            const resultCard = document.getElementById('resultCard');
+            const resultIcon = document.getElementById('resultIcon');
+            
+            if (isLegal) {
+                resultClass = 'success';
+                title = '✅ Lovlig kombinasjon';
+                subtitle = `Du kan trekke denne tilhengeren med klasse ${license}`;
+                resultIcon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>';
+            } else {
+                if (isLegalWithB96 || isLegalWithBE) {
+                    resultClass = 'warning';
+                    title = '⚠️ Krever høyere førerkortklasse';
+                    subtitle = limitingFactor;
+                    resultIcon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+                } else {
+                    resultClass = 'error';
+                    title = '❌ Ikke lovlig';
+                    subtitle = limitingFactor || 'Kombinasjonen overstiger lovlige grenser';
+                    resultIcon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+                }
+            }
+            
+            resultCard.className = 'result-card ' + resultClass;
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultSubtitle').textContent = subtitle;
+            
+            // Update values
+            document.getElementById('resultCarWeight').textContent = formatNumber(carWeight) + ' kg';
+            document.getElementById('resultTrailerWeight').textContent = formatNumber(trailerWeight) + ' kg';
+            document.getElementById('resultCombined').textContent = formatNumber(combinedWeight) + ' kg';
+            document.getElementById('resultMaxTrailer').textContent = formatNumber(maxTrailerWeight) + ' kg';
+            
+            // Generate license badges
+            let badges = '';
+            if (isLegalWithB) badges += '<span class="license-badge ok">✓ Klasse B</span>';
+            else badges += '<span class="license-badge needed">✗ Klasse B</span>';
+            
+            if (isLegalWithB96) badges += '<span class="license-badge ok">✓ Klasse B96</span>';
+            else badges += '<span class="license-badge needed">✗ Klasse B96</span>';
+            
+            if (isLegalWithBE) badges += '<span class="license-badge ok">✓ Klasse BE</span>';
+            else badges += '<span class="license-badge needed">✗ Klasse BE</span>';
+            
+            document.getElementById('licenseBadges').innerHTML = badges;
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('open');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+        
+        function toggleCollapsible(element) {
+            element.classList.toggle('open');
+        }
+        
+        // Enter key to calculate
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+        });
+    </script>
+</body>
+</html>
