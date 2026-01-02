@@ -460,5 +460,28 @@
         document.getElementById('workdays').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
         document.getElementById('extraCosts').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
     </script>
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Reisefradrag Kalkulator 2026",
+  "description": "Beregn reisefradrag (pendlerfradrag) for 2026. Nye satser: 1,90 kr/km og 12 000 kr bunnfradrag.",
+  "url": "https://kalkulatornorge.no/pendlerfradrag.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "nb-NO",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "NOK"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Kalkulatornorge.no",
+    "url": "https://kalkulatornorge.no"
+  }
+}
+</script>
 </body>
 </html>

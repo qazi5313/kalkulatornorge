@@ -447,5 +447,28 @@
         document.getElementById('salary').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
         document.getElementById('employees').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
     </script>
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Arbeidsgiveravgift Kalkulator 2026",
+  "description": "Beregn arbeidsgiveravgift (AGA) per sone. Satser fra 0% til 14,1% avhengig av lokasjon.",
+  "url": "https://kalkulatornorge.no/arbeidsgiveravgift.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "nb-NO",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "NOK"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Kalkulatornorge.no",
+    "url": "https://kalkulatornorge.no"
+  }
+}
+</script>
 </body>
 </html>
