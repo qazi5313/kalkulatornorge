@@ -667,3 +667,31 @@
 .footer-copyright .heart {
     color: var(--color-primary);
 }
+/* Mobile fixes for long words and tables */
+@media (max-width: 768px) {
+  /* Fix calculator card titles breaking out */
+  .calculator-card h3,
+  .calculator-card-title {
+    word-break: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  
+  /* Make tables scrollable on mobile */
+  .info-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+  
+  table {
+    min-width: 500px;
+  }
+  
+  /* Fix section headings */
+  h2, h3 {
+    word-break: break-word;
+    hyphens: auto;
+  }
+}
