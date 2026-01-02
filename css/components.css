@@ -671,27 +671,25 @@
 @media (max-width: 768px) {
   /* Fix calculator card titles breaking out */
   .calculator-card h3,
-  .calculator-card-title {
+  .calculator-card-title,
+  .card-title {
     word-break: break-word;
     hyphens: auto;
     -webkit-hyphens: auto;
   }
   
-  /* Make tables scrollable on mobile */
-  .info-table-container {
+  /* Make ALL tables scrollable on mobile - no wrapper needed */
+  table {
+    display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin: 0 -1rem;
-    padding: 0 1rem;
-  }
-  
-  table {
-    min-width: 500px;
+    white-space: nowrap;
   }
   
   /* Fix section headings */
   h2, h3 {
     word-break: break-word;
     hyphens: auto;
+    overflow-wrap: break-word;
   }
 }
