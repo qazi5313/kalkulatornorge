@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://kalkulatornorge.no/sitemap.xml
-
-# Disallow admin areas (none for this site)
-# Crawl-delay: 1
