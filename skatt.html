@@ -1355,6 +1355,8 @@
             
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Add chart visualization
+            showTaxBreakdown(skattAlminnelig, trinnskatt, trygdeavgift);
         }
 
         // Dropdown toggle
@@ -1382,10 +1384,6 @@
         document.getElementById('deductions').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') calculateTax();
         });
-// Add this function anywhere in your <script> section
-function showTaxBreakdown(kommuneskatt, trinnskatt, trygdeavgift) {
-    // Show the breakdown section
-    document.getElementById('tax-breakdown-section').style.display = 'block';
     
     // Destroy existing chart if it exists
     if (window.taxChart) {
@@ -1465,6 +1463,8 @@ function showTaxBreakdown(kommuneskatt, trinnskatt, trygdeavgift) {
             <div>
                 <strong>Trygdeavgift:</strong> ${trygdeavgift.toLocaleString('nb-NO')} kr 
                 <span style="color: #666;">(${((trygdeavgift/totalTax)*100).toFixed(1)}%)</span>
+// After you calculate kommuneskatt, trinnskatt, trygdeavgift and display result:
+showTaxBreakdown(kommuneskatt, trinnskatt, trygdeavgift);
             </div>
         </div>
     `;
