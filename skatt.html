@@ -754,6 +754,8 @@
             padding: 16px 0;
         }
     </style>
+<!-- Add this in the <head> section, before closing </head> -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body class="calc-page">
     
@@ -978,7 +980,18 @@
                 </div>
             </div>
         </div>
-        
+<!-- Add this right after your main tax result display -->
+<div id="tax-breakdown-section" class="tax-breakdown-container" style="display: none;">
+    <h3 style="font-family: 'Source Serif 4', serif; color: #C4533A; margin-top: 2rem; margin-bottom: 1rem;">
+        📊 Din skatt i detalj
+    </h3>
+    <div style="max-width: 400px; margin: 0 auto; padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <canvas id="taxBreakdownChart"></canvas>
+    </div>
+    <div id="breakdown-details" style="margin-top: 1rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #333;">
+        <!-- Breakdown text will appear here -->
+    </div>
+</div>        
         <!-- Info Box -->
         <div class="info-box">
             <div class="info-box-header">
@@ -1369,6 +1382,94 @@
         document.getElementById('deductions').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') calculateTax();
         });
+// Add this function anywhere in your <script> section
+function showTaxBreakdown(kommuneskatt, trinnskatt, trygdeavgift) {
+    // Show the breakdown section
+    document.getElementById('tax-breakdown-section').style.display = 'block';
+    
+    // Destroy existing chart if it exists
+    if (window.taxChart) {
+        window.taxChart.destroy();
+    }
+    
+    // Create the chart
+    const ctx = document.getElementById('taxBreakdownChart').getContext('2d');
+    window.taxChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Kommuneskatt', 'Trinnskatt', 'Trygdeavgift'],
+            datasets: [{
+                data: [kommuneskatt, trinnskatt, trygdeavgift],
+                backgroundColor: [
+                    '#C4533A',  // Rust - your brand color
+                    '#D97557',  // Lighter rust
+                    '#B04030'   // Darker rust
+                ],
+                borderWidth: 2,
+                borderColor: '#FAF9F7'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            family: "'Inter', sans-serif",
+                            size: 13
+                        },
+                        padding: 15,
+                        color: '#333'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#333',
+                    titleFont: {
+                        family: "'Inter', sans-serif",
+                        size: 14
+                    },
+                    bodyFont: {
+                        family: "'Inter', sans-serif",
+                        size: 13
+                    },
+                    padding: 12,
+                    displayColors: true,
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return label + ': ' + value.toLocaleString('nb-NO') + ' kr (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Add text breakdown below chart
+    const totalTax = kommuneskatt + trinnskatt + trygdeavgift;
+    const breakdownHTML = `
+        <div style="text-align: left; padding: 1rem; background: #FAF9F7; border-radius: 6px; margin-top: 1rem;">
+            <div style="margin-bottom: 0.5rem;">
+                <strong>Kommuneskatt:</strong> ${kommuneskatt.toLocaleString('nb-NO')} kr 
+                <span style="color: #666;">(${((kommuneskatt/totalTax)*100).toFixed(1)}%)</span>
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+                <strong>Trinnskatt:</strong> ${trinnskatt.toLocaleString('nb-NO')} kr 
+                <span style="color: #666;">(${((trinnskatt/totalTax)*100).toFixed(1)}%)</span>
+            </div>
+            <div>
+                <strong>Trygdeavgift:</strong> ${trygdeavgift.toLocaleString('nb-NO')} kr 
+                <span style="color: #666;">(${((trygdeavgift/totalTax)*100).toFixed(1)}%)</span>
+            </div>
+        </div>
+    `;
+    document.getElementById('breakdown-details').innerHTML = breakdownHTML;
+}
     </script>
 <!-- Schema Markup -->
 <script type="application/ld+json">
