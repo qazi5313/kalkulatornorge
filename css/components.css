@@ -670,25 +670,23 @@
 
 /* Mobile fixes for long words and tables */
 @media (max-width: 768px) {
-  /* Fix long words in card titles */
-  .card-title {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-  /* Mobile fixes for long words and tables */
-@media (max-width: 768px) {
-  /* Fix ALL long words in cards and headings */
-  .card-title,
+  /* Fix long words in ALL card titles - target both h3 and the class inside */
   .calculator-card h3,
-  h2, h3 {
+  h3.card-title,
+  .card-title {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     word-break: break-word !important;
-    max-width: 100%;
+    hyphens: manual !important;
   }
   
-  /* Ensure card container doesn't overflow */
+  /* Fix all headings */
+  h2, h3 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Prevent card overflow */
   .calculator-card {
     overflow: hidden;
   }
