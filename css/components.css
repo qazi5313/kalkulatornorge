@@ -669,24 +669,37 @@
 }
 /* Mobile fixes for long words and tables */
 @media (max-width: 768px) {
-  /* Fix calculator card titles breaking out */
+  /* Fix long words in card titles */
   .card-title {
-    word-break: break-word;
+    word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: manual;
+    word-break: break-word;
   }
   
-  /* Make tables scrollable on mobile */
-  table {
+  /* Fix long headings */
+  h2, h3 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Make tables scrollable horizontally */
+  .data-table {
     display: block;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
   
-  /* Fix all headings */
-  h2, h3 {
-    word-break: break-word;
-    overflow-wrap: break-word;
+  .data-table thead,
+  .data-table tbody,
+  .data-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  .data-table th,
+  .data-table td {
+    white-space: nowrap;
   }
 }
