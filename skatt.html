@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
     
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    
     <!-- Open Graph -->
     <meta property="og:title" content="Skattekalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn din skatt for 2026 med vår gratis kalkulator. Trinnskatt, trygdeavgift og netto utbetaling.">
@@ -1354,6 +1357,7 @@
             document.getElementById('resultNettoMaaned').textContent = formatNumber(nettoMaaned);
             
             document.getElementById('results').style.display = 'block';
+            document.getElementById('tax-breakdown-section').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             // Add chart visualization
@@ -1385,90 +1389,92 @@
         document.getElementById('deductions').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') calculateTax();
         });
-    
-    // Destroy existing chart if it exists
-    if (window.taxChart) {
-        window.taxChart.destroy();
-    }
-    
-    // Create the chart
-    const ctx = document.getElementById('taxBreakdownChart').getContext('2d');
-    window.taxChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Kommuneskatt', 'Trinnskatt', 'Trygdeavgift'],
-            datasets: [{
-                data: [kommuneskatt, trinnskatt, trygdeavgift],
-                backgroundColor: [
-                    '#C4533A',  // Rust - your brand color
-                    '#D97557',  // Lighter rust
-                    '#B04030'   // Darker rust
-                ],
-                borderWidth: 2,
-                borderColor: '#FAF9F7'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        font: {
-                            family: "'Inter', sans-serif",
-                            size: 13
-                        },
-                        padding: 15,
-                        color: '#333'
-                    }
+
+        // Chart visualization function
+        function showTaxBreakdown(kommuneskatt, trinnskatt, trygdeavgift) {
+            // Destroy existing chart if it exists
+            if (window.taxChart) {
+                window.taxChart.destroy();
+            }
+            
+            // Create the chart
+            const ctx = document.getElementById('taxBreakdownChart').getContext('2d');
+            window.taxChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Kommuneskatt', 'Trinnskatt', 'Trygdeavgift'],
+                    datasets: [{
+                        data: [kommuneskatt, trinnskatt, trygdeavgift],
+                        backgroundColor: [
+                            '#C4533A',  // Rust - your brand color
+                            '#D97557',  // Lighter rust
+                            '#B04030'   // Darker rust
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#FAF9F7'
+                    }]
                 },
-                tooltip: {
-                    backgroundColor: '#333',
-                    titleFont: {
-                        family: "'Inter', sans-serif",
-                        size: 14
-                    },
-                    bodyFont: {
-                        family: "'Inter', sans-serif",
-                        size: 13
-                    },
-                    padding: 12,
-                    displayColors: true,
-                    callbacks: {
-                        label: function(context) {
-                            const label = context.label || '';
-                            const value = context.parsed || 0;
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const percentage = ((value / total) * 100).toFixed(1);
-                            return label + ': ' + value.toLocaleString('nb-NO') + ' kr (' + percentage + '%)';
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 13
+                                },
+                                padding: 15,
+                                color: '#333'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#333',
+                            titleFont: {
+                                family: "'Inter', sans-serif",
+                                size: 14
+                            },
+                            bodyFont: {
+                                family: "'Inter', sans-serif",
+                                size: 13
+                            },
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return label + ': ' + value.toLocaleString('nb-NO') + ' kr (' + percentage + '%)';
+                                }
+                            }
                         }
                     }
                 }
-            }
+            });
+            
+            // Add text breakdown below chart
+            const totalTax = kommuneskatt + trinnskatt + trygdeavgift;
+            const breakdownHTML = `
+                <div style="text-align: left; padding: 1rem; background: #FAF9F7; border-radius: 6px; margin-top: 1rem;">
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>Kommuneskatt:</strong> ${kommuneskatt.toLocaleString('nb-NO')} kr 
+                        <span style="color: #666;">(${((kommuneskatt/totalTax)*100).toFixed(1)}%)</span>
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>Trinnskatt:</strong> ${trinnskatt.toLocaleString('nb-NO')} kr 
+                        <span style="color: #666;">(${((trinnskatt/totalTax)*100).toFixed(1)}%)</span>
+                    </div>
+                    <div>
+                        <strong>Trygdeavgift:</strong> ${trygdeavgift.toLocaleString('nb-NO')} kr 
+                        <span style="color: #666;">(${((trygdeavgift/totalTax)*100).toFixed(1)}%)</span>
+                    </div>
+                </div>
+            `;
+            document.getElementById('breakdown-details').innerHTML = breakdownHTML;
         }
-    });
-    
-    // Add text breakdown below chart
-    const totalTax = kommuneskatt + trinnskatt + trygdeavgift;
-    const breakdownHTML = `
-        <div style="text-align: left; padding: 1rem; background: #FAF9F7; border-radius: 6px; margin-top: 1rem;">
-            <div style="margin-bottom: 0.5rem;">
-                <strong>Kommuneskatt:</strong> ${kommuneskatt.toLocaleString('nb-NO')} kr 
-                <span style="color: #666;">(${((kommuneskatt/totalTax)*100).toFixed(1)}%)</span>
-            </div>
-            <div style="margin-bottom: 0.5rem;">
-                <strong>Trinnskatt:</strong> ${trinnskatt.toLocaleString('nb-NO')} kr 
-                <span style="color: #666;">(${((trinnskatt/totalTax)*100).toFixed(1)}%)</span>
-            </div>
-            <div>
-                <strong>Trygdeavgift:</strong> ${trygdeavgift.toLocaleString('nb-NO')} kr 
-                <span style="color: #666;">(${((trygdeavgift/totalTax)*100).toFixed(1)}%)</span>
-            </div>
-        </div>
-    `;
-    document.getElementById('breakdown-details').innerHTML = breakdownHTML;
-}
     </script>
 <!-- Schema Markup -->
 <script type="application/ld+json">
