@@ -1716,37 +1716,59 @@
 
         // Email Results Function
         function emailResults() {
-            const brutto = document.getElementById('resultBrutto').textContent;
-            const trinnskatt = document.getElementById('resultTrinnskatt').textContent;
-            const kommuneskatt = document.getElementById('resultKommuneskatt').textContent;
-            const trygdeavgift = document.getElementById('resultTrygdeavgift').textContent;
-            const totalSkatt = document.getElementById('resultTotalSkatt').textContent;
-            const nettoAar = document.getElementById('resultNettoAar').textContent;
-            const nettoMaaned = document.getElementById('resultNettoMaaned').textContent;
+    const brutto = document.getElementById('resultBrutto').textContent;
+    const trinnskatt = document.getElementById('resultTrinnskatt').textContent;
+    const kommuneskatt = document.getElementById('resultKommuneskatt').textContent;
+    const trygdeavgift = document.getElementById('resultTrygdeavgift').textContent;
+    const totalSkatt = document.getElementById('resultTotalSkatt').textContent;
+    const nettoAar = document.getElementById('resultNettoAar').textContent;
+    const nettoMaaned = document.getElementById('resultNettoMaaned').textContent;
 
-            const subject = 'Min skatteberegning 2026 fra Kalkulatornorge.no';
-            const bodyLines = [
-                'Skatteberegning 2026',
-                '',
-                'Bruttoinntekt: ' + brutto,
-                '',
-                'SKATT:',
-                'Trinnskatt: ' + trinnskatt,
-                'Kommuneskatt: ' + kommuneskatt,
-                'Trygdeavgift: ' + trygdeavgift,
-                'Total skatt: ' + totalSkatt,
-                '',
-                'NETTOINNTEKT:',
-                'Årlig: ' + nettoAar,
-                'Månedlig: ' + nettoMaaned,
-                '',
-                'Beregnet med Kalkulatornorge.no',
-                'https://kalkulatornorge.no/skatt.html'
-            ];
-            const body = bodyLines.join('%0A');
+    const emailContent = 
+        'Skatteberegning 2026\n\n' +
+        'Bruttoinntekt: ' + brutto + '\n\n' +
+        'SKATT:\n' +
+        'Trinnskatt: ' + trinnskatt + '\n' +
+        'Kommuneskatt: ' + kommuneskatt + '\n' +
+        'Trygdeavgift: ' + trygdeavgift + '\n' +
+        'Total skatt: ' + totalSkatt + '\n\n' +
+        'NETTOINNTEKT:\n' +
+        'Årlig: ' + nettoAar + '\n' +
+        'Månedlig: ' + nettoMaaned + '\n\n' +
+        'Beregnet med Kalkulatornorge.no\nhttps://kalkulatornorge.no/skatt.html';
 
-            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
-        }
+    // Show modal with email content
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+    
+    modal.innerHTML = `
+        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 500px; max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <h3 style="margin-top: 0; color: #C4533A; font-family: Source Serif 4, serif;">Din skatteberegning</h3>
+            
+            <textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">${emailContent}</textarea>
+            
+            <div style="margin-top: 1rem; background: #f5f5f5; padding: 1rem; border-radius: 6px; font-size: 0.85rem; color: #666; line-height: 1.5;">
+                <strong>Slik sender du eposten:</strong><br>
+                1. Kopier teksten over (eller klikk "Kopier knappen" under)<br>
+                2. Åpne din epostleverandør (Gmail, Outlook, etc.)<br>
+                3. Lag en ny epost<br>
+                4. Paste inn teksten<br>
+                5. Send til deg selv
+            </div>
+            
+            <div style="margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <button onclick="navigator.clipboard.writeText(\`${emailContent.replace(/`/g, '\\`')}\`); alert('Kopiert til utklippstavlen!'); document.querySelector('[data-modal-close]').click();" style="padding: 12px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-family: Inter, sans-serif;">
+                    📋 Kopier tekst
+                </button>
+                <button data-modal-close onclick="this.closest('div').parentElement.parentElement.remove();" style="padding: 12px; background: #ddd; color: #333; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-family: Inter, sans-serif;">
+                    Lukk
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
     </script>
 <!-- Schema Markup -->
 <script type="application/ld+json">
