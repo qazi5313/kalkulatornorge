@@ -24,6 +24,9 @@
     <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
     
+    <!-- jsPDF Library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <!-- Open Graph -->
     <meta property="og:title" content="Skattekalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn din skatt for 2026 med vår gratis kalkulator. Trinnskatt, trygdeavgift og netto utbetaling.">
@@ -994,6 +997,55 @@
     <div id="breakdown-details" style="margin-top: 1rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #333;">
         <!-- Breakdown text will appear here -->
     </div>
+
+    <!-- Average Tax Comparison Section -->
+    <div id="average-comparison-section" style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%); border-radius: 8px; border: 1px solid #e0e0e0;">
+        <h4 style="font-family: 'Source Serif 4', serif; color: #C4533A; margin-top: 0; margin-bottom: 1rem;">Sammenlignet med gjennomsnittet</h4>
+        <div id="average-content" style="font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #333;">
+            <!-- Average comparison will appear here -->
+        </div>
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div id="action-buttons-section" style="margin-top: 1.5rem; padding: 1.5rem; background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
+        <h4 style="font-family: 'Source Serif 4', serif; color: #C4533A; margin-top: 0; margin-bottom: 1rem;">Del og lagre resultater</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <!-- PDF Download -->
+            <button id="pdf-download-btn" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="downloadPDF()">
+                <span>📥 Last ned PDF</span>
+            </button>
+            
+            <!-- Email Results -->
+            <button id="email-btn" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="emailResults()">
+                <span>✉️ Send til deg selv</span>
+            </button>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem; font-family: Inter, sans-serif;">Del resultatet ditt (uten personlige tall):</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
+                <!-- Twitter -->
+                <button onclick="shareToTwitter()" style="padding: 10px; background: #1DA1F2; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    𝕏 Twitter
+                </button>
+                
+                <!-- Facebook -->
+                <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    f Facebook
+                </button>
+                
+                <!-- LinkedIn -->
+                <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    in LinkedIn
+                </button>
+                
+                <!-- Copy Link -->
+                <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    📋 Kopier
+                </button>
+            </div>
+        </div>
+    </div>
 </div>        
         <!-- Info Box -->
         <div class="info-box">
@@ -1366,7 +1418,7 @@
             const percentChange = ((difference / tax2025) * 100).toFixed(1);
 
             // Add chart visualization
-            showTaxBreakdown(skattAlminnelig, trinnskatt, trygdeavgift, tax2025, difference, percentChange);
+            showTaxBreakdown(skattAlminnelig, trinnskatt, trygdeavgift, tax2025, difference, percentChange, income, totalSkatt);
         }
 
         // Dropdown toggle
@@ -1396,7 +1448,7 @@
         });
 
         // Chart visualization function
-        function showTaxBreakdown(kommuneskatt, trinnskatt, trygdeavgift, tax2025, difference, percentChange) {
+        function showTaxBreakdown(kommuneskatt, trinnskatt, trygdeavgift, tax2025, difference, percentChange, income, totalSkatt) {
             // Destroy existing chart if it exists
             if (window.taxChart) {
                 window.taxChart.destroy();
@@ -1491,6 +1543,26 @@
                 </p>
             </div>`;
             document.getElementById('breakdown-details').innerHTML += comparisonHTML;
+
+            // Generate average tax comparison
+            const avgTaxData = getAverageTaxForIncome(income);
+            const avgTaxDifference = totalSkatt - avgTaxData.avgTax;
+            const avgTaxPercentDiff = ((avgTaxDifference / avgTaxData.avgTax) * 100).toFixed(1);
+            
+            const averageHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <p style="margin: 0 0 0.5rem 0; color: #666; font-size: 0.9rem;">
+                        <strong>Inntektsgruppe ${avgTaxData.incomeGroup}:</strong> Gjennomsnittlig skatt er ${avgTaxData.avgTax.toLocaleString('nb-NO')} kr
+                    </p>
+                    <div style="background: #f0f0f0; border-radius: 4px; height: 8px; overflow: hidden;">
+                        <div style="background: ${avgTaxDifference > 0 ? '#C4533A' : '#22c55e'}; height: 100%; width: ${Math.min(100, (totalSkatt / avgTaxData.avgTax) * 100)}%;"></div>
+                    </div>
+                    <p style="margin: 0.5rem 0 0 0; color: ${avgTaxDifference > 0 ? '#C4533A' : '#22c55e'}; font-weight: 600;">
+                        ${avgTaxDifference > 0 ? '+' : ''}${avgTaxDifference.toLocaleString('nb-NO')} kr (${avgTaxPercentDiff}%) ${avgTaxDifference > 0 ? 'mer' : 'mindre'} enn gjennomsnitt
+                    </p>
+                </div>
+            `;
+            document.getElementById('average-content').innerHTML = averageHTML;
         }
 
         // Helper functions for 2025 tax calculation
@@ -1523,6 +1595,152 @@
                 }
             }
             return trinnskatt;
+        }
+
+        // Average tax calculation based on income bracket
+        function getAverageTaxForIncome(income) {
+            let incomeGroup, avgTax;
+            
+            if (income < 300000) {
+                incomeGroup = '< 300k';
+                avgTax = Math.round(income * 0.18);
+            } else if (income < 500000) {
+                incomeGroup = '300-500k';
+                avgTax = Math.round(income * 0.22);
+            } else if (income < 750000) {
+                incomeGroup = '500-750k';
+                avgTax = Math.round(income * 0.27);
+            } else if (income < 1000000) {
+                incomeGroup = '750k-1M';
+                avgTax = Math.round(income * 0.30);
+            } else {
+                incomeGroup = '> 1M';
+                avgTax = Math.round(income * 0.32);
+            }
+            
+            return { incomeGroup, avgTax };
+        }
+
+        // PDF Download Function
+        function downloadPDF() {
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const brutto = document.getElementById('resultBrutto').textContent;
+            const trinnskatt = document.getElementById('resultTrinnskatt').textContent;
+            const kommuneskatt = document.getElementById('resultKommuneskatt').textContent;
+            const trygdeavgift = document.getElementById('resultTrygdeavgift').textContent;
+            const totalSkatt = document.getElementById('resultTotalSkatt').textContent;
+            const nettoAar = document.getElementById('resultNettoAar').textContent;
+            const nettoMaaned = document.getElementById('resultNettoMaaned').textContent;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Set title
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('Skattekalkulator 2026 - Resultat', 20, 20);
+            
+            // Add date
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text('Generert: ' + new Date().toLocaleDateString('nb-NO'), 20, 30);
+            
+            // Add results
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(11);
+            let yPosition = 45;
+            
+            doc.text('INNTEKT OG FRADRAG:', 20, yPosition);
+            yPosition += 8;
+            doc.text('Bruttoinntekt: ' + brutto, 25, yPosition);
+            yPosition += 8;
+            
+            doc.text('SKATT:', 20, yPosition);
+            yPosition += 8;
+            doc.text('Trinnskatt: ' + trinnskatt, 25, yPosition);
+            yPosition += 8;
+            doc.text('Kommuneskatt: ' + kommuneskatt, 25, yPosition);
+            yPosition += 8;
+            doc.text('Trygdeavgift: ' + trygdeavgift, 25, yPosition);
+            yPosition += 8;
+            
+            doc.setFont('helvetica', 'bold');
+            doc.text('Total skatt: ' + totalSkatt, 25, yPosition);
+            yPosition += 12;
+            
+            doc.setFont('helvetica', 'normal');
+            doc.text('NETTOINNTEKT:', 20, yPosition);
+            yPosition += 8;
+            doc.text('Årlig: ' + nettoAar, 25, yPosition);
+            yPosition += 8;
+            doc.text('Månedlig: ' + nettoMaaned, 25, yPosition);
+            
+            // Add footer
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.text('Beregnet med Kalkulatornorge.no', 20, doc.internal.pageSize.height - 10);
+            
+            // Download
+            doc.save('skattekalkulator-2026.pdf');
+        }
+
+        // Social Sharing Functions
+        function shareToTwitter() {
+            const text = 'Jeg har beregnet min skatt for 2026 med Kalkulatornorge.no - gratis og enkelt!';
+            const url = 'https://kalkulatornorge.no/skatt.html';
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(twitterUrl, '_blank');
+        }
+
+        function shareToFacebook() {
+            const url = 'https://kalkulatornorge.no/skatt.html';
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+            window.open(facebookUrl, '_blank');
+        }
+
+        function shareToLinkedIn() {
+            const text = 'Jeg har beregnet min skatt for 2026 med Kalkulatornorge.no';
+            const url = 'https://kalkulatornorge.no/skatt.html';
+            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+            window.open(linkedinUrl, '_blank');
+        }
+
+        function copyToClipboard() {
+            const text = 'Beregn din skatt for 2026 med Kalkulatornorge.no - gratis og enkelt! https://kalkulatornorge.no/skatt.html';
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Teksten er kopiert til utklippstavlen!');
+            }).catch(err => {
+                console.error('Kunne ikke kopiere:', err);
+            });
+        }
+
+        // Email Results Function
+        function emailResults() {
+            const income = document.getElementById('income').value;
+            const brutto = document.getElementById('resultBrutto').textContent;
+            const trinnskatt = document.getElementById('resultTrinnskatt').textContent;
+            const kommuneskatt = document.getElementById('resultKommuneskatt').textContent;
+            const trygdeavgift = document.getElementById('resultTrygdeavgift').textContent;
+            const totalSkatt = document.getElementById('resultTotalSkatt').textContent;
+            const nettoAar = document.getElementById('resultNettoAar').textContent;
+            const nettoMaaned = document.getElementById('resultNettoMaaned').textContent;
+
+            const subject = encodeURIComponent('Min skatteberegning 2026 fra Kalkulatornorge.no');
+            const body = encodeURIComponent(
+                'Skatteberegning 2026\n\n' +
+                'Bruttoinntekt: ' + brutto + '\n\n' +
+                'SKATT:\n' +
+                'Trinnskatt: ' + trinnskatt + '\n' +
+                'Kommuneskatt: ' + kommuneskatt + '\n' +
+                'Trygdeavgift: ' + trygdeavgift + '\n' +
+                'Total skatt: ' + totalSkatt + '\n\n' +
+                'NETTOINNTEKT:\n' +
+                'Årlig: ' + nettoAar + '\n' +
+                'Månedlig: ' + nettoMaaned + '\n\n' +
+                'Beregnet med Kalkulatornorge.no\nhttps://kalkulatornorge.no/skatt.html'
+            );
+
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
         }
     </script>
 <!-- Schema Markup -->
