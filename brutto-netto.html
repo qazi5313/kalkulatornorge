@@ -1559,22 +1559,72 @@
             if (e.key === 'Enter') calculate();
         });
 
-        // Generate Savings Content
+        // Generate Savings Content with BigMac Index and Regional Comparison
         function generateSavingsContent(nettoAar) {
             const savingPercentages = [10, 15, 20];
+            const bigMacPrice = 125; // NOK in Oslo 2026
+            const regionalMultipliers = {
+                oslo: 1.0,
+                bergen: 0.75,
+                stavanger: 0.74,
+                trondheim: 0.78,
+                smallTown: 0.70
+            };
+            
             let html = '<div style="margin-bottom: 1rem;">';
+            
+            // 1. Savings Section
+            html += '<div style="margin-bottom: 1.5rem;"><strong style="color: #333; font-size: 1rem;">Sparepotensial:</strong>';
             
             savingPercentages.forEach(percentage => {
                 const monthlySavings = Math.round((nettoAar / 12) * (percentage / 100));
                 const yearlySavings = Math.round(nettoAar * (percentage / 100));
                 
                 html += `
-                    <div style="margin-bottom: 1rem; padding: 1rem; background: white; border-left: 4px solid #C4533A; border-radius: 4px;">
-                        <strong>Hvis du sparer ${percentage}% av nettolønnen:</strong><br>
-                        ${monthlySavings.toLocaleString('nb-NO')} kr/måned = ${yearlySavings.toLocaleString('nb-NO')} kr/år
+                    <div style="margin: 0.8rem 0; padding: 0.8rem; background: white; border-left: 4px solid #C4533A; border-radius: 4px; font-size: 0.95rem;">
+                        <strong>Hvis du sparer ${percentage}%:</strong> ${monthlySavings.toLocaleString('nb-NO')} kr/måned = ${yearlySavings.toLocaleString('nb-NO')} kr/år
                     </div>
                 `;
             });
+            
+            html += '</div>';
+            
+            // 2. BigMac Purchasing Power
+            const bigMacsPerMonth = Math.round((nettoAar / 12) / bigMacPrice);
+            const bigMacsPerYear = Math.round(nettoAar / bigMacPrice);
+            
+            html += `
+                <div style="margin-bottom: 1.5rem; padding: 1rem; background: #fff9f6; border: 1px solid #E8D4C8; border-radius: 6px;">
+                    <strong style="color: #C4533A; font-size: 1rem;">Din kjøpekraft:</strong><br>
+                    <div style="margin-top: 0.8rem; font-size: 0.95rem; color: #333;">
+                        Din nettlønn tilsvarer <strong>${bigMacsPerMonth} BigMac-måltider/måned</strong> 🍔<br>
+                        eller <strong>${bigMacsPerYear} BigMac-måltider/år</strong>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">(basert på 125 kr per Big Mac Menu i Oslo)</div>
+                    </div>
+                </div>
+            `;
+            
+            // 3. Regional Salary Comparison
+            html += `
+                <div style="padding: 1rem; background: #f0f9ff; border: 1px solid #BCE4FF; border-radius: 6px;">
+                    <strong style="color: #0A66C2; font-size: 1rem;">Regionale lønnssammenligninger:</strong><br>
+                    <div style="margin-top: 0.8rem; font-size: 0.95rem; color: #333;">
+                        <div style="margin: 0.6rem 0;">
+                            <strong>I Bergen</strong> trenger du ${Math.round(nettoAar * (1 - regionalMultipliers.bergen))} kr mindre netto for samme levestandard
+                        </div>
+                        <div style="margin: 0.6rem 0;">
+                            <strong>I Stavanger</strong> trenger du ${Math.round(nettoAar * (1 - regionalMultipliers.stavanger))} kr mindre netto for samme levestandard
+                        </div>
+                        <div style="margin: 0.6rem 0;">
+                            <strong>I Trondheim</strong> trenger du ${Math.round(nettoAar * (1 - regionalMultipliers.trondheim))} kr mindre netto for samme levestandard
+                        </div>
+                        <div style="margin: 0.6rem 0; border-top: 1px solid #ccc; padding-top: 0.6rem;">
+                            <strong>I mindre bygder/småsteder</strong> kan du leve for ${Math.round(nettoAar * (1 - regionalMultipliers.smallTown))} kr mindre netto årlig
+                        </div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">*Basert på 20-30% lavere kostnad (bolig, mat, transport)</div>
+                    </div>
+                </div>
+            `;
             
             html += '</div>';
             document.getElementById('savings-content').innerHTML = html;
