@@ -1716,7 +1716,6 @@
 
         // Email Results Function
         function emailResults() {
-            const income = document.getElementById('income').value;
             const brutto = document.getElementById('resultBrutto').textContent;
             const trinnskatt = document.getElementById('resultTrinnskatt').textContent;
             const kommuneskatt = document.getElementById('resultKommuneskatt').textContent;
@@ -1725,22 +1724,28 @@
             const nettoAar = document.getElementById('resultNettoAar').textContent;
             const nettoMaaned = document.getElementById('resultNettoMaaned').textContent;
 
-            const subject = encodeURIComponent('Min skatteberegning 2026 fra Kalkulatornorge.no');
-            const body = encodeURIComponent(
-                'Skatteberegning 2026\n\n' +
-                'Bruttoinntekt: ' + brutto + '\n\n' +
-                'SKATT:\n' +
-                'Trinnskatt: ' + trinnskatt + '\n' +
-                'Kommuneskatt: ' + kommuneskatt + '\n' +
-                'Trygdeavgift: ' + trygdeavgift + '\n' +
-                'Total skatt: ' + totalSkatt + '\n\n' +
-                'NETTOINNTEKT:\n' +
-                'Årlig: ' + nettoAar + '\n' +
-                'Månedlig: ' + nettoMaaned + '\n\n' +
-                'Beregnet med Kalkulatornorge.no\nhttps://kalkulatornorge.no/skatt.html'
-            );
+            const subject = 'Min skatteberegning 2026 fra Kalkulatornorge.no';
+            const bodyLines = [
+                'Skatteberegning 2026',
+                '',
+                'Bruttoinntekt: ' + brutto,
+                '',
+                'SKATT:',
+                'Trinnskatt: ' + trinnskatt,
+                'Kommuneskatt: ' + kommuneskatt,
+                'Trygdeavgift: ' + trygdeavgift,
+                'Total skatt: ' + totalSkatt,
+                '',
+                'NETTOINNTEKT:',
+                'Årlig: ' + nettoAar,
+                'Månedlig: ' + nettoMaaned,
+                '',
+                'Beregnet med Kalkulatornorge.no',
+                'https://kalkulatornorge.no/skatt.html'
+            ];
+            const body = bodyLines.join('%0A');
 
-            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
         }
     </script>
 <!-- Schema Markup -->
