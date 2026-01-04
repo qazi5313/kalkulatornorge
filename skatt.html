@@ -1360,14 +1360,14 @@
             document.getElementById('tax-breakdown-section').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            // Add chart visualization
-            showTaxBreakdown(skattAlminnelig, trinnskatt, trygdeavgift, tax2025, difference, percentChange);
-        }
-
             // Calculate 2025 comparison
             const tax2025 = calculateTax2025(income, minstefradrag);
             const difference = totalSkatt - tax2025;
             const percentChange = ((difference / tax2025) * 100).toFixed(1);
+
+            // Add chart visualization
+            showTaxBreakdown(skattAlminnelig, trinnskatt, trygdeavgift, tax2025, difference, percentChange);
+        }
 
         // Dropdown toggle
         function toggleDropdown() {
@@ -1475,47 +1475,54 @@
                     <div>
                         <strong>Trygdeavgift:</strong> ${trygdeavgift.toLocaleString('nb-NO')} kr 
                         <span style="color: #666;">(${((trygdeavgift/totalTax)*100).toFixed(1)}%)</span>
-                    function calculateTax2025(income, minstefradrag) {
-    const alminneligInntekt = Math.max(0, income - minstefradrag);
-    const taxableAlminnelig = Math.max(0, alminneligInntekt - 71900); // 2025 personfradrag
-    const skattAlminnelig2025 = taxableAlminnelig * 0.22;
-    const trinnskatt2025 = calculateTrinnskatt2025(income);
-    const trygdeavgift2025 = income * 0.076;
-    return skattAlminnelig2025 + trinnskatt2025 + trygdeavgift2025;
-}
+                    </div>
+                </div>
+            `;
+            document.getElementById('breakdown-details').innerHTML = breakdownHTML;
 
-function calculateTrinnskatt2025(income) {
-    const brackets2025 = [
-        { threshold: 220850, rate: 0 },
-        { threshold: 310200, rate: 0.017 },
-        { threshold: 671100, rate: 0.040 },
-        { threshold: 937650, rate: 0.137 },
-        { threshold: 1409000, rate: 0.168 },
-        { threshold: Infinity, rate: 0.178 }
-    ];
-    let trinnskatt = 0;
-    for (let i = 1; i < brackets2025.length; i++) {
-        const lowerThreshold = brackets2025[i - 1].threshold;
-        const upperThreshold = brackets2025[i].threshold;
-        const rate = brackets2025[i].rate;
-        if (income > lowerThreshold) {
-            const taxableInThisBracket = Math.min(income, upperThreshold) - lowerThreshold;
-            trinnskatt += taxableInThisBracket * rate;
+            // Add year-over-year comparison
+            const comparisonHTML = `<div style="margin-top: 1.5rem; padding: 1rem; background: ${difference > 0 ? '#fef2f2' : '#f0fdf4'}; border-left: 4px solid ${difference > 0 ? '#C4533A' : '#22c55e'}; border-radius: 4px;">
+                <strong style="color: ${difference > 0 ? '#C4533A' : '#22c55e'}; font-family: Inter, sans-serif;">
+                    ${difference > 0 ? 'Høyere skatt i 2026' : 'Lavere skatt i 2026'}
+                </strong>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #666; font-family: Inter, sans-serif;">
+                    2025: ${tax2025.toLocaleString('nb-NO')} kr | 2026: ${(kommuneskatt + trinnskatt + trygdeavgift).toLocaleString('nb-NO')} kr
+                    <br><strong>${difference > 0 ? '+' : ''}${difference.toLocaleString('nb-NO')} kr (${percentChange}%)</strong>
+                </p>
+            </div>`;
+            document.getElementById('breakdown-details').innerHTML += comparisonHTML;
         }
-    }
-    return trinnskatt;
-}
-// Add year-over-year comparison
-const comparisonHTML = `<div style="margin-top: 1.5rem; padding: 1rem; background: ${difference > 0 ? '#fef2f2' : '#f0fdf4'}; border-left: 4px solid ${difference > 0 ? '#C4533A' : '#22c55e'}; border-radius: 4px;">
-    <strong style="color: ${difference > 0 ? '#C4533A' : '#22c55e'}; font-family: Inter, sans-serif;">
-        ${difference > 0 ? 'Høyere skatt i 2026' : 'Lavere skatt i 2026'}
-    </strong>
-    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #666; font-family: Inter, sans-serif;">
-        2025: ${tax2025.toLocaleString('nb-NO')} kr | 2026: ${(skattAlminnelig + trinnskatt + trygdeavgift).toLocaleString('nb-NO')} kr
-        <br><strong>${difference > 0 ? '+' : ''}${difference.toLocaleString('nb-NO')} kr (${percentChange}%)</strong>
-    </p>
-</div>`;
-document.getElementById('breakdown-details').innerHTML += comparisonHTML;
+
+        // Helper functions for 2025 tax calculation
+        function calculateTax2025(income, minstefradrag) {
+            const alminneligInntekt = Math.max(0, income - minstefradrag);
+            const taxableAlminnelig = Math.max(0, alminneligInntekt - 71900); // 2025 personfradrag
+            const skattAlminnelig2025 = taxableAlminnelig * 0.22;
+            const trinnskatt2025 = calculateTrinnskatt2025(income);
+            const trygdeavgift2025 = income * 0.076;
+            return skattAlminnelig2025 + trinnskatt2025 + trygdeavgift2025;
+        }
+
+        function calculateTrinnskatt2025(income) {
+            const brackets2025 = [
+                { threshold: 220850, rate: 0 },
+                { threshold: 310200, rate: 0.017 },
+                { threshold: 671100, rate: 0.040 },
+                { threshold: 937650, rate: 0.137 },
+                { threshold: 1409000, rate: 0.168 },
+                { threshold: Infinity, rate: 0.178 }
+            ];
+            let trinnskatt = 0;
+            for (let i = 1; i < brackets2025.length; i++) {
+                const lowerThreshold = brackets2025[i - 1].threshold;
+                const upperThreshold = brackets2025[i].threshold;
+                const rate = brackets2025[i].rate;
+                if (income > lowerThreshold) {
+                    const taxableInThisBracket = Math.min(income, upperThreshold) - lowerThreshold;
+                    trinnskatt += taxableInThisBracket * rate;
+                }
+            }
+            return trinnskatt;
         }
     </script>
 <!-- Schema Markup -->
