@@ -759,6 +759,136 @@
             align-items: center;
             padding: 16px 0;
         }
+        
+        /* New Features CSS */
+        .feature-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+        
+        .feature-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .savings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .savings-card {
+            background: rgba(196, 83, 58, 0.04);
+            border: 1px solid rgba(196, 83, 58, 0.2);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .savings-label {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        
+        .savings-amount {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        .savings-sub {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+        
+        .bigmac-section {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border: 1px solid #FFB300;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        
+        .bigmac-icon {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+        
+        .bigmac-text {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .bigmac-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: #F57C00;
+        }
+        
+        .bigmac-sub {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-top: 6px;
+        }
+        
+        .regional-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .regional-card {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        
+        .regional-city {
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        
+        .regional-amount {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        .regional-note {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+        
+        @media (max-width: 600px) {
+            .savings-grid {
+                grid-template-columns: 1fr;
+            }
+            .regional-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 <!-- Add this in the <head> section, before closing </head> -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -1024,9 +1154,9 @@
         <div style="margin-bottom: 1rem;">
             <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem; font-family: Inter, sans-serif;">Del resultatet ditt (uten personlige tall):</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
-                <!-- Twitter -->
-                <button onclick="shareToTwitter()" style="padding: 10px; background: #1DA1F2; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
-                    𝕏 Twitter
+                <!-- X (formerly Twitter) -->
+                <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    𝕏
                 </button>
                 
                 <!-- Facebook -->
@@ -1046,7 +1176,71 @@
             </div>
         </div>
     </div>
-</div>        
+</div>
+        
+        <!-- Savings Visualizer -->
+        <div class="feature-section" id="savings-section" style="display: none;">
+            <div class="feature-title">
+                💰 Optimaliseringsmuligheter
+            </div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Se hvor mye mer du kan spare ved å utnytte fradrag bedre:</p>
+            <div class="savings-grid">
+                <div class="savings-card">
+                    <div class="savings-label">+10% netto</div>
+                    <div class="savings-amount" id="savings10">-</div>
+                    <div class="savings-sub">Bedre fradragsutnyttelse</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">+15% netto</div>
+                    <div class="savings-amount" id="savings15">-</div>
+                    <div class="savings-sub">Optimale fradrag</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">+20% netto</div>
+                    <div class="savings-amount" id="savings20">-</div>
+                    <div class="savings-sub">Maksimal optimalisering</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BigMac Index -->
+        <div class="bigmac-section" id="bigmac-section" style="display: none;">
+            <div class="bigmac-icon">🍔</div>
+            <div class="bigmac-text">Din netto månedslønn tilsvarer</div>
+            <div class="bigmac-value" id="bigmacCount">-</div>
+            <div class="bigmac-sub" id="bigmacSub">Big Mac-måltider</div>
+        </div>
+        
+        <!-- Regional Comparison -->
+        <div class="feature-section" id="regional-section" style="display: none;">
+            <div class="feature-title">
+                🗺️ Regionalt perspektiv
+            </div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Din månedslønn tilsvarer denne kjøpekraft i ulike deler av Norge:</p>
+            <div class="regional-grid">
+                <div class="regional-card">
+                    <div class="regional-city">Oslo</div>
+                    <div class="regional-amount" id="regionalOslo">-</div>
+                    <div class="regional-note">Høyeste levekostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Bergen</div>
+                    <div class="regional-amount" id="regionalBergen">-</div>
+                    <div class="regional-note">25% lavere kostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Trondheim</div>
+                    <div class="regional-amount" id="regionalTrondheim">-</div>
+                    <div class="regional-note">22% lavere kostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Småbyer</div>
+                    <div class="regional-amount" id="regionalSmall">-</div>
+                    <div class="regional-note">30% lavere kostnader</div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Info Box -->
         <div class="info-box">
             <div class="info-box-header">
@@ -1419,6 +1613,41 @@
 
             // Add chart visualization
             showTaxBreakdown(skattAlminnelig, trinnskatt, trygdeavgift, tax2025, difference, percentChange, income, totalSkatt);
+            
+            // ===== NEW FEATURES CALCULATIONS =====
+            const BIGMAC_PRICE = 125; // NOK per Big Mac meal in Oslo
+            
+            // Savings scenarios (10%, 15%, 20% more net income through better deduction optimization)
+            const savings10 = nettoMaaned * 1.10;
+            const savings15 = nettoMaaned * 1.15;
+            const savings20 = nettoMaaned * 1.20;
+            
+            document.getElementById('savings10').textContent = Math.round(savings10).toLocaleString('no-NO') + ' kr';
+            document.getElementById('savings15').textContent = Math.round(savings15).toLocaleString('no-NO') + ' kr';
+            document.getElementById('savings20').textContent = Math.round(savings20).toLocaleString('no-NO') + ' kr';
+            
+            // BigMac Index (monthly net income in Big Mac meals)
+            const bigmacCount = Math.floor(nettoMaaned / BIGMAC_PRICE);
+            const bigmacYearly = Math.floor(nettoAar / BIGMAC_PRICE);
+            document.getElementById('bigmacCount').textContent = bigmacCount.toLocaleString('no-NO');
+            document.getElementById('bigmacSub').textContent = `${bigmacYearly.toLocaleString('no-NO')} måltider per år`;
+            
+            // Regional Comparison (monthly net salary equivalent purchasing power in different regions)
+            // Oslo = 100% baseline, other cities have lower cost of living
+            const osloValue = nettoMaaned;
+            const bergenValue = nettoMaaned / 0.75; // 25% cheaper
+            const trondheimValue = nettoMaaned / 0.78; // 22% cheaper
+            const smallValue = nettoMaaned / 0.70; // 30% cheaper
+            
+            document.getElementById('regionalOslo').textContent = Math.round(osloValue).toLocaleString('no-NO') + ' kr';
+            document.getElementById('regionalBergen').textContent = Math.round(bergenValue).toLocaleString('no-NO') + ' kr';
+            document.getElementById('regionalTrondheim').textContent = Math.round(trondheimValue).toLocaleString('no-NO') + ' kr';
+            document.getElementById('regionalSmall').textContent = Math.round(smallValue).toLocaleString('no-NO') + ' kr';
+            
+            // Show new feature sections
+            document.getElementById('savings-section').style.display = 'block';
+            document.getElementById('bigmac-section').style.display = 'block';
+            document.getElementById('regional-section').style.display = 'block';
         }
 
         // Dropdown toggle
@@ -1685,11 +1914,11 @@
         }
 
         // Social Sharing Functions
-        function shareToTwitter() {
+        function shareToX() {
             const text = 'Jeg har beregnet min skatt for 2026 med Kalkulatornorge.no - gratis og enkelt!';
             const url = 'https://kalkulatornorge.no/skatt.html';
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-            window.open(twitterUrl, '_blank');
+            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(xUrl, '_blank');
         }
 
         function shareToFacebook() {
