@@ -12,779 +12,900 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- CSS with fallbacks -->
-    <style>
-        /* BASIC STYLES AS FALLBACK - Your CSS files might be missing */
-        :root {
-            --color-primary: #C4533A;
-            --color-primary-hover: #B04030;
-            --color-background: #FAF9F7;
-            --color-surface: #FFFFFF;
-            --color-border: #E2E8F0;
-            --color-text: #1A202C;
-            --color-text-secondary: #718096;
-            --font-display: 'Source Serif 4', serif;
-            --font-body: 'Inter', sans-serif;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: var(--font-body);
-            background-color: var(--color-background);
-            color: var(--color-text);
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Calculator Styles */
-        .calc-page {
-            min-height: 100vh;
-        }
-        
-        .calc-box {
-            background: var(--color-surface);
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        
-        .calc-title {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--color-text);
-            margin-bottom: 24px;
-        }
-        
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--color-text);
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--color-border);
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.2s;
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-        
-        .calc-btn {
-            background-color: var(--color-primary);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            font-family: var(--font-display);
-            transition: background-color 0.2s;
-        }
-        
-        .calc-btn:hover {
-            background-color: var(--color-primary-hover);
-        }
-        
-        .results-box {
-            background: var(--color-surface);
-            border-radius: 16px;
-            padding: 32px;
-            margin-top: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        
-        .results-title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-text);
-            margin-bottom: 24px;
-        }
-        
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-        
-        .result-label {
-            color: var(--color-text-secondary);
-        }
-        
-        .result-value {
-            font-weight: 600;
-            color: var(--color-text);
-        }
-        
-        .no-deduction {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--color-text-secondary);
-        }
-    </style>
-    
-    <!-- Chart.js for Visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
-    <!-- jsPDF for PDF generation -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/components.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <meta property="og:title" content="Pendlerfradrag Kalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn skattefradrag for reise til jobb. Nye 2026-satser: 1,90 kr/km, kun 12 000 kr bunnfradrag.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/pendlerfradrag.html">
-    
-    <!-- New Features Styles -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "Får jeg reisefradrag selv om jeg sykler til jobb?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, reisefradraget gis uavhengig av transportmiddel. Du får fradrag basert på avstanden mellom hjem og jobb, uansett om du sykler, går, kjører bil eller tar kollektivt."}},
+        {"@type": "Question", "name": "Hvor mye kan jeg få i reisefradrag i 2026?", "acceptedAnswer": {"@type": "Answer", "text": "I 2026 er satsen 1,90 kr per km med et bunnfradrag på 12 000 kr. Maksimalt fradrag er 120 000 kr. En person som bor 35 km fra jobb og jobber 230 dager kan få ca. 18 590 kr i fradrag."}},
+        {"@type": "Question", "name": "Får begge ektefeller fradrag hvis de kjører sammen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, hvis to personer kjører sammen til jobb, får begge fullt reisefradrag. Dette gjelder også for ektefeller og samboere."}}
+      ]
+    }
+
+        // Micro-tool: Load common route
+        function loadCommonRoute() {
+            const route = document.getElementById('commonRoute').value;
+            if (route) {
+                document.getElementById('distance').value = route;
+            }
+        }
+        
+        // PDF Download
+        function downloadPDF() {
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const workdays = parseInt(document.getElementById('workdays').value) || 230;
+            const extraCosts = parseFloat(document.getElementById('extraCosts').value) || 0;
+            const dailyKm = document.getElementById('resultDailyKm').textContent;
+            const yearlyKm = document.getElementById('resultYearlyKm').textContent;
+            const travelCost = document.getElementById('resultTravelCost').textContent;
+            const totalCost = document.getElementById('resultTotalCost').textContent;
+            const deduction = document.getElementById('resultDeduction').textContent;
+            const savings = document.getElementById('resultSavings').textContent;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('Pendlerfradrag 2026 - Resultat', 20, 20);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text('Generert: ' + new Date().toLocaleDateString('nb-NO'), 20, 30);
+            
+            doc.setFontSize(11);
+            let y = 45;
+            
+            doc.text('INNDATA:', 20, y); y += 8;
+            doc.text('Avstand (en vei): ' + distance + ' km', 25, y); y += 8;
+            doc.text('Arbeidsdager: ' + workdays, 25, y); y += 8;
+            if (extraCosts > 0) {
+                doc.text('Bom/ferge: ' + formatNumber(extraCosts) + ' kr', 25, y); y += 8;
+            }
+            y += 4;
+            
+            doc.text('BEREGNING:', 20, y); y += 8;
+            doc.text('Daglig kjoreavstand: ' + dailyKm, 25, y); y += 8;
+            doc.text('Arlig kjoreavstand: ' + yearlyKm, 25, y); y += 8;
+            doc.text('Reisekostnad (1,90 kr/km): ' + travelCost, 25, y); y += 8;
+            doc.text('Total reisekostnad: ' + totalCost, 25, y); y += 12;
+            
+            doc.setFont('helvetica', 'bold');
+            doc.text('Reisefradrag: ' + deduction, 25, y); y += 8;
+            doc.text('Skattebesparelse: ' + savings, 25, y);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.text('Beregnet med Kalkulatornorge.no', 20, doc.internal.pageSize.height - 10);
+            
+            doc.save('pendlerfradrag-2026.pdf');
+        }
+
+        // Social Sharing
+        function shareToX() {
+            const text = 'Jeg har beregnet mitt pendlerfradrag for 2026 med Kalkulatornorge.no - gratis og enkelt!';
+            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareToFacebook() {
+            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareToLinkedIn() {
+            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function copyToClipboard() {
+            const text = 'Beregn ditt pendlerfradrag for 2026 med Kalkulatornorge.no! https://kalkulatornorge.no/pendlerfradrag.html';
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Teksten er kopiert til utklippstavlen!');
+            }).catch(err => {
+                console.error('Kunne ikke kopiere:', err);
+            });
+        }
+
+        // Email Results
+        function emailResults() {
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const workdays = parseInt(document.getElementById('workdays').value) || 230;
+            const dailyKm = document.getElementById('resultDailyKm').textContent;
+            const yearlyKm = document.getElementById('resultYearlyKm').textContent;
+            const deduction = document.getElementById('resultDeduction').textContent;
+            const savings = document.getElementById('resultSavings').textContent;
+            
+            const emailContent = `PENDLERFRADRAG 2026 - RESULTAT
+
+Beregnet: ${new Date().toLocaleDateString('nb-NO')}
+
+INNDATA:
+- Avstand (en vei): ${distance} km
+- Arbeidsdager: ${workdays}
+
+RESULTAT:
+- Daglig kjoreavstand: ${dailyKm}
+- Arlig kjoreavstand: ${yearlyKm}
+- Reisefradrag: ${deduction}
+- Skattebesparelse (22%): ${savings}
+
+Beregnet med Kalkulatornorge.no
+https://kalkulatornorge.no/pendlerfradrag.html`;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
+                    <h3 style="margin: 0 0 16px 0; font-family: 'Source Serif 4', serif;">Send resultat til deg selv</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p>
+                    <textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">${emailContent}</textarea>
+                    <div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;">
+                        <button onclick="navigator.clipboard.writeText(\`${emailContent.replace(/`/g, '\`')}\`); alert('Kopiert!'); this.closest('[style*=fixed]').remove();" style="padding: 12px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button>
+                        <button onclick="this.closest('[style*=fixed]').remove();" style="padding: 12px 20px; background: #E2E8F0; color: #2D3748; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        }
+    </script>
     <style>
-        /* ==================== */
-        /* NEW FEATURES STYLES  */
-        /* ==================== */
-
-        /* Chart Container */
-        .chart-container {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 32px;
-            margin-bottom: 24px;
-        }
-        .chart-title {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-text);
-            margin: 0 0 16px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chart-wrapper {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-
-        /* Savings Visualizer */
-        .savings-visualizer {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 24px;
-            margin-bottom: 24px;
-        }
-        .savings-title {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-text);
-            margin: 0 0 16px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .savings-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-top: 16px;
-        }
-        @media (max-width: 600px) {
-            .savings-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .savings-card {
-            background: rgba(196, 83, 58, 0.04);
-            border: 1px solid rgba(196, 83, 58, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .savings-card:hover {
-            transform: translateY(-4px);
-        }
-        .savings-label {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 8px;
-        }
-        .savings-amount {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 4px;
-        }
-        .savings-sub {
-            font-size: 0.8rem;
-            color: var(--color-text-secondary);
-        }
-
-        /* BigMac Index */
-        .bigmac-section {
-            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
-            border: 1px solid #FFB300;
-            border-radius: 16px;
-            padding: 32px;
-            margin-top: 24px;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-        .bigmac-icon {
-            font-size: 3.5rem;
-            margin-bottom: 12px;
-            line-height: 1;
-        }
-        .bigmac-text {
-            font-size: 1rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 12px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .bigmac-value {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            font-weight: 700;
-            color: #F57C00;
-            margin-bottom: 8px;
-            line-height: 1;
-        }
-        .bigmac-sub {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
-        }
-
-        /* Regional Comparison */
-        .regional-comparison {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 24px;
-            margin-bottom: 24px;
-        }
-        .regional-title {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-text);
-            margin: 0 0 16px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .regional-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-top: 16px;
-        }
-        @media (max-width: 600px) {
-            .regional-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .regional-card {
-            background: var(--color-background);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 20px;
-            transition: transform 0.2s;
-        }
-        .regional-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--color-primary);
-        }
-        .regional-city {
-            font-weight: 700;
-            color: var(--color-text);
-            font-size: 1rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .regional-amount {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 4px;
-        }
-        .regional-note {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-            margin-top: 8px;
-            line-height: 1.4;
-        }
-
-        /* Action Buttons Section */
-        .action-buttons {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 24px;
-            margin-bottom: 24px;
-        }
-        .action-title {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-text);
-            margin: 0 0 20px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        @media (max-width: 500px) {
-            .action-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .action-btn {
-            padding: 14px 20px;
-            border: none;
-            border-radius: 10px;
-            font-family: inherit;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-        .action-btn.primary {
-            background: var(--color-primary);
-            color: white;
-        }
-        .action-btn.primary:hover {
-            background: var(--color-primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(196, 83, 58, 0.2);
-        }
-        .social-sharing {
-            margin-top: 20px;
-        }
-        .social-title {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 12px;
-        }
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-        @media (max-width: 400px) {
-            .social-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .social-btn {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-        .social-btn.x {
-            background: #000000;
-            color: white;
-        }
-        .social-btn.facebook {
-            background: #1877F2;
-            color: white;
-        }
-        .social-btn.linkedin {
-            background: #0A66C2;
-            color: white;
-        }
-        .social-btn.copy {
-            background: #666666;
-            color: white;
-        }
-        .social-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        /* Year Comparison */
-        .year-comparison {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 24px;
-            margin-bottom: 24px;
-        }
-        .year-title {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-text);
-            margin: 0 0 16px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .year-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            align-items: center;
-        }
-        @media (max-width: 600px) {
-            .year-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        .year-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .year-stat {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: var(--color-background);
-            border-radius: 10px;
-            border: 1px solid var(--color-border);
-        }
-        .year-label {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
-        }
-        .year-value {
-            font-weight: 600;
-            color: var(--color-text);
-        }
-        .year-diff {
-            font-size: 0.9rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: #E8F5E9;
-            color: #2E7D32;
-        }
-        .year-diff.negative {
-            background: #FFEBEE;
-            color: #C62828;
-        }
-        .year-chart {
-            height: 200px;
-            position: relative;
-        }
+        .calc-page { background: var(--color-background); min-height: 100vh; }
+        .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
+        .back-link:hover { color: var(--color-primary); }
+        .calc-header { text-align: center; margin-bottom: 32px; }
+        .calc-icon { width: 64px; height: 64px; background: var(--color-primary-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+        .calc-icon svg { width: 32px; height: 32px; }
+        .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
+        .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
+        .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
+        .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
+        .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
+        .calc-btn:hover { background: var(--color-primary-hover); }
+        .calc-btn:active { transform: scale(0.98); }
+        .results-section { margin-top: 24px; display: none; }
+        .results-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--color-border); border-bottom: none; }
+        .results-table thead { background: var(--color-primary); color: white; }
+        .results-table th { padding: 14px 20px; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .results-table th:last-child { text-align: right; }
+        .results-table td { padding: 14px 20px; font-size: 0.9rem; border-bottom: 1px solid var(--color-border); }
+        .results-table td:first-child { color: var(--color-text-secondary); }
+        .results-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text); }
+        .results-table tbody tr:hover { background: var(--color-background); }
+        .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
+        .results-table tr.highlight td:last-child { color: var(--color-primary); }
+        .results-total { background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
+        .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
+        .total-sub { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+        .total-right { text-align: right; }
+        .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
+        .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
+        @media (max-width: 480px) { .results-total { flex-direction: column; text-align: center; gap: 16px; } .total-right { text-align: center; } .total-value { font-size: 1.75rem; } }
+        .no-deduction-msg { display: none; background: #FFF3E0; border: 1px solid #FF9800; border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; }
+        .no-deduction-msg svg { width: 48px; height: 48px; color: #FF9800; margin-bottom: 12px; }
+        .no-deduction-msg h3 { font-family: var(--font-display); font-size: 1.2rem; color: var(--color-text); margin: 0 0 8px 0; }
+        .no-deduction-msg p { color: var(--color-text-secondary); margin: 0; font-size: 0.9rem; }
+        .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .info-box-header svg { color: var(--color-primary); }
+        .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
+        .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
+        .info-box p:last-child { margin-bottom: 0; }
+        .info-box a { color: var(--color-primary); text-decoration: none; }
+        .info-box a:hover { text-decoration: underline; }
+        .seo-content { margin-top: 48px; }
+        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .seo-content h2:first-child { margin-top: 0; }
+        .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+        .seo-content a { color: var(--color-primary); text-decoration: none; }
+        .seo-content a:hover { text-decoration: underline; }
+        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
+        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
+        .callout-content { flex: 1; }
+        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
+        .callout-text { margin: 0; font-size: 0.9rem; }
+        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
+        .callout.tip .callout-icon { color: #4CAF50; }
+        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
+        .callout.warning .callout-icon { color: #FF9800; }
+        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.info .callout-icon { color: var(--color-primary); }
+        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
+        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+        .info-table .change-positive { color: #4CAF50; font-weight: 600; }
+        .info-table .change-negative { color: #4CAF50; font-weight: 600; }
+        .info-table tr:hover td { background: var(--color-background); }
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
+        .collapsible-header { width: 100%; padding: 18px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: inherit; text-align: left; }
+        .collapsible-header:hover { background: var(--color-background); }
+        .collapsible-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 10px; }
+        .collapsible-icon { transition: transform 0.3s; color: var(--color-text-secondary); }
+        .collapsible.open .collapsible-icon { transform: rotate(180deg); }
+        .collapsible-content { display: none; padding: 0 24px 24px 24px; }
+        .collapsible.open .collapsible-content { display: block; }
+        .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
+        .collapsible-content ul, .collapsible-content ol { margin: 12px 0; padding-left: 20px; }
+        .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
+        .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
+        .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+        .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .related-card-icon svg { width: 20px; height: 20px; }
+        .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
+        .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
+        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
+        .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
+        .dropdown-menu { position: relative; }
+        .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .dropdown-btn:hover { border-color: var(--color-primary); }
+        .dropdown-content { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.12); min-width: 260px; z-index: 1000; padding: 8px; max-height: 70vh; overflow-y: auto; }
+        .dropdown-menu.open .dropdown-content { display: block; }
+        .dropdown-category { font-size: 0.75rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 12px 6px 12px; }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--color-text); text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: background 0.15s; }
+        .dropdown-item:hover { background: var(--color-background); }
+        .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
+        .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .dropdown-item-icon svg { width: 16px; height: 16px; }
+        
+        /* Micro-tools CSS */
+        .helper-link { color: var(--color-primary); font-size: 0.8rem; text-decoration: none; display: inline-block; margin-top: 4px; }
+        .helper-link:hover { text-decoration: underline; }
+        .tooltip-icon { display: inline-block; width: 16px; height: 16px; background: var(--color-primary); color: white; border-radius: 50%; text-align: center; line-height: 16px; font-size: 11px; font-weight: 700; margin-left: 6px; cursor: help; position: relative; }
+        .tooltip-icon:hover::after { content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 8px 12px; border-radius: 6px; font-size: 0.75rem; z-index: 100; font-weight: 400; width: 280px; white-space: normal; }
+        
+        /* Features CSS */
+        .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; }
+        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+        .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
+        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
+        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 20px; margin-top: 16px; text-align: center; }
+        .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
+        .bigmac-text { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #F57C00; }
+        .bigmac-sub { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 6px; }
+        .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+        .regional-card { background: var(--color-background); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px; }
+        .regional-city { font-weight: 600; color: var(--color-text); font-size: 0.9rem; margin-bottom: 4px; }
+        .regional-amount { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--color-primary); }
+        .regional-note { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } .regional-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body class="calc-page">
-    <div class="container">
-        <!-- Calculator Form -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">Kalkulatornorge.no</span>
+                </a>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button class="dropdown-btn" onclick="toggleDropdown()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        Andre Kalkulatorer
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-category">Jobb & Lønn</div>
+                        <a href="skatt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></span>Skattekalkulator</a>
+                        <a href="brutto-netto.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Brutto/Netto Lønn</a>
+                        <a href="feriepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg></span>Feriepenger</a>
+                        <a href="overtid.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M8.72852 2.25098C12.9078 2.25098 16.2957 5.63911 16.2959 9.81836C16.2959 11.4898 15.7526 13.0338 14.835 14.2861L16.832 16.2402L15.2783 17.7588L13.3193 15.832C12.0458 16.806 10.4555 17.3867 8.72852 17.3867C6.99424 17.3867 5.3973 16.8017 4.12109 15.8203L2.16992 17.7402L0.617188 16.2217L2.60938 14.2695C1.6992 13.0202 1.16113 11.4823 1.16113 9.81836C1.16133 5.63915 4.54928 2.25104 8.72852 2.25098ZM7.89746 10.0791L10.6318 12.7197L11.752 11.6055L9.6543 9.49805V5.44141H7.89746V10.0791ZM14.2393 0C16.0265 0 17.4755 1.44908 17.4756 3.23633C17.4756 3.98175 17.2204 4.66576 16.7969 5.21289C15.7242 3.28619 13.9834 1.78306 11.8857 1.01953C12.4758 0.393233 13.3109 0.000102796 14.2393 0ZM3.23633 0C4.16225 0 4.9951 0.3913 5.58496 1.01465C3.48612 1.7749 1.74256 3.27476 0.666992 5.19922C0.250188 4.65446 0 3.97523 0 3.23633C0 1.44908 1.44906 0 3.23633 0Z" fill="#C4533A"/></svg></span>Overtid</a>
+                        <a href="arbeidsgiveravgift.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/></svg></span>Arbeidsgiveravgift</a>
+                        <div class="dropdown-category">Husholdning</div>
+                        <a href="stromkostnad.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/></svg></span>Strømkostnad</a>
+                        <a href="bilkostnad.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></span>Bilkostnad</a>
+                        <div class="dropdown-category">Familie & Helse</div>
+                        <a href="barnebidrag.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M1.5 15C2.32843 15 3 15.6716 3 16.5C3 17.3284 2.32843 18 1.5 18C0.671573 18 0 17.3284 0 16.5C0 15.6716 0.671573 15 1.5 15ZM12.5 15C13.3284 15 14 15.6716 14 16.5C14 17.3284 13.3284 18 12.5 18C11.6716 18 11 17.3284 11 16.5C11 15.6716 11.6716 15 12.5 15ZM16 6H14V14H0V7H12.5V4.5H16V6ZM8.5 6H0.5C0.5 2.68629 3.18629 0 6.5 0H8.5V6Z" fill="#C4533A"/></svg></span>Barnebidrag</a>
+                        <a href="sykepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M14 4.2666H18V16H0V4.2666H4V0H14V4.2666ZM7.5 11V15H10.5V11H7.5ZM2 11.9951H4V9.99512H2V11.9951ZM14 11.9951H16V9.99512H14V11.9951ZM2 7.99512H4V5.99512H2V7.99512ZM14 7.99512H16V5.99512H14V7.99512ZM8.25 3.95117H6.25V5.45117H8.25V7.45117H9.75V5.45117H11.75V3.95117H9.75V1.95117H8.25V3.95117Z" fill="#C4533A"/></svg></span>Sykepenger</a>
+                        <div class="dropdown-category">Transport</div>
+                        <a href="pendlerfradrag.html" class="dropdown-item active"><span class="dropdown-item-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></span>Pendlerfradrag</a>
+                        <a href="tilhengervekt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg></span>Tilhengervekt</a>
+                        <div class="dropdown-category">Næring</div>
+                        <a href="timelonn-frilanser.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Timelønn Frilansere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="calc-container">
+        <a href="index.html" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
+        
+        <div class="calc-header">
+            <div class="calc-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></div>
+            <h1>Pendlerfradrag Kalkulator 2026</h1>
+            <p>Beregn skattefradrag for reise mellom hjem og jobb</p>
+        </div>
+        
         <div class="calc-box">
-            <h1 class="calc-title">Pendlerfradrag Kalkulator 2026</h1>
-            
-            <div class="input-group">
-                <label for="distance">Avstand til arbeidssted (én vei) i kilometer</label>
-                <input type="number" id="distance" placeholder="F.eks. 15" min="0" step="0.1" value="15">
+            <!-- Micro-tool: Common Routes -->
+            <div class="form-group">
+                <label class="form-label">Velg vanlig pendlerrute (valgfritt)</label>
+                <select class="form-select" id="commonRoute" onchange="loadCommonRoute()">
+                    <option value="">-- Velg rute for auto-utfylling --</option>
+                    <option value="465">Oslo ↔ Bergen (465 km)</option>
+                    <option value="495">Oslo ↔ Trondheim (495 km)</option>
+                    <option value="580">Oslo ↔ Stavanger (580 km)</option>
+                    <option value="320">Oslo ↔ Kristiansand (320 km)</option>
+                    <option value="45">Oslo ↔ Drammen (45 km)</option>
+                    <option value="90">Oslo ↔ Fredrikstad (90 km)</option>
+                    <option value="210">Bergen ↔ Stavanger (210 km)</option>
+                    <option value="660">Bergen ↔ Trondheim (660 km)</option>
+                    <option value="700">Trondheim ↔ Bodø (700 km)</option>
+                    <option value="230">Stavanger ↔ Kristiansand (230 km)</option>
+                    <option value="280">Drammen ↔ Kristiansand (280 km)</option>
+                    <option value="250">Tromsø ↔ Narvik (250 km)</option>
+                    <option value="650">Bodø ↔ Tromsø (650 km)</option>
+                </select>
+                <span class="form-hint">Vanlige pendlerruter i Norge</span>
             </div>
             
-            <div class="input-group">
-                <label for="workdays">Arbeidsdager per år (standard 230)</label>
-                <input type="number" id="workdays" placeholder="230" min="1" max="365" value="230">
+            <div class="form-group">
+                <label class="form-label" for="distance">Avstand til jobb (én vei)</label>
+                <input type="number" class="form-input" id="distance" placeholder="f.eks. 35" min="0" step="0.1">
+                <span class="form-hint">Korteste reiseavstand fra bolig til arbeidssted i kilometer</span>
+                <a href="https://www.google.com/maps/dir//" target="_blank" class="helper-link">📍 Sjekk avstand på Google Maps</a>
             </div>
             
-            <div class="input-group">
-                <label for="extraCosts">Ekstra utgifter (bompenger, ferge, parkering) i kroner</label>
-                <input type="number" id="extraCosts" placeholder="F.eks. 5000" min="0" value="0">
+            <div class="form-group">
+                <label class="form-label" for="workdays">Antall arbeidsdager per år<span class="tooltip-icon" data-tooltip="Standard: 230 dager (52 uker - 5 ferie - 10 helligdager). Trekk fra hjemmekontor og sykefravær.">i</span></label>
+                <input type="number" class="form-input" id="workdays" placeholder="230" value="230" min="1" max="365">
+                <span class="form-hint">Standard er 230 dager. Trekk fra hjemmekontor, ferie utover 5 uker, sykefravær.</span>
             </div>
             
-            <button class="calc-btn" onclick="calculate()">Beregn pendlerfradrag</button>
-            
-            <p style="margin-top: 16px; font-size: 0.9rem; color: var(--color-text-secondary);">
-                <strong>Nye 2026-satser:</strong> 1,90 kr/km, bunnfradrag 12 000 kr, maks 120 000 kr[citation:4]
-            </p>
-        </div>
-
-        <!-- Results Section -->
-        <div class="results-box" id="results" style="display: none;">
-            <h2 class="results-title">Dine beregnede resultater</h2>
-            
-            <div class="result-row">
-                <span class="result-label">Daglig kjørelengde (tur/retur)</span>
-                <span class="result-value" id="resultDailyKm">0 km</span>
+            <div class="form-group">
+                <label class="form-label" for="extraCosts">Ekstra bom/ferge-utgifter (valgfritt)</label>
+                <input type="number" class="form-input" id="extraCosts" placeholder="0" value="0" min="0">
+                <span class="form-hint">Årlige utgifter over 3 300 kr. Krever at du sparer minst 2 timer daglig vs. kollektiv.</span>
             </div>
             
-            <div class="result-row">
-                <span class="result-label">Årlig kjørelengde</span>
-                <span class="result-value" id="resultYearlyKm">0 km</span>
-            </div>
+            <button class="calc-btn" onclick="calculate()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                Beregn pendlerfradrag
+            </button>
             
-            <div class="result-row">
-                <span class="result-label">Reisekostnad (1,90 kr/km)</span>
-                <span class="result-value" id="resultTravelCost">0 kr</span>
-            </div>
-            
-            <div class="result-row" id="rowExtraCosts" style="display: none;">
-                <span class="result-label">Ekstra utgifter</span>
-                <span class="result-value" id="resultExtraCosts">0 kr</span>
-            </div>
-            
-            <div class="result-row">
-                <span class="result-label">Total kostnad før fradrag</span>
-                <span class="result-value" id="resultTotalCost">0 kr</span>
-            </div>
-            
-            <div class="result-row" style="border-bottom: none; padding-bottom: 0;">
-                <span class="result-label">Pendlerfradrag 2026</span>
-                <span class="result-value" id="resultDeduction">0 kr</span>
-            </div>
-            
-            <div style="background: rgba(196, 83, 58, 0.05); padding: 16px; border-radius: 8px; margin-top: 24px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: 600; color: var(--color-text);">Årlig skattebesparelse (22%)</span>
-                    <span style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--color-primary);" id="resultSavings">0 kr</span>
-                </div>
-                <p style="margin-top: 8px; font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 0;">
-                    Dette er beløpet du sparer i skatt hvert år med disse inndataene.
-                </p>
-            </div>
-        </div>
-
-        <!-- No Deduction Message -->
-        <div class="no-deduction" id="noDeduction" style="display: none;">
-            <p style="font-size: 1.1rem; margin-bottom: 12px;">😊 Ingen pendlerfradrag med disse inndataene</p>
-            <p>For å få pendlerfradrag må total reisekostnad overstige <strong>12 000 kr</strong> (bunnfradrag for 2026).</p>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- NEW FEATURES SECTION -->
-        <!-- ========================================== -->
-
-        <!-- 1. Chart Visualization -->
-        <div class="chart-container" id="chartContainer" style="display: none;">
-            <div class="chart-title">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 21H6.2C5.07989 21 4.51984 21 4.09202 20.782C3.71569 20.5903 3.40973 20.2843 3.21799 19.908C3 19.4802 3 18.9201 3 17.8V3"/>
-                    <path d="M21 16L15.5657 10.5657C15.3677 10.3677 15.2687 10.2687 15.1545 10.2316C15.0541 10.199 14.9459 10.199 14.8455 10.2316C14.7313 10.2687 14.6323 10.3677 14.4343 10.5657L12.5657 12.4343C12.3677 12.6323 12.2687 12.7313 12.1545 12.7684C12.0541 12.801 11.9459 12.801 11.8455 12.7684C11.7313 12.7313 11.6323 12.6323 11.4343 12.4343L7 8"/>
-                    <path d="M10 8H10.01"/>
-                    <path d="M14 12H14.01"/>
-                    <path d="M18 16H18.01"/>
-                </svg>
-                Din beregning visualisert
-            </div>
-            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Se fordelingen av dine totale reisekostnader og hvordan fradraget påvirker skatten din.</p>
-            <div class="chart-wrapper">
-                <canvas id="costBreakdownChart"></canvas>
-            </div>
-        </div>
-
-        <!-- 2. Year Comparison (2025 vs 2026) -->
-        <div class="year-comparison" id="yearComparison" style="display: none;">
-            <div class="year-title">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                    <path d="M8 14h.01"/>
-                    <path d="M12 14h.01"/>
-                    <path d="M16 14h.01"/>
-                    <path d="M8 18h.01"/>
-                    <path d="M12 18h.01"/>
-                    <path d="M16 18h.01"/>
-                </svg>
-                Sammenligning: 2025 vs 2026
-            </div>
-            <div class="year-content">
-                <div class="year-stats">
-                    <div class="year-stat">
-                        <span class="year-label">Fradrag 2025</span>
-                        <span class="year-value" id="comparison2025">0 kr</span>
+            <div class="results-section" id="results">
+                <table class="results-table">
+                    <thead><tr><th>Beskrivelse</th><th>Verdi</th></tr></thead>
+                    <tbody>
+                        <tr><td>Daglig reiseavstand (tur/retur)</td><td id="resultDailyKm">0 km</td></tr>
+                        <tr><td>Årlig reiseavstand</td><td id="resultYearlyKm">0 km</td></tr>
+                        <tr class="highlight"><td>Reisekostnad (1,90 kr/km)</td><td id="resultTravelCost">0 kr</td></tr>
+                        <tr id="rowExtraCosts" style="display: none;"><td>+ Bom/ferge-utgifter</td><td id="resultExtraCosts">0 kr</td></tr>
+                        <tr><td>Total reisekostnad</td><td id="resultTotalCost">0 kr</td></tr>
+                        <tr><td>− Bunnfradrag (egenandel)</td><td>12 000 kr</td></tr>
+                    </tbody>
+                </table>
+                <div class="results-total">
+                    <div class="total-left">
+                        <div class="total-label">Ditt pendlerfradrag</div>
+                        <div class="total-value" id="resultDeduction">0 kr</div>
+                        <div class="total-sub">Skattefradrag i skattemeldingen</div>
                     </div>
-                    <div class="year-stat">
-                        <span class="year-label">Fradrag 2026</span>
-                        <span class="year-value" id="comparison2026">0 kr</span>
-                    </div>
-                    <div class="year-stat">
-                        <span class="year-label">Økning/minskning</span>
-                        <span class="year-value">
-                            <span id="comparisonDiff">0 kr</span>
-                            <span class="year-diff" id="comparisonDiffPercent">0%</span>
-                        </span>
+                    <div class="total-right">
+                        <div class="monthly-label">Du sparer ca.</div>
+                        <div class="monthly-value" id="resultSavings">0 kr/år</div>
                     </div>
                 </div>
-                <div class="year-chart">
-                    <canvas id="yearChart"></canvas>
-                </div>
-            </div>
-            <p style="color: var(--color-text-secondary); font-size: 0.85rem; margin-top: 16px; margin-bottom: 0;">
-                <strong>Merk:</strong> 2026-satsene (1,90 kr/km, bunnfradrag 12 000 kr) gir ofte høyere fradrag enn 2025 (1,83 kr/km, bunnfradrag 15 250 kr)[citation:4].
-            </p>
-        </div>
-
-        <!-- 3. Action Buttons (PDF, Email, Social) -->
-        <div class="action-buttons" id="actionButtons" style="display: none;">
-            <div class="action-title">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Del og lagre resultatene dine
             </div>
             
-            <div class="action-grid">
-                <button class="action-btn primary" onclick="downloadPDF()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Last ned PDF
+            <div class="no-deduction-msg" id="noDeduction">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <h3>Ingen fradrag</h3>
+                <p>Reisekostnadene dine er under bunnfradraget på 12 000 kr. Du trenger lengre reiseavstand eller flere arbeidsdager for å få fradrag.</p>
+            </div>
+        </div>
+        
+        
+        <!-- PDF Download, Email & Social Sharing -->
+        <div id="action-buttons-section" class="feature-section" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📥 Last ned PDF</span>
                 </button>
-                
-                <button class="action-btn primary" onclick="showEmailModal()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                    </svg>
-                    Send på e-post
+                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>✉️ Send til deg selv</span>
                 </button>
             </div>
-
-            <div class="social-sharing">
-                <div class="social-title">Del dette verktøyet:</div>
-                <div class="social-grid">
-                    <button class="social-btn x" onclick="shareToX()">
-                        𝕏 X
-                    </button>
-                    <button class="social-btn facebook" onclick="shareToFacebook()">
-                        f Facebook
-                    </button>
-                    <button class="social-btn linkedin" onclick="shareToLinkedIn()">
-                        in LinkedIn
-                    </button>
-                    <button class="social-btn copy" onclick="copyPageLink()">
-                        📋 Kopier lenke
-                    </button>
+            <div>
+                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet (uten personlige tall):</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
+                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
+                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
+                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
+                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
                 </div>
             </div>
         </div>
-
-        <!-- 4. Savings Visualizer -->
-        <div class="savings-visualizer" id="savingsVisualizer" style="display: none;">
-            <div class="savings-title">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                </svg>
-                Optimaliseringspotensial
-            </div>
-            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 0;">Dine potensielle besparelser ved å utnytte andre skattefradrag eller optimalisere arbeidsreiser:</p>
+        
+        <!-- Savings Visualizer -->
+        <div id="savings-section" class="feature-section" style="display: none;">
+            <div class="feature-title">💰 Optimaliseringsmuligheter</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Se hvor mye mer du kan spare ved å optimalisere pendlerordningen:</p>
             <div class="savings-grid">
                 <div class="savings-card">
-                    <div class="savings-label">Moderat optimalisering</div>
-                    <div class="savings-amount" id="savings10">0 kr</div>
-                    <div class="savings-sub">+10% i totalt skattefradrag</div>
+                    <div class="savings-label">+10% besparelse</div>
+                    <div class="savings-amount" id="savings10">-</div>
+                    <div class="savings-sub">Optimalisert oppsett</div>
                 </div>
                 <div class="savings-card">
-                    <div class="savings-label">God optimalisering</div>
-                    <div class="savings-amount" id="savings15">0 kr</div>
-                    <div class="savings-sub">+15% i totalt skattefradrag</div>
+                    <div class="savings-label">+15% besparelse</div>
+                    <div class="savings-amount" id="savings15">-</div>
+                    <div class="savings-sub">Bedre planlegging</div>
                 </div>
                 <div class="savings-card">
-                    <div class="savings-label">Maksimal optimalisering</div>
-                    <div class="savings-amount" id="savings20">0 kr</div>
-                    <div class="savings-sub">+20% i totalt skattefradrag</div>
+                    <div class="savings-label">+20% besparelse</div>
+                    <div class="savings-amount" id="savings20">-</div>
+                    <div class="savings-sub">Maksimal gevinst</div>
                 </div>
             </div>
         </div>
-
-        <!-- 5. BigMac Index -->
-        <div class="bigmac-section" id="bigmacSection" style="display: none;">
+        
+        <!-- BigMac Index -->
+        <div id="bigmac-section" class="bigmac-section" style="display: none;">
             <div class="bigmac-icon">🍔</div>
-            <div class="bigmac-text">Dine årlige skattebesparelser fra pendlerfradrag tilsvarer</div>
-            <div class="bigmac-value" id="bigmacCount">0</div>
-            <div class="bigmac-sub" id="bigmacText">Big Mac-måltider til en pris av 125 kr stk[citation:5][citation:8]</div>
+            <div class="bigmac-text">Din skattebesparelse tilsvarer</div>
+            <div class="bigmac-value" id="bigmacCount">-</div>
+            <div class="bigmac-sub" id="bigmacSub">Big Mac-måltider</div>
         </div>
-
-        <!-- 6. Regional Comparison -->
-        <div class="regional-comparison" id="regionalComparison" style="display: none;">
-            <div class="regional-title">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                </svg>
-                Kjøpekraft i ulike regioner
-            </div>
-            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 0;">Dine skattebesparelser gir denne kjøpekraften basert på regionale levekostnader[citation:3][citation:6][citation:9]:</p>
+        
+        <!-- Regional Comparison -->
+        <div id="regional-section" class="feature-section" style="display: none;">
+            <div class="feature-title">🗺️ Regionalt perspektiv</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Slik påvirker besparelsen levestandard i ulike deler av Norge:</p>
             <div class="regional-grid">
                 <div class="regional-card">
-                    <div class="regional-city">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        Oslo (100%)
-                    </div>
-                    <div class="regional-amount" id="regionalOslo">0 kr</div>
-                    <div class="regional-note">Høyeste levekostnader i Norge. Besparelsen dekker f.eks. 1 måned med kollektivtransport (730 kr)[citation:9].</div>
+                    <div class="regional-city">Oslo</div>
+                    <div class="regional-amount" id="regionalOslo">-</div>
+                    <div class="regional-note">Høyeste levekostnader</div>
                 </div>
                 <div class="regional-card">
-                    <div class="regional-city">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
-                        </svg>
-                        Bergen (~92%)
+                    <div class="regional-city">Bergen</div>
+                    <div class="regional-amount" id="regionalBergen">-</div>
+                    <div class="regional-note">25% lavere kostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Trondheim</div>
+                    <div class="regional-amount" id="regionalTrondheim">-</div>
+                    <div class="regional-note">22% lavere kostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Småbyer</div>
+                    <div class="regional-amount" id="regionalSmall">-</div>
+                    <div class="regional-note">30% lavere kostnader</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <div class="info-box-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><h3>Om beregningen</h3></div>
+            <p>Pendlerfradrag (reisefradrag) beregnes med <strong>1,90 kr per kilometer</strong> for 2026. Bunnfradraget er <strong>12 000 kr</strong>, og maksimalt fradrag er <strong>120 000 kr</strong>.</p>
+            <p><strong>Kilde:</strong> <a href="https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/arbeid-trygd-og-pensjon/reise/reise-mellom-hjem-og-arbeid/" target="_blank" rel="noopener">Skatteetaten – Reisefradrag</a></p>
+        </div>
+        
+        <div class="seo-content">
+            <h2>🚗 Slik fungerer pendlerfradrag i Norge</h2>
+            <p>Pendlerfradrag (også kalt reisefradrag) gir deg skattefradrag for reisen mellom hjem og arbeidssted. For 2026 er reglene forbedret betydelig — lavere bunnfradrag og høyere kilometersats betyr at flere nordmenn kan få fradrag.</p>
+            
+            <div class="callout info">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Hvem kan få pendlerfradrag?</div>
+                    <p class="callout-text">Du kan få reisefradrag uansett hvordan du kommer deg til jobb — bil, kollektiv, sykkel eller til fots. Det eneste kravet er at reisekostnadene overstiger bunnfradraget på 12 000 kr.</p>
+                </div>
+            </div>
+            
+            <h2>📊 2026-satser sammenlignet med 2025</h2>
+            <table class="info-table">
+                <thead><tr><th>Parameter</th><th>2025</th><th>2026</th><th>Endring</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Kilometersats</strong></td><td>1,83 kr</td><td><span class="rate-badge">1,90 kr</span></td><td class="change-positive">+0,07 kr</td></tr>
+                    <tr><td><strong>Bunnfradrag</strong></td><td>15 250 kr</td><td><span class="rate-badge">12 000 kr</span></td><td class="change-negative">−3 250 kr</td></tr>
+                    <tr><td><strong>Maksimalt fradrag</strong></td><td>100 880 kr</td><td><span class="rate-badge">120 000 kr</span></td><td class="change-positive">+19 120 kr</td></tr>
+                    <tr><td><strong>Minsteavstand</strong></td><td>2,5 km</td><td>2,5 km</td><td>Uendret</td></tr>
+                    <tr><td><strong>Standard arbeidsdager</strong></td><td>230</td><td>230</td><td>Uendret</td></tr>
+                </tbody>
+            </table>
+            
+            <div class="callout tip">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Nytt i 2026</div>
+                    <p class="callout-text">Med lavere bunnfradrag trenger du bare ca. <strong>27 km daglig reiseavstand</strong> (tur/retur) for å få fradrag. I 2025 var grensen 36 km.</p>
+                </div>
+            </div>
+            
+            <h2>📝 Beregningseksempel</h2>
+            <div class="callout info">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Eksempel: 35 km til jobb, 230 arbeidsdager</div>
+                    <p class="callout-text">
+                        Årlig reiseavstand: 35 km × 2 × 230 = <strong>16 100 km</strong><br>
+                        Reisekostnad: 16 100 × 1,90 kr = <strong>30 590 kr</strong><br>
+                        Minus bunnfradrag: 30 590 − 12 000 = <strong>18 590 kr i fradrag</strong><br>
+                        Skattebesparelse (22%): ca. <strong>4 090 kr</strong>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="callout warning">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Husk hjemmekontor!</div>
+                    <p class="callout-text">Dager du jobber hjemmefra skal trekkes fra. Er du borte mer enn 15 dager i året (ferie, sykdom, hjemmekontor), må du beregne etter faktiske arbeidsdager, ikke 230-standarden.</p>
+                </div>
+            </div>
+            
+            <h2>🧩 Slik beregnes fradraget</h2>
+            <div class="collapsible open" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Steg-for-steg beregning</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content">
+                    <ol>
+                        <li><strong>Tell reiseavstand:</strong> Korteste vei fra bolig til arbeidssted</li>
+                        <li><strong>Beregn årlig distanse:</strong> Avstand × 2 × antall arbeidsdager</li>
+                        <li><strong>Multipliser med sats:</strong> Total km × 1,90 kr</li>
+                        <li><strong>Trekk fra bunnfradrag:</strong> Resultat minus 12 000 kr</li>
+                        <li><strong>Skatteeffekt:</strong> Fradraget × 22% = din besparelse</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Bom, ferge og parkering</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content">
+                    <ul>
+                        <li>Bom og ferge kan legges til hvis du sparer minst 2 timer daglig vs. kollektiv</li>
+                        <li>Må ha over 3 300 kr i årlige bom-/fergekostnader</li>
+                        <li>Bruk billigste betalingsmåte (AutoPASS, fergeabonnement)</li>
+                        <li><strong>Parkeringsutgifter</strong> ved arbeidssted er IKKE fradragsberettiget</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>❓ Ofte stilte spørsmål</h2>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Får jeg fradrag selv om jeg sykler til jobb?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Ja! Reisefradraget gis uavhengig av transportmiddel. Selv om du sykler eller går, får du fradrag basert på avstanden. Du trenger ikke dokumentere faktiske utgifter.</p></div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Hva hvis jeg har to jobber?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Du får fradrag for begge arbeidsreisene. Beregn reisekostnad for hver jobb separat, og legg dem sammen før du trekker fra bunnfradraget på 12 000 kr.</p></div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header"><span class="collapsible-title">Får begge fradrag hvis vi kjører sammen?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Ja! Hvis to personer kjører sammen til jobb, får begge fullt reisefradrag. Dette gjelder også ektefeller og samboere.</p></div>
+            </div>
+            
+            <h2>🔗 Relaterte kalkulatorer</h2>
+            <div class="related-grid">
+                <a href="skatt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Skattekalkulator</h4><p>Detaljert skatteberegning</p></div></a>
+                <a href="brutto-netto.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Brutto/Netto Kalkulator</h4><p>Se hva du får utbetalt</p></div></a>
+                <a href="bilkostnad.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Bilkostnadskalkulator</h4><p>Totale kostnader ved bil</p></div></a>
+                <a href="arbeidsgiveravgift.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Arbeidsgiveravgift</h4><p>Beregn AGA per sone</p></div></a>
+            </div>
+            
+            <div class="disclaimer"><p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler. Faktisk fradrag kan variere basert på din situasjon. Kontakt Skatteetaten for nøyaktig informasjon om dine fradragsmuligheter.</p></div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Alle kalkulatorer</a>
+                <a href="personvern.html" class="footer-link">Personvern</a>
+                <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
+            </div>
+            <p class="footer-copyright">© 2026 Kalkulatornorge.no - Laget med <span class="heart">❤️</span> for norske brukere</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 2026 Rates
+        const BIGMAC_PRICE = 125; // NOK per Big Mac meal in Oslo
+        
+        const RATE_PER_KM = 1.90;
+        const THRESHOLD = 12000;
+        const MAX_DEDUCTION = 120000;
+        const TAX_RATE = 0.22;
+
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('nb-NO');
+        }
+
+        function calculate() {
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const workdays = parseInt(document.getElementById('workdays').value) || 230;
+            const extraCosts = parseFloat(document.getElementById('extraCosts').value) || 0;
+            
+            if (distance <= 0) {
+                alert('Vennligst oppgi avstand til jobb');
+                return;
+            }
+            
+            // Calculations
+            const dailyKm = distance * 2;
+            const yearlyKm = dailyKm * workdays;
+            const travelCost = yearlyKm * RATE_PER_KM;
+            const totalCost = travelCost + extraCosts;
+            
+            // Deduction with threshold and max
+            let deduction = Math.max(0, totalCost - THRESHOLD);
+            deduction = Math.min(deduction, MAX_DEDUCTION);
+            
+            // Tax savings
+            const taxSavings = deduction * TAX_RATE;
+            
+            // Update results
+            document.getElementById('resultDailyKm').textContent = formatNumber(dailyKm) + ' km';
+            document.getElementById('resultYearlyKm').textContent = formatNumber(yearlyKm) + ' km';
+            document.getElementById('resultTravelCost').textContent = formatNumber(travelCost) + ' kr';
+            document.getElementById('resultTotalCost').textContent = formatNumber(totalCost) + ' kr';
+            document.getElementById('resultDeduction').textContent = formatNumber(deduction) + ' kr';
+            document.getElementById('resultSavings').textContent = formatNumber(taxSavings) + ' kr/år';
+            
+            // Show/hide extra costs row
+            const extraCostsRow = document.getElementById('rowExtraCosts');
+            if (extraCosts > 0) {
+                extraCostsRow.style.display = '';
+                document.getElementById('resultExtraCosts').textContent = formatNumber(extraCosts) + ' kr';
+            } else {
+                extraCostsRow.style.display = 'none';
+            }
+            
+            // Show results or no-deduction message
+            const resultsSection = document.getElementById('results');
+            const noDeductionMsg = document.getElementById('noDeduction');
+            
+            if (deduction > 0) {
+                resultsSection.style.display = 'block';
+                noDeductionMsg.style.display = 'none';
+            } else {
+                resultsSection.style.display = 'none';
+                noDeductionMsg.style.display = 'block';
+            }
+            
+            
+            // Show/hide new feature sections and calculate values
+            if (deduction > 0) {
+                document.getElementById('action-buttons-section').style.display = 'block';
+                document.getElementById('savings-section').style.display = 'block';
+                document.getElementById('bigmac-section').style.display = 'block';
+                document.getElementById('regional-section').style.display = 'block';
+                
+                // Savings scenarios
+                const savings10 = taxSavings * 1.10;
+                const savings15 = taxSavings * 1.15;
+                const savings20 = taxSavings * 1.20;
+                document.getElementById('savings10').textContent = formatNumber(savings10) + ' kr';
+                document.getElementById('savings15').textContent = formatNumber(savings15) + ' kr';
+                document.getElementById('savings20').textContent = formatNumber(savings20) + ' kr';
+                
+                // BigMac Index
+                const bigmacCount = Math.floor(taxSavings / BIGMAC_PRICE);
+                const bigmacMonthly = Math.floor(bigmacCount / 12);
+                document.getElementById('bigmacCount').textContent = formatNumber(bigmacCount);
+                document.getElementById('bigmacSub').textContent = `Ca. ${bigmacMonthly} måltider per måned`;
+                
+                // Regional Comparison
+                const osloValue = taxSavings;
+                const bergenValue = taxSavings / 0.75;
+                const trondheimValue = taxSavings / 0.78;
+                const smallValue = taxSavings / 0.70;
+                document.getElementById('regionalOslo').textContent = formatNumber(osloValue) + ' kr';
+                document.getElementById('regionalBergen').textContent = formatNumber(bergenValue) + ' kr';
+                document.getElementById('regionalTrondheim').textContent = formatNumber(trondheimValue) + ' kr';
+                document.getElementById('regionalSmall').textContent = formatNumber(smallValue) + ' kr';
+            }
+            
+            // Scroll to results
+            setTimeout(() => {
+                const target = deduction > 0 ? resultsSection : noDeductionMsg;
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('open');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+        
+        function toggleCollapsible(element) {
+            element.classList.toggle('open');
+        }
+        
+        // Enter key to calculate
+        document.getElementById('distance').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+        document.getElementById('workdays').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+        document.getElementById('extraCosts').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+
+        // Micro-tool: Load common route
+        function loadCommonRoute() {
+            const route = document.getElementById('commonRoute').value;
+            if (route) {
+                document.getElementById('distance').value = route;
+            }
+        }
+        
+        // PDF Download
+        function downloadPDF() {
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const workdays = parseInt(document.getElementById('workdays').value) || 230;
+            const extraCosts = parseFloat(document.getElementById('extraCosts').value) || 0;
+            const dailyKm = document.getElementById('resultDailyKm').textContent;
+            const yearlyKm = document.getElementById('resultYearlyKm').textContent;
+            const travelCost = document.getElementById('resultTravelCost').textContent;
+            const totalCost = document.getElementById('resultTotalCost').textContent;
+            const deduction = document.getElementById('resultDeduction').textContent;
+            const savings = document.getElementById('resultSavings').textContent;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('Pendlerfradrag 2026 - Resultat', 20, 20);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text('Generert: ' + new Date().toLocaleDateString('nb-NO'), 20, 30);
+            
+            doc.setFontSize(11);
+            let y = 45;
+            
+            doc.text('INNDATA:', 20, y); y += 8;
+            doc.text('Avstand (en vei): ' + distance + ' km', 25, y); y += 8;
+            doc.text('Arbeidsdager: ' + workdays, 25, y); y += 8;
+            if (extraCosts > 0) {
+                doc.text('Bom/ferge: ' + formatNumber(extraCosts) + ' kr', 25, y); y += 8;
+            }
+            y += 4;
+            
+            doc.text('BEREGNING:', 20, y); y += 8;
+            doc.text('Daglig kjoreavstand: ' + dailyKm, 25, y); y += 8;
+            doc.text('Arlig kjoreavstand: ' + yearlyKm, 25, y); y += 8;
+            doc.text('Reisekostnad (1,90 kr/km): ' + travelCost, 25, y); y += 8;
+            doc.text('Total reisekostnad: ' + totalCost, 25, y); y += 12;
+            
+            doc.setFont('helvetica', 'bold');
+            doc.text('Reisefradrag: ' + deduction, 25, y); y += 8;
+            doc.text('Skattebesparelse: ' + savings, 25, y);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.text('Beregnet med Kalkulatornorge.no', 20, doc.internal.pageSize.height - 10);
+            
+            doc.save('pendlerfradrag-2026.pdf');
+        }
+
+        // Social Sharing
+        function shareToX() {
+            const text = 'Jeg har beregnet mitt pendlerfradrag for 2026 med Kalkulatornorge.no - gratis og enkelt!';
+            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareToFacebook() {
+            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareToLinkedIn() {
+            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function copyToClipboard() {
+            const text = 'Beregn ditt pendlerfradrag for 2026 med Kalkulatornorge.no! https://kalkulatornorge.no/pendlerfradrag.html';
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Teksten er kopiert til utklippstavlen!');
+            }).catch(err => {
+                console.error('Kunne ikke kopiere:', err);
+            });
+        }
+
+        // Email Results
+        function emailResults() {
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const workdays = parseInt(document.getElementById('workdays').value) || 230;
+            const dailyKm = document.getElementById('resultDailyKm').textContent;
+            const yearlyKm = document.getElementById('resultYearlyKm').textContent;
+            const deduction = document.getElementById('resultDeduction').textContent;
+            const savings = document.getElementById('resultSavings').textContent;
+            
+            const emailContent = `PENDLERFRADRAG 2026 - RESULTAT
+
+Beregnet: ${new Date().toLocaleDateString('nb-NO')}
+
+INNDATA:
+- Avstand (en vei): ${distance} km
+- Arbeidsdager: ${workdays}
+
+RESULTAT:
+- Daglig kjoreavstand: ${dailyKm}
+- Arlig kjoreavstand: ${yearlyKm}
+- Reisefradrag: ${deduction}
+- Skattebesparelse (22%): ${savings}
+
+Beregnet med Kalkulatornorge.no
+https://kalkulatornorge.no/pendlerfradrag.html`;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
+                    <h3 style="margin: 0 0 16px 0; font-family: 'Source Serif 4', serif;">Send resultat til deg selv</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p>
+                    <textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">${emailContent}</textarea>
+                    <div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;">
+                        <button onclick="navigator.clipboard.writeText(\`${emailContent.replace(/`/g, '\`')}\`); alert('Kopiert!'); this.closest('[style*=fixed]').remove();" style="padding: 12px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button>
+                        <button onclick="this.closest('[style*=fixed]').remove();" style="padding: 12px 20px; background: #E2E8F0; color: #2D3748; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button>
                     </div>
-                    <div class="regional-amount" id="regionalBergen">0 kr</div>
-                    <div class="regional-note">Litt lavere kostnader. T
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        }
+    </script>
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Reisefradrag Kalkulator 2026",
+  "description": "Beregn reisefradrag (pendlerfradrag) for 2026. Nye satser: 1,90 kr/km og 12 000 kr bunnfradrag.",
+  "url": "https://kalkulatornorge.no/pendlerfradrag.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "nb-NO",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "NOK"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Kalkulatornorge.no",
+    "url": "https://kalkulatornorge.no"
+  }
+}
+</script>
+</body>
+</html>
