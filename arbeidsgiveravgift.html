@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta property="og:title" content="Arbeidsgiveravgift Kalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn arbeidsgiveravgift for alle soner fra 0% til 14,1%.">
     <meta property="og:type" content="website">
@@ -263,6 +264,37 @@
         </div>
         
         <!-- NEW: 6 Base Features -->
+
+        <!-- Pie Chart Section -->
+        <div id="pie-chart-section" class="feature-section" style="display: none;">
+            <div class="feature-title">📊 Lønnskostnad fordeling</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Slik fordeler arbeidsgiveravgiften seg på total lønnskostnad:
+            </p>
+            <div style="max-width: 350px; margin: 0 auto;">
+                <canvas id="agaPieChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Zone Comparison Chart -->
+        <div id="zone-comparison-section" class="feature-section" style="display: none;">
+            <div class="feature-title">🗺️ Sammenligning med andre soner</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Årlig AGA-kostnad for samme lønn i alle soner:
+            </p>
+            <div style="max-width: 600px; margin: 0 auto;">
+                <canvas id="zoneComparisonChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Year over Year Comparison -->
+        <div id="year-comparison-section" class="feature-section" style="display: none;">
+            <div class="feature-title">📅 Endring fra 2025</div>
+            <div id="year-comparison-content" style="color: var(--color-text-secondary); font-size: 0.95rem;">
+                <!-- Year comparison will appear here -->
+            </div>
+        </div>
+        
         <div id="action-buttons-section" class="feature-section" style="display: none;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                 <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -542,6 +574,21 @@
             
             // NEW: Show and populate 6 features
             document.getElementById('action-buttons-section').style.display = 'block';
+            
+            // Show chart sections
+            document.getElementById('pie-chart-section').style.display = 'block';
+            document.getElementById('zone-comparison-section').style.display = 'block';
+            document.getElementById('year-comparison-section').style.display = 'block';
+            
+            // Create Pie Chart - Vibrant colors
+            createAgaPieChart(totalSalary, totalAGA);
+            
+            // Create Zone Comparison Chart
+            createZoneComparisonChart(salary, employees, zone);
+            
+            // Show year-over-year comparison
+            showYearComparison(totalSalary, totalAGA, zone);
+
             document.getElementById('savings-section').style.display = 'block';
             document.getElementById('bigmac-section').style.display = 'block';
             document.getElementById('regional-section').style.display = 'block';
@@ -668,6 +715,169 @@
             modal.innerHTML = '<div style="background: white; border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;"><h3 style="margin: 0 0 16px 0; font-family: \'Source Serif 4\', serif;">Send resultat til deg selv</h3><p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p><textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">' + emailContent + '</textarea><div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;"><button onclick="navigator.clipboard.writeText(\'' + emailContent.replace(/'/g, "\\'").replace(/\n/g, '\\n') + '\'); alert(\'Kopiert!\'); this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button><button onclick="this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #E2E8F0; color: #2D3748; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button></div></div>';
             document.body.appendChild(modal);
             modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
+        }
+        
+        // Pie Chart - Vibrant colors for Lønn vs AGA
+        function createAgaPieChart(salary, aga) {
+            const ctx = document.getElementById('agaPieChart');
+            if (!ctx) return;
+            
+            // Destroy existing chart properly
+            if (window.agaPieChart && typeof window.agaPieChart.destroy === 'function') {
+                window.agaPieChart.destroy();
+            }
+            
+            window.agaPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bruttolønn', 'Arbeidsgiveravgift'],
+                    datasets: [{
+                        data: [salary, aga],
+                        backgroundColor: [
+                            '#3B82F6',  // Vibrant blue for salary
+                            '#C4533A'   // Brand rust for AGA
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#FAF9F7'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Inter', sans-serif", size: 13 },
+                                padding: 15,
+                                color: '#333',
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    return data.labels.map((label, i) => {
+                                        const value = data.datasets[0].data[i];
+                                        const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return {
+                                            text: label + ': ' + formatNumber(value) + ' (' + percentage + '%)',
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            hidden: false,
+                                            index: i
+                                        };
+                                    });
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return label + ': ' + formatNumber(value) + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Zone Comparison Horizontal Bar Chart
+        function createZoneComparisonChart(salary, employees, currentZone) {
+            const ctx = document.getElementById('zoneComparisonChart');
+            if (!ctx) return;
+            
+            // Destroy existing chart properly
+            if (window.zoneComparisonChart && typeof window.zoneComparisonChart.destroy === 'function') {
+                window.zoneComparisonChart.destroy();
+            }
+            
+            const zones = ['1', '1a', '2', '3', '4', '4a', '5'];
+            const agaCosts = zones.map(z => salary * employees * ZONE_RATES[z].rate);
+            const zoneNames = zones.map(z => ZONE_RATES[z].name + ' (' + (ZONE_RATES[z].rate * 100).toFixed(1) + '%)');
+            
+            // Color current zone in rust, others in graded blue
+            const colors = zones.map(z => z === currentZone ? '#C4533A' : '#93C5FD');
+            
+            window.zoneComparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: zoneNames,
+                    datasets: [{
+                        label: 'Årlig AGA-kostnad',
+                        data: agaCosts,
+                        backgroundColor: colors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return formatNumber(context.parsed.x);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Year-over-Year Comparison (2025 vs 2026)
+        function showYearComparison(totalSalary, totalAGA, zone) {
+            const contentDiv = document.getElementById('year-comparison-content');
+            if (!contentDiv) return;
+            
+            // In 2025, there was extra 5% AGA on salary above 850,000 kr
+            // This was removed in 2025, so anyone earning 850k+ benefits
+            const zoneRate = ZONE_RATES[zone].rate;
+            let html = '';
+            
+            if (totalSalary > 850000) {
+                const excessSalary = totalSalary - 850000;
+                const extraAGA2025 = excessSalary * 0.05;
+                
+                html = `
+                    <div style="background: #E8F5E9; border-left: 4px solid #4CAF50; padding: 20px; border-radius: 8px;">
+                        <p style="margin: 0 0 12px 0; font-weight: 600; color: #1F2937;">
+                            ✅ Du sparer penger i 2026!
+                        </p>
+                        <p style="margin: 0 0 8px 0;">
+                            Den ekstra arbeidsgiveravgiften på 5% for lønn over 850 000 kr ble fjernet fra og med 2025.
+                        </p>
+                        <p style="margin: 0; font-size: 1.1rem; color: #22c55e; font-weight: 700;">
+                            Besparelse: ${formatNumber(extraAGA2025)} per år
+                        </p>
+                    </div>
+                `;
+            } else {
+                html = `
+                    <div style="background: #F3F4F6; border-left: 4px solid #9CA3AF; padding: 20px; border-radius: 8px;">
+                        <p style="margin: 0; color: #6B7280;">
+                            AGA-satsene for ${ZONE_RATES[zone].name} er uendret fra 2025 til 2026. 
+                            Den ekstra avgiften på 5% over 850 000 kr som ble fjernet i 2025 påvirker ikke denne lønnen.
+                        </p>
+                    </div>
+                `;
+            }
+            
+            contentDiv.innerHTML = html;
         }
     </script>
 <script type="application/ld+json">
