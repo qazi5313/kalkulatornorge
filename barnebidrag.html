@@ -14,6 +14,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta property="og:title" content="Barnebidrag Kalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn estimert barnebidrag basert på inntekt, samvær og barnets alder.">
     <meta property="og:type" content="website">
@@ -132,6 +134,26 @@
         .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
         .dropdown-item-icon svg { width: 16px; height: 16px; }
         .section-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
+        
+        /* Feature Sections CSS */
+        .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; }
+        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+        .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
+        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
+        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 20px; margin-top: 16px; text-align: center; }
+        .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
+        .bigmac-text { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #F57C00; }
+        .bigmac-sub { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 6px; }
+        .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+        .regional-card { background: var(--color-background); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px; }
+        .regional-city { font-weight: 600; color: var(--color-text); font-size: 0.9rem; margin-bottom: 4px; }
+        .regional-amount { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--color-primary); }
+        .regional-note { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } .regional-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body class="calc-page">
@@ -255,6 +277,106 @@
                         <div class="total-value" id="resultYearly">0 kr</div>
                         <div class="total-sub">per år</div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- NEW: Pie Chart Section -->
+        <div id="pie-chart-section" class="feature-section" style="display: none;">
+            <div class="feature-title">📊 Underholdskostnad fordeling</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Slik fordeles underholdskostnaden mellom foreldrene:
+            </p>
+            <div style="max-width: 350px; margin: 0 auto;">
+                <canvas id="bidragPieChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- NEW: Custody Comparison Chart -->
+        <div id="custody-comparison-section" class="feature-section" style="display: none;">
+            <div class="feature-title">🏠 Samværsfradrag sammenligning</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Månedlig bidrag for ulike samværsklasser:
+            </p>
+            <div style="max-width: 600px; margin: 0 auto;">
+                <canvas id="custodyComparisonChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- NEW: 6 Base Features -->
+        <div id="action-buttons-section" class="feature-section" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📥 Last ned PDF</span>
+                </button>
+                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>✉️ Send til deg selv</span>
+                </button>
+            </div>
+            <div>
+                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet (uten personlige tall):</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
+                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
+                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
+                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
+                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="savings-section" class="feature-section" style="display: none;">
+            <div class="feature-title">💰 Samværsfradrag påvirkning</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Sammenlign månedlig bidrag med ulik samværsordning:</p>
+            <div class="savings-grid">
+                <div class="savings-card">
+                    <div class="savings-label">Klasse 1 (2-3 dager)</div>
+                    <div class="savings-amount" id="savingsClass1">-</div>
+                    <div class="savings-sub">per måned</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Klasse 2 (4-8 dager)</div>
+                    <div class="savings-amount" id="savingsClass2">-</div>
+                    <div class="savings-sub">per måned</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Klasse 3 (9-13 dager)</div>
+                    <div class="savings-amount" id="savingsClass3">-</div>
+                    <div class="savings-sub">per måned</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="bigmac-section" class="bigmac-section" style="display: none;">
+            <div class="bigmac-icon">🍔</div>
+            <div class="bigmac-text">Årlig barnebidrag tilsvarer</div>
+            <div class="bigmac-value" id="bigmacCount">-</div>
+            <div class="bigmac-sub" id="bigmacSub">Big Mac-måltider</div>
+        </div>
+        
+        <div id="regional-section" class="feature-section" style="display: none;">
+            <div class="feature-title">🗺️ Kjøpekraft per region</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Samme bidragsbeløp har ulik kjøpekraft i Norge:</p>
+            <div class="regional-grid">
+                <div class="regional-card">
+                    <div class="regional-city">Oslo</div>
+                    <div class="regional-amount" id="regionalOslo">-</div>
+                    <div class="regional-note">Høyeste levekostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Bergen</div>
+                    <div class="regional-amount" id="regionalBergen">-</div>
+                    <div class="regional-note">25% lavere kostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Trondheim</div>
+                    <div class="regional-amount" id="regionalTrondheim">-</div>
+                    <div class="regional-note">22% lavere kostnader</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Småbyer</div>
+                    <div class="regional-amount" id="regionalSmabyer">-</div>
+                    <div class="regional-note">30% lavere kostnader</div>
                 </div>
             </div>
         </div>
@@ -394,6 +516,14 @@
             '3': 'klasse 3',
             '4': 'klasse 4'
         };
+        
+        const BIGMAC_PRICE = 125;
+        const REGIONAL_FACTORS = {
+            oslo: 1.00,
+            bergen: 0.75,
+            trondheim: 0.78,
+            smabyer: 0.70
+        };
 
         function formatNumber(num) {
             return Math.round(num).toLocaleString('nb-NO');
@@ -459,6 +589,41 @@
             
             // Show results
             document.getElementById('results').style.display = 'block';
+            
+            // Show all feature sections
+            document.getElementById('pie-chart-section').style.display = 'block';
+            document.getElementById('custody-comparison-section').style.display = 'block';
+            document.getElementById('action-buttons-section').style.display = 'block';
+            document.getElementById('savings-section').style.display = 'block';
+            document.getElementById('bigmac-section').style.display = 'block';
+            document.getElementById('regional-section').style.display = 'block';
+            
+            // Create charts
+            createBidragPieChart(cost, payerCostShare, netCost - payerCostShare);
+            createCustodyComparisonChart(netCost, payerShare, childAge);
+            
+            // Populate savings scenarios
+            const class1Bidrag = Math.max(0, Math.min(payerCostShare - custodyDeduction['1'], effectiveMax));
+            const class2Bidrag = Math.max(0, Math.min(payerCostShare - custodyDeduction['2'], effectiveMax));
+            const class3Bidrag = Math.max(0, Math.min(payerCostShare - custodyDeduction['3'], effectiveMax));
+            
+            document.getElementById('savingsClass1').textContent = formatNumber(class1Bidrag) + ' kr';
+            document.getElementById('savingsClass2').textContent = formatNumber(class2Bidrag) + ' kr';
+            document.getElementById('savingsClass3').textContent = formatNumber(class3Bidrag) + ' kr';
+            
+            // BigMac Index
+            const yearlyBidrag = monthlyContribution * 12;
+            const bigmacCount = Math.floor(yearlyBidrag / BIGMAC_PRICE);
+            const bigmacMonthly = Math.floor(bigmacCount / 12);
+            document.getElementById('bigmacCount').textContent = bigmacCount.toLocaleString('nb-NO');
+            document.getElementById('bigmacSub').textContent = 'Ca. ' + bigmacMonthly.toLocaleString('nb-NO') + ' måltider per måned';
+            
+            // Regional purchasing power
+            document.getElementById('regionalOslo').textContent = formatNumber(monthlyContribution) + ' kr';
+            document.getElementById('regionalBergen').textContent = formatNumber(monthlyContribution / REGIONAL_FACTORS.bergen) + ' kr';
+            document.getElementById('regionalTrondheim').textContent = formatNumber(monthlyContribution / REGIONAL_FACTORS.trondheim) + ' kr';
+            document.getElementById('regionalSmabyer').textContent = formatNumber(monthlyContribution / REGIONAL_FACTORS.smabyer) + ' kr';
+            
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -477,6 +642,191 @@
             element.classList.toggle('open');
         }
         
+        
+        // Pie Chart - Vibrant colors
+        function createBidragPieChart(cost, payerShare, receiverShare) {
+            const ctx = document.getElementById('bidragPieChart');
+            if (!ctx) return;
+            
+            if (window.bidragPieChart && typeof window.bidragPieChart.destroy === 'function') {
+                window.bidragPieChart.destroy();
+            }
+            
+            window.bidragPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bidragspliktige (betaler)', 'Bidragsmottaker (mottar)', 'Barnetrygd'],
+                    datasets: [{
+                        data: [payerShare, receiverShare, barnetrygd],
+                        backgroundColor: ['#3B82F6', '#C4533A', '#10B981'],
+                        borderWidth: 2,
+                        borderColor: '#FAF9F7'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Inter', sans-serif", size: 13 },
+                                padding: 15,
+                                color: '#333',
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    return data.labels.map((label, i) => {
+                                        const value = data.datasets[0].data[i];
+                                        return {
+                                            text: label + ': ' + formatNumber(value) + ' kr',
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            hidden: false,
+                                            index: i
+                                        };
+                                    });
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + formatNumber(context.parsed) + ' kr';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Custody Comparison Chart
+        function createCustodyComparisonChart(netCost, payerShare, childAge) {
+            const ctx = document.getElementById('custodyComparisonChart');
+            if (!ctx) return;
+            
+            if (window.custodyComparisonChart && typeof window.custodyComparisonChart.destroy === 'function') {
+                window.custodyComparisonChart.destroy();
+            }
+            
+            const cost = maintenanceCost[childAge];
+            const maxFromCost = cost * (5/6);
+            const payerCostShare = netCost * payerShare;
+            
+            const classes = ['Klasse 0', 'Klasse 1', 'Klasse 2', 'Klasse 3', 'Klasse 4'];
+            const bidragAmounts = ['0', '1', '2', '3', '4'].map(c => {
+                const deduction = custodyDeduction[c];
+                return Math.max(0, Math.min(payerCostShare - deduction, maxFromCost));
+            });
+            
+            window.custodyComparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: classes,
+                    datasets: [{
+                        label: 'Månedlig bidrag',
+                        data: bidragAmounts,
+                        backgroundColor: '#3B82F6',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return formatNumber(context.parsed.x) + ' kr/mnd';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatNumber(value) + ' kr';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // PDF Download
+        function downloadPDF() {
+            const childAge = document.getElementById('childAge').value;
+            const monthly = document.getElementById('resultMonthly').textContent;
+            const yearly = document.getElementById('resultYearly').textContent;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('Barnebidrag 2026 - Resultat', 20, 20);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text('Generert: ' + new Date().toLocaleDateString('nb-NO'), 20, 30);
+            
+            doc.setFontSize(11);
+            let y = 45;
+            
+            doc.text('INNDATA:', 20, y); y += 8;
+            doc.text('Barnets alder: ' + childAge, 25, y); y += 12;
+            
+            doc.text('RESULTAT:', 20, y); y += 8;
+            doc.text('Manedlig bidrag: ' + monthly, 25, y); y += 8;
+            doc.text('Arlig bidrag: ' + yearly, 25, y);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.text('Beregnet med Kalkulatornorge.no', 20, doc.internal.pageSize.height - 10);
+            
+            doc.save('barnebidrag-2026.pdf');
+        }
+
+        // Social Sharing
+        function shareToX() {
+            const text = 'Jeg har beregnet barnebidrag med Kalkulatornorge.no!';
+            const url = 'https://kalkulatornorge.no/barnebidrag.html';
+            window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank');
+        }
+
+        function shareToFacebook() {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('https://kalkulatornorge.no/barnebidrag.html'), '_blank');
+        }
+
+        function shareToLinkedIn() {
+            window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://kalkulatornorge.no/barnebidrag.html'), '_blank');
+        }
+
+        function copyToClipboard() {
+            const text = 'Beregn barnebidrag med Kalkulatornorge.no! https://kalkulatornorge.no/barnebidrag.html';
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Teksten er kopiert til utklippstavlen!');
+            });
+        }
+
+        // Email Results
+        function emailResults() {
+            const childAge = document.getElementById('childAge').value;
+            const monthly = document.getElementById('resultMonthly').textContent;
+            const yearly = document.getElementById('resultYearly').textContent;
+            
+            const emailContent = 'BARNEBIDRAG 2026 - RESULTAT\n\nBeregnet: ' + new Date().toLocaleDateString('nb-NO') + '\n\nINNDATA:\n- Barnets alder: ' + childAge + '\n\nRESULTAT:\n- Manedlig bidrag: ' + monthly + '\n- Arlig bidrag: ' + yearly + '\n\nBeregnet med Kalkulatornorge.no\nhttps://kalkulatornorge.no/barnebidrag.html';
+            
+            const modal = document.createElement('div');
+            modal.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
+            modal.innerHTML = '<div style="background: white; border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;"><h3 style="margin: 0 0 16px 0; font-family: \'Source Serif 4\', serif;">Send resultat til deg selv</h3><p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p><textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">' + emailContent + '</textarea><div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;"><button onclick="navigator.clipboard.writeText(\'' + emailContent.replace(/'/g, "\\'").replace(/\n/g, '\\n') + '\'); alert(\'Kopiert!\'); this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button><button onclick="this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #E2E8F0; color: #2D3748; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button></div></div>';
+            document.body.appendChild(modal);
+            modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
+        }
         // Enter key to calculate
         document.querySelectorAll('.form-input').forEach(input => {
             input.addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
