@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <meta property="og:title" content="Arbeidsgiveravgift Kalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn arbeidsgiveravgift for alle soner fra 0% til 14,1%.">
     <meta property="og:type" content="website">
@@ -98,28 +99,19 @@
         .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
         .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
         .info-table tr:last-child td { border-bottom: none; }
-        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
-        .info-table tr:hover td { background: var(--color-background); }
-        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
-        .collapsible-header { width: 100%; padding: 18px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: inherit; text-align: left; }
+        .info-table tbody tr:hover { background: var(--color-background); }
+        .rate-badge { display: inline-block; padding: 4px 8px; background: var(--color-primary-light); color: var(--color-primary); border-radius: 6px; font-weight: 600; font-size: 0.85rem; }
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+        .collapsible-header { width: 100%; padding: 20px 24px; background: transparent; border: none; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; font-family: inherit; text-align: left; }
         .collapsible-header:hover { background: var(--color-background); }
-        .collapsible-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 10px; }
-        .collapsible-icon { transition: transform 0.3s; color: var(--color-text-secondary); }
+        .collapsible-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
+        .collapsible-icon { width: 20px; height: 20px; transition: transform 0.3s; }
         .collapsible.open .collapsible-icon { transform: rotate(180deg); }
-        .collapsible-content { display: none; padding: 0 24px 24px 24px; }
-        .collapsible.open .collapsible-content { display: block; }
-        .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
-        .collapsible-content ul, .collapsible-content ol { margin: 12px 0; padding-left: 20px; }
-        .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
-        .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
-        .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
-        .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .related-card-icon svg { width: 20px; height: 20px; }
-        .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
-        .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
-        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
-        .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
+        .collapsible-content { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
+        .collapsible.open .collapsible-content { max-height: 1000px; padding: 0 24px 20px 24px; }
+        .collapsible-content p { color: var(--color-text-secondary); line-height: 1.6; margin: 0 0 12px 0; }
+        .collapsible-content ul { margin: 8px 0 0 0; padding-left: 20px; }
+        .collapsible-content li { color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 6px; }
         .dropdown-menu { position: relative; }
         .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .dropdown-btn:hover { border-color: var(--color-primary); }
@@ -131,7 +123,26 @@
         .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
         .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
         .dropdown-item-icon svg { width: 16px; height: 16px; }
-        .zone-indicator { display: inline-flex; align-items: center; gap: 6px; background: var(--color-primary-light); color: var(--color-primary); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-top: 8px; }
+        
+        /* New Features CSS */
+        .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; }
+        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+        .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
+        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
+        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 20px; margin-top: 16px; text-align: center; }
+        .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
+        .bigmac-text { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #F57C00; }
+        .bigmac-sub { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 6px; }
+        .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+        .regional-card { background: var(--color-background); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px; }
+        .regional-city { font-weight: 600; color: var(--color-text); font-size: 0.9rem; margin-bottom: 4px; }
+        .regional-amount { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--color-primary); }
+        .regional-note { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } .regional-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body class="calc-page">
@@ -242,141 +253,236 @@
             </div>
         </div>
         
+        <!-- NEW: 6 Base Features -->
+        <div id="action-buttons-section" class="feature-section" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📥 Last ned PDF</span>
+                </button>
+                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>✉️ Send til deg selv</span>
+                </button>
+            </div>
+            <div>
+                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet (uten personlige tall):</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
+                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
+                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
+                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
+                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="savings-section" class="feature-section" style="display: none;">
+            <div class="feature-title">💰 Besparelsespotensial</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Sammenlign med andre soner og se besparelsen:</p>
+            <div class="savings-grid">
+                <div class="savings-card">
+                    <div class="savings-label">Sone 5 (0%)</div>
+                    <div class="savings-amount" id="savingsSone5">-</div>
+                    <div class="savings-sub">Ingen AGA</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Sone 4 (5,1%)</div>
+                    <div class="savings-amount" id="savingsSone4">-</div>
+                    <div class="savings-sub">Lav sats</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Din besparelse</div>
+                    <div class="savings-amount" id="savingsCurrent">-</div>
+                    <div class="savings-sub">vs. Sone 1</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="bigmac-section" class="bigmac-section" style="display: none;">
+            <div class="bigmac-icon">🍔</div>
+            <div class="bigmac-text">Total AGA-kostnad tilsvarer</div>
+            <div class="bigmac-value" id="bigmacCount">-</div>
+            <div class="bigmac-sub" id="bigmacSub">Big Mac-måltider</div>
+        </div>
+        
+        <div id="regional-section" class="feature-section" style="display: none;">
+            <div class="feature-title">🗺️ AGA-kostnad per region</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Årlig besparelse ved å etablere virksomhet i ulike regioner:</p>
+            <div class="regional-grid">
+                <div class="regional-card">
+                    <div class="regional-city">Oslo (Sone 1)</div>
+                    <div class="regional-amount" id="regionalOslo">-</div>
+                    <div class="regional-note">Høyeste AGA-sats</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Trøndelag (Sone 3)</div>
+                    <div class="regional-amount" id="regionalTrondelag">-</div>
+                    <div class="regional-note">Middels sats</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Nord-Norge (Sone 4)</div>
+                    <div class="regional-amount" id="regionalNordNorge">-</div>
+                    <div class="regional-note">Lav sats</div>
+                </div>
+                <div class="regional-card">
+                    <div class="regional-city">Finnmark (Sone 5)</div>
+                    <div class="regional-amount" id="regionalFinnmark">-</div>
+                    <div class="regional-note">Ingen AGA</div>
+                </div>
+            </div>
+        </div>
+        
         <div class="info-box">
             <div class="info-box-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><h3>Om beregningen</h3></div>
             <p>Arbeidsgiveravgift beregnes av bruttolønn inkludert feriepenger og andre ytelser. Satsen avhenger av hvilken sone virksomheten er registrert i.</p>
             <p><strong>Kilde:</strong> <a href="https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/arbeidsgiveravgift/" target="_blank" rel="noopener">Skatteetaten – Arbeidsgiveravgift</a></p>
         </div>
         
-        <div class="seo-content">
-            <h2>🏢 Hva er arbeidsgiveravgift?</h2>
-            <p>Arbeidsgiveravgift (AGA) er en skatt arbeidsgivere betaler på lønnskostnader. Avgiften er regionalt differensiert for å stimulere næringsvirksomhet i distriktene. Satsen varierer fra 0% i Nord-Troms og Finnmark til 14,1% i sentrale strøk.</p>
-            
-            <div class="callout warning">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <div class="callout-content">
-                    <div class="callout-title">Viktig endring fra 2025</div>
-                    <p class="callout-text">Den ekstra arbeidsgiveravgiften på 5% for lønn over 850 000 kr er fjernet fra og med 2025. Nå gjelder kun den ordinære sonesatsen.</p>
-                </div>
+        <!-- NEW: SEO Content -->
+        <div class="info-box">
+            <div class="info-box-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                <h3>Satser for arbeidsgiveravgift 2026</h3>
             </div>
-            
-            <h2>📊 AGA-satser per sone 2026</h2>
             <table class="info-table">
-                <thead><tr><th>Sone</th><th>Sats</th><th>Områder (eksempler)</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Sone</th>
+                        <th>Sats 2026</th>
+                        <th>Områder (eksempler)</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td><strong>Sone 1</strong></td><td><span class="rate-badge">14,1%</span></td><td>Oslo, Bergen, Trondheim, Stavanger</td></tr>
-                    <tr><td><strong>Sone 1a</strong></td><td><span class="rate-badge">10,6%*</span></td><td>Deler av Troms, enkelte kommuner</td></tr>
-                    <tr><td><strong>Sone 2</strong></td><td><span class="rate-badge">10,6%</span></td><td>Deler av Vestland, Møre og Romsdal</td></tr>
-                    <tr><td><strong>Sone 3</strong></td><td><span class="rate-badge">6,4%</span></td><td>Deler av Nordland, Trøndelag</td></tr>
-                    <tr><td><strong>Sone 4</strong></td><td><span class="rate-badge">5,1%</span></td><td>Store deler av Nord-Norge</td></tr>
-                    <tr><td><strong>Sone 4a</strong></td><td><span class="rate-badge">7,9%</span></td><td>Enkelte kommuner i Nord-Norge</td></tr>
-                    <tr><td><strong>Sone 5</strong></td><td><span class="rate-badge">0%</span></td><td>Finnmark, Nord-Troms</td></tr>
+                    <tr><td>Sone 1</td><td><span class="rate-badge">14,1%</span></td><td>Oslo, Bergen, Trondheim, Stavanger</td></tr>
+                    <tr><td>Sone 1a</td><td><span class="rate-badge">10,6%*</span></td><td>Deler av Troms, enkelte kommuner</td></tr>
+                    <tr><td>Sone 2</td><td><span class="rate-badge">10,6%</span></td><td>Deler av Vestland, Møre og Romsdal</td></tr>
+                    <tr><td>Sone 3</td><td><span class="rate-badge">6,4%</span></td><td>Deler av Nordland, Trøndelag</td></tr>
+                    <tr><td>Sone 4</td><td><span class="rate-badge">5,1%</span></td><td>Store deler av Nord-Norge</td></tr>
+                    <tr><td>Sone 4a</td><td><span class="rate-badge">7,9%</span></td><td>Enkelte kommuner i Nord-Norge</td></tr>
+                    <tr><td>Sone 5</td><td><span class="rate-badge">0%</span></td><td>Finnmark, Nord-Troms</td></tr>
                 </tbody>
             </table>
-            <p style="font-size: 0.85rem; color: var(--color-text-secondary);">*Sone 1a: 10,6% inntil fribeløp på 850 000 kr er brukt opp, deretter 14,1%</p>
-            
-            <div class="callout info">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                <div class="callout-content">
-                    <div class="callout-title">Fribeløpsordningen (Sone 1a)</div>
-                    <p class="callout-text">I sone 1a betaler du 10,6% inntil differansen mellom det du betaler og det du ville betalt med 14,1% tilsvarer fribeløpet på 850 000 kr. Deretter brukes full sats på 14,1%.</p>
-                </div>
-            </div>
-            
-            <h2>📝 Beregningseksempel</h2>
-            <div class="callout info">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
-                <div class="callout-content">
-                    <div class="callout-title">Ansatt i Oslo (sone 1) med 600 000 kr i årslønn</div>
-                    <p class="callout-text">
-                        Arbeidsgiveravgift: 600 000 × 14,1% = <strong>84 600 kr</strong><br>
-                        Total lønnskostnad: 600 000 + 84 600 = <strong>684 600 kr</strong><br><br>
-                        <strong>Samme ansatt i Hammerfest (sone 5):</strong><br>
-                        Arbeidsgiveravgift: 600 000 × 0% = <strong>0 kr</strong><br>
-                        Besparelse for arbeidsgiver: <strong>84 600 kr per år</strong>
-                    </p>
-                </div>
-            </div>
-            
-            <h2>🧩 Hva inngår i AGA-grunnlaget?</h2>
-            <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Ytelser som inngår</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content">
-                    <p>Arbeidsgiveravgift beregnes av:</p>
-                    <ul>
-                        <li>Lønn og honorarer</li>
-                        <li>Feriepenger</li>
-                        <li>Sykepenger og fødselspenger betalt av arbeidsgiver</li>
-                        <li>Naturalytelser (fri bil, telefon, etc.)</li>
-                        <li>Pensjonsinnskudd</li>
-                        <li>Sluttvederlag (skattepliktig del)</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>Sektorunntak (alltid 14,1%)</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content">
-                    <p>Enkelte sektorer må bruke høyeste sats (14,1%) uansett sone:</p>
-                    <ul>
-                        <li>Finansierings- og forsikringsvirksomhet</li>
-                        <li>Stålsektoren</li>
-                        <li>Kullsektoren</li>
-                        <li>Hovedkontortjenester i konsern</li>
-                        <li>Foretak i økonomiske vanskeligheter</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h2>❓ Ofte stilte spørsmål</h2>
-            <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Hvordan finner jeg hvilken sone min bedrift tilhører?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Sjekk Skatteetatens sonekart på norgeskart.no eller søk opp kommunen din i Skatteetatens liste. Sonen bestemmes av hvor virksomheten er registrert i Enhetsregisteret.</p></div>
-            </div>
-            
-            <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Må jeg betale AGA for meg selv i enkeltpersonforetak?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Nei, innehaver av enkeltpersonforetak betaler ikke arbeidsgiveravgift for egne uttak. Men har du ansatte i ENK-et, må du betale AGA for dem.</p></div>
-            </div>
-            
-            <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Når skal arbeidsgiveravgiften betales?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Arbeidsgiveravgift betales 6 ganger i året sammen med forskuddstrekk. Fristen er den 15. i oddetallsmåneder (januar, mars, mai, juli, september, november).</p></div>
-            </div>
-            
-            <div class="callout tip">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
-                <div class="callout-content">
-                    <div class="callout-title">Tips for gründere</div>
-                    <p class="callout-text">Vurder om det lønner seg å etablere virksomheten i en sone med lavere avgift. Besparelsen kan være betydelig — opptil <strong>84 600 kr per ansatt per år</strong> sammenlignet med sone 1.</p>
-                </div>
-            </div>
-            
-            <h2>🔗 Relaterte kalkulatorer</h2>
-            <div class="related-grid">
-                <a href="brutto-netto.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Brutto/Netto Kalkulator</h4><p>Se hva ansatte får utbetalt</p></div></a>
-                <a href="skatt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Skattekalkulator</h4><p>Detaljert skatteberegning</p></div></a>
-                <a href="timelonn-frilanser.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Timelønn Frilansere</h4><p>Beregn riktig timepris</p></div></a>
-                <a href="feriepenger.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Feriepengekalkulator</h4><p>Beregn feriepenger</p></div></a>
-            </div>
-            
-            <div class="disclaimer"><p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler. Enkelte sektorer har særregler. Kontakt Skatteetaten eller regnskapsfører for nøyaktig informasjon om din virksomhet.</p></div>
+            <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 12px;">*Sone 1a: 10,6% inntil fribeløp på 850 000 kr er brukt opp, deretter 14,1%</p>
         </div>
+        
+        <div class="callout info">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <div class="callout-content">
+                <div class="callout-title">Fribeløpsordningen (Sone 1a)</div>
+                <p class="callout-text">I sone 1a betaler du 10,6% inntil differansen mellom det du betaler og det du ville betalt med 14,1% tilsvarer fribeløpet på 850 000 kr. Deretter brukes full sats på 14,1%.</p>
+            </div>
+        </div>
+        
+        <div class="callout warning">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <div class="callout-content">
+                <div class="callout-title">Viktig endring fra 2025</div>
+                <p class="callout-text">Den ekstra arbeidsgiveravgiften på 5% for lønn over 850 000 kr er fjernet fra og med 2025. Nå gjelder kun den ordinære sonesatsen.</p>
+            </div>
+        </div>
+        
+        <div class="collapsible">
+            <button class="collapsible-header" onclick="toggleCollapsible(this.parentElement)">
+                <h3 class="collapsible-title">Hva inngår i grunnlaget?</h3>
+                <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </button>
+            <div class="collapsible-content">
+                <p>Arbeidsgiveravgift beregnes av:</p>
+                <ul>
+                    <li>Lønn og honorarer</li>
+                    <li>Feriepenger</li>
+                    <li>Sykepenger og fødselspenger betalt av arbeidsgiver</li>
+                    <li>Naturalytelser (fri bil, telefon, etc.)</li>
+                    <li>Pensjonsinnskudd</li>
+                    <li>Sluttvederlag (skattepliktig del)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="collapsible">
+            <button class="collapsible-header" onclick="toggleCollapsible(this.parentElement)">
+                <h3 class="collapsible-title">Sektorunntak</h3>
+                <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </button>
+            <div class="collapsible-content">
+                <p>Enkelte sektorer må bruke høyeste sats (14,1%) uansett sone:</p>
+                <ul>
+                    <li>Finansierings- og forsikringsvirksomhet</li>
+                    <li>Stålsektoren</li>
+                    <li>Kullsektoren</li>
+                    <li>Hovedkontortjenester i konsern</li>
+                    <li>Foretak i økonomiske vanskeligheter</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="collapsible">
+            <button class="collapsible-header" onclick="toggleCollapsible(this.parentElement)">
+                <h3 class="collapsible-title">Ofte stilte spørsmål</h3>
+                <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </button>
+            <div class="collapsible-content">
+                <p><strong>Hvordan finner jeg hvilken sone min bedrift tilhører?</strong><br>
+                Sjekk Skatteetatens sonekart på norgeskart.no eller søk opp kommunen din i Skatteetatens liste. Sonen bestemmes av hvor virksomheten er registrert i Enhetsregisteret.</p>
+                
+                <p><strong>Må jeg betale AGA for meg selv i enkeltpersonforetak?</strong><br>
+                Nei, innehaver av enkeltpersonforetak betaler ikke arbeidsgiveravgift for egne uttak. Men har du ansatte i ENK-et, må du betale AGA for dem.</p>
+                
+                <p><strong>Når skal arbeidsgiveravgiften betales?</strong><br>
+                Arbeidsgiveravgift betales 6 ganger i året sammen med forskuddstrekk. Fristen er den 15. i oddetallsmåneder (januar, mars, mai, juli, september, november).</p>
+            </div>
+        </div>
+        
+        <div class="callout tip">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <div class="callout-content">
+                <div class="callout-title">For gründere</div>
+                <p class="callout-text">Vurder om det lønner seg å etablere virksomheten i en sone med lavere avgift. Besparelsen kan være betydelig — opptil 84 600 kr per ansatt per år sammenlignet med sone 1.</p>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <div class="info-box-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                <h3>Relaterte kalkulatorer</h3>
+            </div>
+            <p>
+                <a href="brutto-netto.html">Brutto/Netto</a> • 
+                <a href="skatt.html">Skattekalkulator</a> • 
+                <a href="timelonn-frilanser.html">Timelønn for Frilansere</a> • 
+                <a href="feriepenger.html">Feriepenger</a>
+            </p>
+        </div>
+        
     </main>
     
     <footer class="footer">
         <div class="container">
-            <div class="footer-links">
-                <a href="index.html" class="footer-link">Alle kalkulatorer</a>
-                <a href="personvern.html" class="footer-link">Personvern</a>
-                <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
-            </div>
-            <p class="footer-copyright">© 2026 Kalkulatornorge.no - Laget med <span class="heart">❤️</span> for norske brukere</p>
+            <p>&copy; 2026 Kalkulatornorge.no - Alle rettigheter reservert</p>
         </div>
     </footer>
     
     <script>
-        // AGA rates per zone
         const ZONE_RATES = {
             '1': { rate: 0.141, name: 'Sone 1', description: 'Oslo, Bergen, Trondheim, Stavanger' },
             '1a': { rate: 0.106, name: 'Sone 1a', description: 'Deler av Troms (10,6% inntil fribeløp)' },
@@ -386,9 +492,11 @@
             '4a': { rate: 0.079, name: 'Sone 4a', description: 'Enkelte kommuner i Nord-Norge' },
             '5': { rate: 0.0, name: 'Sone 5', description: 'Finnmark, Nord-Troms' }
         };
+        
+        const BIGMAC_PRICE = 125;
 
         function formatNumber(num) {
-            return Math.round(num).toLocaleString('nb-NO');
+            return Math.round(num).toLocaleString('nb-NO') + ' kr';
         }
 
         function calculate() {
@@ -407,15 +515,13 @@
             const totalSalary = salary * employees;
             const totalCost = totalSalary + totalAGA;
             
-            // Update results
-            document.getElementById('resultSalary').textContent = formatNumber(salary) + ' kr';
+            document.getElementById('resultSalary').textContent = formatNumber(salary);
             document.getElementById('resultZone').textContent = zoneData.name;
             document.getElementById('resultRate').textContent = (zoneData.rate * 100).toFixed(1) + '%';
-            document.getElementById('resultAGA').textContent = formatNumber(agaPerEmployee) + ' kr';
-            document.getElementById('resultTotal').textContent = formatNumber(totalCost) + ' kr';
-            document.getElementById('resultTotalAGA').textContent = formatNumber(totalAGA) + ' kr';
+            document.getElementById('resultAGA').textContent = formatNumber(agaPerEmployee);
+            document.getElementById('resultTotal').textContent = formatNumber(totalCost);
+            document.getElementById('resultTotalAGA').textContent = formatNumber(totalAGA);
             
-            // Show/hide multiple employees row
             const rowMultiple = document.getElementById('rowMultiple');
             if (employees > 1) {
                 rowMultiple.style.display = '';
@@ -424,8 +530,40 @@
                 rowMultiple.style.display = 'none';
             }
             
-            // Show results
             document.getElementById('results').style.display = 'block';
+            
+            // NEW: Show and populate 6 features
+            document.getElementById('action-buttons-section').style.display = 'block';
+            document.getElementById('savings-section').style.display = 'block';
+            document.getElementById('bigmac-section').style.display = 'block';
+            document.getElementById('regional-section').style.display = 'block';
+            
+            // Savings comparison
+            const agaSone5 = 0;
+            const agaSone4 = salary * employees * 0.051;
+            const agaSone1 = salary * employees * 0.141;
+            const savingsVsSone1 = agaSone1 - totalAGA;
+            
+            document.getElementById('savingsSone5').textContent = '0 kr';
+            document.getElementById('savingsSone4').textContent = formatNumber(agaSone4);
+            document.getElementById('savingsCurrent').textContent = formatNumber(Math.max(0, savingsVsSone1));
+            
+            // BigMac Index
+            const bigmacCount = Math.floor(totalAGA / BIGMAC_PRICE);
+            const bigmacMonthly = Math.floor(bigmacCount / 12);
+            document.getElementById('bigmacCount').textContent = bigmacCount.toLocaleString('nb-NO');
+            document.getElementById('bigmacSub').textContent = 'Ca. ' + bigmacMonthly.toLocaleString('nb-NO') + ' måltider per måned';
+            
+            // Regional comparison
+            const osloAGA = salary * employees * 0.141;
+            const trondelagAGA = salary * employees * 0.064;
+            const nordnorgeAGA = salary * employees * 0.051;
+            
+            document.getElementById('regionalOslo').textContent = formatNumber(osloAGA);
+            document.getElementById('regionalTrondelag').textContent = formatNumber(trondelagAGA);
+            document.getElementById('regionalNordNorge').textContent = formatNumber(nordnorgeAGA);
+            document.getElementById('regionalFinnmark').textContent = '0 kr';
+            
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -444,11 +582,86 @@
             element.classList.toggle('open');
         }
         
-        // Enter key to calculate
         document.getElementById('salary').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
         document.getElementById('employees').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+        
+        // NEW: PDF, Social, Email functions
+        function downloadPDF() {
+            const salary = parseFloat(document.getElementById('salary').value) || 0;
+            const zone = document.getElementById('zone').selectedOptions[0].text;
+            const employees = parseInt(document.getElementById('employees').value) || 1;
+            const aga = document.getElementById('resultAGA').textContent;
+            const total = document.getElementById('resultTotal').textContent;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('Arbeidsgiveravgift 2026 - Resultat', 20, 20);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text('Generert: ' + new Date().toLocaleDateString('nb-NO'), 20, 30);
+            
+            doc.setFontSize(11);
+            let y = 45;
+            
+            doc.text('INNDATA:', 20, y); y += 8;
+            doc.text('Bruttolonn: ' + formatNumber(salary), 25, y); y += 8;
+            doc.text('Sone: ' + zone, 25, y); y += 8;
+            doc.text('Ansatte: ' + employees, 25, y); y += 12;
+            
+            doc.text('RESULTAT:', 20, y); y += 8;
+            doc.text('AGA per ansatt: ' + aga, 25, y); y += 12;
+            
+            doc.setFont('helvetica', 'bold');
+            doc.text('Total lonnskostnad: ' + total, 25, y);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.text('Beregnet med Kalkulatornorge.no', 20, doc.internal.pageSize.height - 10);
+            
+            doc.save('arbeidsgiveravgift-2026.pdf');
+        }
+
+        function shareToX() {
+            const text = 'Jeg har beregnet arbeidsgiveravgift med Kalkulatornorge.no!';
+            const url = 'https://kalkulatornorge.no/arbeidsgiveravgift.html';
+            window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank');
+        }
+
+        function shareToFacebook() {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('https://kalkulatornorge.no/arbeidsgiveravgift.html'), '_blank');
+        }
+
+        function shareToLinkedIn() {
+            window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://kalkulatornorge.no/arbeidsgiveravgift.html'), '_blank');
+        }
+
+        function copyToClipboard() {
+            const text = 'Beregn arbeidsgiveravgift med Kalkulatornorge.no! https://kalkulatornorge.no/arbeidsgiveravgift.html';
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Teksten er kopiert til utklippstavlen!');
+            });
+        }
+
+        function emailResults() {
+            const salary = parseFloat(document.getElementById('salary').value) || 0;
+            const zone = document.getElementById('zone').selectedOptions[0].text;
+            const employees = parseInt(document.getElementById('employees').value) || 1;
+            const aga = document.getElementById('resultAGA').textContent;
+            const total = document.getElementById('resultTotal').textContent;
+            
+            const emailContent = 'ARBEIDSGIVERAVGIFT 2026 - RESULTAT\n\nBeregnet: ' + new Date().toLocaleDateString('nb-NO') + '\n\nINNDATA:\n- Bruttolonn: ' + formatNumber(salary) + '\n- Sone: ' + zone + '\n- Ansatte: ' + employees + '\n\nRESULTAT:\n- AGA per ansatt: ' + aga + '\n- Total lonnskostnad: ' + total + '\n\nBeregnet med Kalkulatornorge.no\nhttps://kalkulatornorge.no/arbeidsgiveravgift.html';
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
+            modal.innerHTML = '<div style="background: white; border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;"><h3 style="margin: 0 0 16px 0; font-family: \'Source Serif 4\', serif;">Send resultat til deg selv</h3><p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p><textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">' + emailContent + '</textarea><div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;"><button onclick="navigator.clipboard.writeText(\'' + emailContent.replace(/'/g, "\\'").replace(/\n/g, '\\n') + '\'); alert(\'Kopiert!\'); this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button><button onclick="this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #E2E8F0; color: #2D3748; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button></div></div>';
+            document.body.appendChild(modal);
+            modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
+        }
     </script>
-<!-- Schema Markup -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
