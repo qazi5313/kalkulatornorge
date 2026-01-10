@@ -21,6 +21,12 @@
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
     
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <!-- Open Graph -->
     <meta property="og:title" content="Feriepengekalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn hvor mye du får i feriepenger med 10,2% eller 12% sats.">
@@ -803,6 +809,553 @@
             align-items: center;
             padding: 16px 0;
         }
+        
+        /* ============================================
+           ENHANCED FEATURES CSS - Added Jan 2026
+           ============================================ */
+        
+        /* Chart Containers */
+        .charts-container {
+            display: none;
+            margin-top: 32px;
+        }
+        
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .chart-box {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .chart-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--color-text);
+        }
+        
+        .chart-canvas {
+            max-width: 100%;
+            height: 300px;
+        }
+        
+        /* Comparison Bar Styling */
+        .comparison-bar {
+            margin-top: 20px;
+        }
+        
+        .comparison-item {
+            margin-bottom: 16px;
+        }
+        
+        .comparison-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .comparison-label-left {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        
+        .comparison-label-right {
+            color: var(--color-text-secondary);
+        }
+        
+        .bar-background {
+            background: #F3F4F6;
+            border-radius: 8px;
+            height: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .bar-fill.weeks-4 {
+            background: #3B82F6;
+        }
+        
+        .bar-fill.weeks-5 {
+            background: #F59E0B;
+        }
+        
+        /* Action Buttons Grid */
+        .action-buttons {
+            display: none;
+            margin-top: 32px;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-pdf {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        .btn-pdf:hover {
+            background: #A8452F;
+        }
+        
+        .btn-x {
+            background: #000000;
+            color: white;
+        }
+        
+        .btn-facebook {
+            background: #1877F2;
+            color: white;
+        }
+        
+        .btn-linkedin {
+            background: #0A66C2;
+            color: white;
+        }
+        
+        .btn-copy {
+            background: #6B7280;
+            color: white;
+        }
+        
+        /* Email Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 32px;
+            border-radius: 12px;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+        }
+        
+        .modal-close:hover {
+            color: #333;
+        }
+        
+        .modal h3 {
+            font-family: var(--font-display);
+            margin-bottom: 16px;
+        }
+        
+        .modal textarea {
+            width: 100%;
+            min-height: 250px;
+            padding: 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        
+        /* Savings Visualizer */
+        .savings-visualizer {
+            display: none;
+            margin-top: 40px;
+        }
+        
+        .savings-visualizer h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+        
+        .savings-visualizer .subtitle {
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+        
+        .savings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .savings-card {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .savings-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(196, 83, 58, 0.15);
+        }
+        
+        .savings-card.highlighted {
+            background: rgba(196, 83, 58, 0.04);
+            border: 2px solid var(--color-primary);
+        }
+        
+        .savings-scenario {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .savings-amount {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+        
+        .savings-description {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+        
+        /* BigMac Index */
+        .bigmac-index {
+            display: none;
+            margin-top: 40px;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border: 1px solid #FFB300;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+        }
+        
+        .bigmac-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        
+        .bigmac-index h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+        
+        .bigmac-index .subtitle {
+            color: var(--color-text-secondary);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .bigmac-value {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: #F57C00;
+            margin-bottom: 8px;
+        }
+        
+        .bigmac-monthly {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Regional Comparison */
+        .regional-comparison {
+            display: none;
+            margin-top: 40px;
+        }
+        
+        .regional-comparison h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+        
+        .regional-comparison .subtitle {
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+        
+        .regional-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .regional-card {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .regional-card.baseline {
+            background: rgba(196, 83, 58, 0.04);
+            border: 1px solid var(--color-primary);
+        }
+        
+        .regional-left h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: var(--color-text);
+        }
+        
+        .regional-left .cost-factor {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+        }
+        
+        .regional-right {
+            text-align: right;
+        }
+        
+        .regional-value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        .regional-label {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+        
+        /* Info/Warning/Tip Callouts */
+        .callout {
+            margin: 32px 0;
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: flex;
+            gap: 16px;
+        }
+        
+        .callout-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .callout-content h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .callout-content p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        .callout.info {
+            background: rgba(196, 83, 58, 0.08);
+            border-left: 4px solid var(--color-primary);
+        }
+        
+        .callout.warning {
+            background: #FFF3E0;
+            border-left: 4px solid #FF9800;
+        }
+        
+        .callout.tip {
+            background: #E8F5E9;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        /* Collapsibles */
+        .collapsible-section {
+            margin: 24px 0;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .collapsible-header {
+            background: white;
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .collapsible-header:hover {
+            background: var(--color-background);
+        }
+        
+        .collapsible-header h4 {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            margin: 0;
+            color: var(--color-text);
+        }
+        
+        .collapsible-icon {
+            transition: transform 0.3s;
+            color: var(--color-primary);
+        }
+        
+        .collapsible-icon.open {
+            transform: rotate(180deg);
+        }
+        
+        .collapsible-content {
+            display: none;
+            padding: 0 24px 24px 24px;
+            background: white;
+        }
+        
+        .collapsible-content.open {
+            display: block;
+        }
+        
+        .collapsible-content p, .collapsible-content ul {
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+        }
+        
+        .collapsible-content ul {
+            padding-left: 20px;
+        }
+        
+        .collapsible-content li {
+            margin-bottom: 8px;
+        }
+        
+        /* FAQ Section */
+        .faq-item {
+            margin-bottom: 16px;
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+        
+        .faq-answer {
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Related Calculators - Icon Fix */
+        .related-card-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(196, 83, 58, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .related-card-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--color-primary);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .savings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .regional-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-canvas {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .bigmac-value {
+                font-size: 2.5rem;
+            }
+            
+            .savings-amount {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body class="calc-page">
@@ -960,7 +1513,7 @@
                 </select>
             </div>
             
-            <div class="checkbox-group" onclick="document.getElementById('over60').click()">
+            <div class="checkbox-group">
                 <input type="checkbox" id="over60">
                 <label for="over60">Jeg er over 60 år (+2,3% ekstra feriepenger)</label>
             </div>
@@ -1011,6 +1564,200 @@
                     <div class="total-right">
                         <div class="monthly-label">Utbetales vanligvis</div>
                         <div class="monthly-value">Juni 2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================
+             ENHANCED FEATURES - Added Jan 2026
+             ============================================ -->
+        
+        <!-- Charts Container -->
+        <div class="charts-container" id="chartsContainer">
+            <div class="chart-row">
+                <!-- Pie Chart -->
+                <div class="chart-box">
+                    <h3>📊 Fordeling av feriepenger</h3>
+                    <canvas id="feriepengerPieChart" class="chart-canvas"></canvas>
+                </div>
+                
+                <!-- Comparison Chart -->
+                <div class="chart-box">
+                    <h3>⚖️ 4 uker vs 5 uker ferie</h3>
+                    <div class="comparison-bar">
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <span class="comparison-label-left">4 uker (10,2%)</span>
+                                <span class="comparison-label-right" id="compare4weeks">0 kr</span>
+                            </div>
+                            <div class="bar-background">
+                                <div class="bar-fill weeks-4" id="bar4weeks" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <span class="comparison-label-left">5 uker (12%)</span>
+                                <span class="comparison-label-right" id="compare5weeks">0 kr</span>
+                            </div>
+                            <div class="bar-background">
+                                <div class="bar-fill weeks-5" id="bar5weeks" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 16px; font-size: 0.9rem; color: var(--color-text-secondary);">
+                            <strong>Forskjell:</strong> <span id="weeksDifference">0 kr</span> mer med 5 ukers ferie
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons" id="actionButtons">
+            <div class="button-grid">
+                <button class="action-btn btn-pdf" onclick="downloadPDF()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Last ned PDF
+                </button>
+                
+                <button class="action-btn btn-x" onclick="shareToX()">
+                    <span style="font-size: 1.1rem; font-weight: bold;">𝕏</span>
+                    Del på X
+                </button>
+                
+                <button class="action-btn btn-facebook" onclick="shareToFacebook()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    Facebook
+                </button>
+                
+                <button class="action-btn btn-linkedin" onclick="shareToLinkedIn()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                </button>
+                
+                <button class="action-btn btn-copy" onclick="copyToClipboard()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Kopier lenke
+                </button>
+                
+                <button class="action-btn btn-copy" onclick="emailResults()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    Send på e-post
+                </button>
+            </div>
+        </div>
+        
+        <!-- Email Modal -->
+        <div id="emailModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closeEmailModal()">&times;</span>
+                <h3>📧 E-post innhold</h3>
+                <p style="color: var(--color-text-secondary); margin-bottom: 16px;">Kopier teksten under og lim inn i din e-post:</p>
+                <textarea id="emailContent" readonly></textarea>
+                <button class="action-btn btn-primary" onclick="copyEmailContent()" style="width: 100%;">
+                    Kopier til utklippstavle
+                </button>
+            </div>
+        </div>
+        
+        <!-- Savings Visualizer -->
+        <div class="savings-visualizer" id="savingsVisualizer">
+            <h3>💰 Optimaliseringsmuligheter</h3>
+            <p class="subtitle">Se hvordan ekstra inntekter i grunnlaget påvirker feriepengene dine</p>
+            
+            <div class="savings-grid">
+                <div class="savings-card">
+                    <div class="savings-scenario">Med overtid (+10%)</div>
+                    <div class="savings-amount" id="savings10">0 kr</div>
+                    <div class="savings-description">Inkluderer overtidsarbeid</div>
+                </div>
+                
+                <div class="savings-card highlighted">
+                    <div class="savings-scenario">Med bonuser (+15%)</div>
+                    <div class="savings-amount" id="savings15">0 kr</div>
+                    <div class="savings-description">Inkluderer bonus og tillegg</div>
+                </div>
+                
+                <div class="savings-card">
+                    <div class="savings-scenario">Full lønn (+20%)</div>
+                    <div class="savings-amount" id="savings20">0 kr</div>
+                    <div class="savings-description">Maksimalt grunnlag</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BigMac Index -->
+        <div class="bigmac-index" id="bigmacIndex">
+            <div class="bigmac-icon">🍔</div>
+            <h3>BigMac-kjøpekraften</h3>
+            <p class="subtitle">Hvor mange BigMac-måltider kan feriepengene dekke?</p>
+            <div class="bigmac-value" id="bigmacCount">0</div>
+            <p class="bigmac-monthly">BigMac-måltider (125 kr per måltid i Oslo)</p>
+        </div>
+        
+        <!-- Regional Comparison -->
+        <div class="regional-comparison" id="regionalComparison">
+            <h3>🗺️ Kjøpekraft i ulike byer</h3>
+            <p class="subtitle">Samme feriepenger gir forskjellig kjøpekraft avhengig av hvor du bor</p>
+            
+            <div class="regional-grid">
+                <div class="regional-card baseline">
+                    <div class="regional-left">
+                        <h4>Oslo</h4>
+                        <div class="cost-factor">Dyreste byen (100%)</div>
+                    </div>
+                    <div class="regional-right">
+                        <div class="regional-value" id="osloValue">0 kr</div>
+                        <div class="regional-label">Kjøpekraft</div>
+                    </div>
+                </div>
+                
+                <div class="regional-card">
+                    <div class="regional-left">
+                        <h4>Bergen</h4>
+                        <div class="cost-factor">25% rimeligere</div>
+                    </div>
+                    <div class="regional-right">
+                        <div class="regional-value" id="bergenValue">0 kr</div>
+                        <div class="regional-label">Tilsvarende verdi</div>
+                    </div>
+                </div>
+                
+                <div class="regional-card">
+                    <div class="regional-left">
+                        <h4>Trondheim</h4>
+                        <div class="cost-factor">22% rimeligere</div>
+                    </div>
+                    <div class="regional-right">
+                        <div class="regional-value" id="trondheimValue">0 kr</div>
+                        <div class="regional-label">Tilsvarende verdi</div>
+                    </div>
+                </div>
+                
+                <div class="regional-card">
+                    <div class="regional-left">
+                        <h4>Småbyer</h4>
+                        <div class="cost-factor">30% rimeligere</div>
+                    </div>
+                    <div class="regional-right">
+                        <div class="regional-value" id="smabyerValue">0 kr</div>
+                        <div class="regional-label">Tilsvarende verdi</div>
                     </div>
                 </div>
             </div>
@@ -1297,10 +2044,34 @@
     
     <!-- JavaScript -->
     <script>
+        // ============================================
+        // CONSTANTS
+        // ============================================
+        const BIGMAC_PRICE = 125; // NOK per meal in Oslo 2025
+        const REGIONAL_FACTORS = {
+            oslo: 1.00,
+            bergen: 0.75,
+            trondheim: 0.78,
+            smabyer: 0.70
+        };
+        
+        // Chart instances
+        let pieChart = null;
+        
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
         function formatNumber(num) {
             return Math.round(num).toLocaleString('no-NO') + ' kr';
         }
-
+        
+        function formatNumberPlain(num) {
+            return Math.round(num).toLocaleString('no-NO');
+        }
+        
+        // ============================================
+        // MAIN CALCULATION FUNCTION
+        // ============================================
         function calculate() {
             const salary = parseFloat(document.getElementById('salary').value) || 0;
             const rate = parseFloat(document.getElementById('rate').value);
@@ -1323,16 +2094,9 @@
             }
             
             const totalPay = basePay + bonusPay;
+            const vacationDays = rate === 0.102 ? 25 : 30;
             
-            // Determine vacation days
-            let vacationDays;
-            if (rate === 0.102) {
-                vacationDays = over60 ? 31 : 25;
-            } else {
-                vacationDays = over60 ? 36 : 30;
-            }
-            
-            // Update results
+            // Update basic results
             document.getElementById('resultGrunnlag').textContent = formatNumber(salary);
             document.getElementById('resultSats').textContent = (totalRate * 100).toFixed(1) + '%';
             
@@ -1348,11 +2112,234 @@
             document.getElementById('resultDager').textContent = vacationDays + ' virkedager';
             document.getElementById('resultTotal').textContent = formatNumber(totalPay);
             
+            // Show results section
             document.getElementById('results').style.display = 'block';
+            
+            // ============================================
+            // SHOW ALL ENHANCED FEATURES
+            // ============================================
+            document.getElementById('chartsContainer').style.display = 'block';
+            document.getElementById('actionButtons').style.display = 'block';
+            document.getElementById('savingsVisualizer').style.display = 'block';
+            document.getElementById('bigmacIndex').style.display = 'block';
+            document.getElementById('regionalComparison').style.display = 'block';
+            
+            // ============================================
+            // GENERATE PIE CHART
+            // ============================================
+            generatePieChart(salary, totalPay);
+            
+            // ============================================
+            // POPULATE COMPARISON CHART (4 weeks vs 5 weeks)
+            // ============================================
+            const weeks4 = salary * 0.102;
+            const weeks5 = salary * 0.12;
+            const maxWeeks = Math.max(weeks4, weeks5);
+            
+            document.getElementById('compare4weeks').textContent = formatNumber(weeks4);
+            document.getElementById('compare5weeks').textContent = formatNumber(weeks5);
+            document.getElementById('weeksDifference').textContent = formatNumber(weeks5 - weeks4);
+            
+            document.getElementById('bar4weeks').style.width = ((weeks4 / maxWeeks) * 100) + '%';
+            document.getElementById('bar5weeks').style.width = ((weeks5 / maxWeeks) * 100) + '%';
+            
+            // ============================================
+            // POPULATE SAVINGS VISUALIZER
+            // ============================================
+            const savings10 = totalPay * 1.10;
+            const savings15 = totalPay * 1.15;
+            const savings20 = totalPay * 1.20;
+            
+            document.getElementById('savings10').textContent = formatNumber(savings10);
+            document.getElementById('savings15').textContent = formatNumber(savings15);
+            document.getElementById('savings20').textContent = formatNumber(savings20);
+            
+            // ============================================
+            // POPULATE BIGMAC INDEX
+            // ============================================
+            const bigmacCount = Math.floor(totalPay / BIGMAC_PRICE);
+            document.getElementById('bigmacCount').textContent = formatNumberPlain(bigmacCount);
+            
+            // ============================================
+            // POPULATE REGIONAL COMPARISON
+            // ============================================
+            document.getElementById('osloValue').textContent = formatNumber(totalPay);
+            document.getElementById('bergenValue').textContent = formatNumber(totalPay / REGIONAL_FACTORS.bergen);
+            document.getElementById('trondheimValue').textContent = formatNumber(totalPay / REGIONAL_FACTORS.trondheim);
+            document.getElementById('smabyerValue').textContent = formatNumber(totalPay / REGIONAL_FACTORS.smabyer);
+            
+            // Scroll to results
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        
+        // ============================================
+        // PIE CHART GENERATION
+        // ============================================
+        function generatePieChart(grunnlag, feriepenger) {
+            const ctx = document.getElementById('feriepengerPieChart').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (pieChart && typeof pieChart.destroy === 'function') {
+                pieChart.destroy();
+            }
+            
+            pieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Grunnlag (Årslønn)', 'Feriepenger'],
+                    datasets: [{
+                        data: [grunnlag, feriepenger],
+                        backgroundColor: [
+                            '#3B82F6', // Blue for grunnlag
+                            '#F59E0B'  // Amber for feriepenger
+                        ],
+                        borderColor: '#FAF9F7',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                },
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = Math.round(context.parsed).toLocaleString('no-NO');
+                                    return label + ': ' + value + ' kr';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // ============================================
+        // PDF DOWNLOAD
+        // ============================================
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const grunnlag = document.getElementById('resultGrunnlag').textContent;
+            const sats = document.getElementById('resultSats').textContent;
+            const total = document.getElementById('resultTotal').textContent;
+            
+            // Title
+            doc.setFontSize(20);
+            doc.setTextColor(196, 83, 58);
+            doc.text('Feriepenger Beregning 2026', 20, 20);
+            
+            // Date
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            const today = new Date().toLocaleDateString('no-NO');
+            doc.text('Dato: ' + today, 20, 30);
+            
+            // Results
+            doc.setFontSize(12);
+            doc.setTextColor(0);
+            doc.text('Feriepengegrunnlag: ' + grunnlag, 20, 50);
+            doc.text('Feriepengesats: ' + sats, 20, 60);
+            doc.text('Totale feriepenger: ' + total, 20, 70);
+            doc.text('Utbetales: Juni 2026', 20, 80);
+            
+            // Footer
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text('Generert av Kalkulatornorge.no', 20, 280);
+            doc.text('Dette er et estimat basert på ferieloven.', 20, 285);
+            
+            doc.save('feriepenger-2026.pdf');
+        }
+        
+        // ============================================
+        // SOCIAL SHARING
+        // ============================================
+        function shareToX() {
+            const text = 'Jeg har nettopp beregnet mine feriepenger for 2026! Bruk denne gratis kalkulatoren:';
+            const url = 'https://kalkulatornorge.no/feriepenger.html';
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function shareToFacebook() {
+            const url = 'https://kalkulatornorge.no/feriepenger.html';
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function shareToLinkedIn() {
+            const url = 'https://kalkulatornorge.no/feriepenger.html';
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function copyToClipboard() {
+            const url = 'https://kalkulatornorge.no/feriepenger.html';
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ Lenke kopiert til utklippstavlen!');
+            }).catch(() => {
+                alert('❌ Kunne ikke kopiere lenke');
+            });
+        }
+        
+        // ============================================
+        // EMAIL RESULTS
+        // ============================================
+        function emailResults() {
+            const grunnlag = document.getElementById('resultGrunnlag').textContent;
+            const sats = document.getElementById('resultSats').textContent;
+            const total = document.getElementById('resultTotal').textContent;
+            
+            const emailText = `Mine feriepenger for 2026:
 
-        // Dropdown toggle
+Feriepengegrunnlag: ${grunnlag}
+Feriepengesats: ${sats}
+Totale feriepenger: ${total}
+Utbetales: Juni 2026
+
+Beregnet med Kalkulatornorge.no
+https://kalkulatornorge.no/feriepenger.html
+
+---
+Dette er et estimat basert på ferieloven. Kontakt arbeidsgiver for nøyaktig beløp.`;
+            
+            document.getElementById('emailContent').value = emailText;
+            document.getElementById('emailModal').style.display = 'block';
+        }
+        
+        function closeEmailModal() {
+            document.getElementById('emailModal').style.display = 'none';
+        }
+        
+        function copyEmailContent() {
+            const emailText = document.getElementById('emailContent');
+            emailText.select();
+            document.execCommand('copy');
+            alert('✅ Innhold kopiert! Lim inn i din e-post.');
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('emailModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // DROPDOWN TOGGLE
+        // ============================================
         function toggleDropdown() {
             document.getElementById('dropdownMenu').classList.toggle('open');
         }
@@ -1365,15 +2352,24 @@
             }
         });
 
-        // Collapsible sections
+        // ============================================
+        // COLLAPSIBLE SECTIONS
+        // ============================================
         function toggleCollapsible(element) {
-            element.classList.toggle('open');
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('.collapsible-icon');
+            
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
         }
 
-        // Enter key to calculate
+        // ============================================
+        // ENTER KEY TO CALCULATE
+        // ============================================
         document.getElementById('salary').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') calculate();
         });
+    </script>
     </script>
 <!-- Schema Markup -->
 <script type="application/ld+json">
