@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sykepengekalkulator 2026 - Beregn sykepenger fra arbeidsgiver og NAV | Kalkulatornorge.no</title>
-    <meta name="description" content="Gratis sykepengekalkulator for 2026. Beregn hva du får i sykepenger fra arbeidsgiver (dag 1-16) og NAV (dag 17+). Oppdatert med 6G-grense.">
+    <meta name="description" content="Gratis sykepengekalkulator for 2026. Beregn hva du får i sykepenger fra arbeidsgiver (dag 1-16) og NAV (dag 17+). Se 6G-grense effekt og arbeidsgiver kostnad.">
     <meta name="keywords" content="sykepenger, sykepengekalkulator, sykepenger NAV, arbeidsgiverperiode, 6G grense, sykemelding, sykefravær">
     <link rel="canonical" href="https://kalkulatornorge.no/sykepenger.html">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -14,22 +14,69 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <meta property="og:title" content="Sykepengekalkulator 2026 | Kalkulatornorge.no">
-    <meta property="og:description" content="Beregn hva du får i sykepenger fra arbeidsgiver og NAV.">
+    <meta property="og:description" content="Beregn hva du får i sykepenger fra arbeidsgiver og NAV. Se 6G-grense effekt.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/sykepenger.html">
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        {"@type": "Question", "name": "Hvor mye får jeg i sykepenger?", "acceptedAnswer": {"@type": "Answer", "text": "Du får 100% av lønnen din i sykepenger, men maks 6G (ca. 744 000 kr). Arbeidsgiver betaler dag 1-16, deretter NAV."}},
-        {"@type": "Question", "name": "Når trenger jeg sykemelding?", "acceptedAnswer": {"@type": "Answer", "text": "Du kan bruke egenmelding de første 3 dagene. Fra dag 4 trenger du sykemelding fra lege."}},
-        {"@type": "Question", "name": "Hva er 6G-grensen for sykepenger?", "acceptedAnswer": {"@type": "Answer", "text": "6G er maksgrensen for sykepenger, ca. 744 168 kr i 2026. Tjener du mer enn dette, får du ikke sykepenger for beløpet over."}}
+        {
+          "@type": "Question",
+          "name": "Hvor mye får jeg i sykepenger?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Du får 100% av lønnen din i sykepenger som fast ansatt, men maks 6G (744 168 kr i 2026). Arbeidsgiver betaler dag 1-16, deretter NAV. Selvstendig næringsdrivende får 80% fra dag 17."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hva er 6G-grensen for sykepenger?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "6G er maksgrensen for sykepenger, 744 168 kr i 2026. Tjener du mer enn dette, får du ikke sykepenger for beløpet over. En person med 900 000 kr årslønn mister derfor ca. 156 000 kr ved langtidssykdom."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hvor lenge kan jeg få sykepenger?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Du kan få sykepenger i maksimalt 52 uker (248 arbeidsdager). Etter dette må du søke om arbeidsavklaringspenger (AAP) hvis du fortsatt ikke kan jobbe."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Når trenger jeg sykemelding fra lege?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Du kan bruke egenmelding de første 3 dagene (eller opptil 24 dager på et år hvis arbeidsgiver tillater). Fra dag 4 eller mer enn 3 påfølgende dager trenger du sykemelding fra lege."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Betaler jeg skatt av sykepenger?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja, sykepenger er skattepliktig inntekt og beskattes som vanlig lønn. Du får også opptjent feriepenger (10,2%) av sykepengene."
+          }
+        }
       ]
     }
     </script>
+    
     <style>
+        /* Base Calculator Styles - Following bilkostnad.html exactly */
         .calc-page { background: var(--color-background); min-height: 100vh; }
         .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
         .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
@@ -40,6 +87,8 @@
         .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
         .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
         .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+        
+        /* Form Styles */
         .form-group { margin-bottom: 20px; }
         .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
         .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
@@ -47,9 +96,12 @@
         .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        
         .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
         .calc-btn:hover { background: var(--color-primary-hover); }
         .calc-btn:active { transform: scale(0.98); }
+        
+        /* Results Table */
         .results-section { margin-top: 24px; display: none; }
         .results-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--color-border); border-bottom: none; }
         .results-table thead { background: var(--color-primary); color: white; }
@@ -61,6 +113,7 @@
         .results-table tbody tr:hover { background: var(--color-background); }
         .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
         .results-table tr.highlight td:last-child { color: var(--color-primary); }
+        
         .results-total { background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
         .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
         .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
@@ -69,55 +122,101 @@
         .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
         .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
         @media (max-width: 480px) { .results-total { flex-direction: column; text-align: center; gap: 16px; } .total-right { text-align: center; } .total-value { font-size: 1.75rem; } }
+        
+        /* Feature Sections - Matching bilkostnad.html exactly */
+        .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; display: none; }
+        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        
+        /* Timeline Visualization */
+        .timeline-visual { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
+        .timeline-bars { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+        .timeline-bar-wrapper { display: flex; align-items: center; gap: 12px; }
+        .timeline-label { flex: 0 0 100px; font-size: 0.85rem; font-weight: 600; color: var(--color-text); }
+        .timeline-bar-container { flex: 1; height: 40px; background: #F3F4F6; border-radius: 8px; position: relative; overflow: hidden; }
+        .timeline-bar { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.85rem; transition: width 0.5s ease; }
+        .timeline-bar.egenmelding { background: linear-gradient(135deg, #10B981, #059669); }
+        .timeline-bar.arbeidsgiver { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+        .timeline-bar.nav { background: linear-gradient(135deg, #F59E0B, #D97706); }
+        .timeline-amount { flex: 0 0 120px; text-align: right; font-weight: 700; color: var(--color-text); font-size: 0.9rem; }
+        
+        /* 6G Impact Section */
+        .sixg-impact { background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%); border: 2px solid #FF9800; border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
+        .sixg-impact h3 { font-family: var(--font-display); font-size: 1.2rem; margin: 0 0 16px 0; color: var(--color-text); display: flex; align-items: center; gap: 8px; }
+        .sixg-progress { background: white; height: 40px; border-radius: 8px; overflow: hidden; position: relative; margin: 16px 0; border: 1px solid #FFB300; display: flex; }
+        .sixg-bar { height: 100%; display: flex; align-items: center; padding: 0 12px; font-weight: 600; font-size: 0.85rem; }
+        .sixg-bar.covered { background: linear-gradient(135deg, #10B981, #059669); color: white; }
+        .sixg-bar.lost { background: linear-gradient(135deg, #EF4444, #DC2626); color: white; }
+        .sixg-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+        .sixg-stat { background: white; padding: 16px; border-radius: 8px; border: 1px solid #FFB300; }
+        .sixg-stat-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 4px; }
+        .sixg-stat-value { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
+        
+        /* Employer Cost Section */
+        .employer-cost { background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); border: 2px solid #4CAF50; border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
+        .employer-cost h3 { font-family: var(--font-display); font-size: 1.2rem; margin: 0 0 16px 0; color: var(--color-text); display: flex; align-items: center; gap: 8px; }
+        .employer-cost-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; }
+        .employer-cost-card { background: white; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #81C784; }
+        .employer-cost-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .employer-cost-value { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--color-primary); }
+        @media (max-width: 600px) { .employer-cost-grid { grid-template-columns: 1fr; } }
+        
+        /* Callouts */
+        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
+        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
+        .callout-content { flex: 1; }
+        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
+        .callout-text { margin: 0; font-size: 0.9rem; line-height: 1.6; }
+        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
+        .callout.warning .callout-icon { color: #FF9800; }
+        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.info .callout-icon { color: var(--color-primary); }
+        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
+        .callout.tip .callout-icon { color: #4CAF50; }
+        .callout ul { margin: 8px 0; padding-left: 20px; line-height: 1.7; }
+        .callout li { margin-bottom: 6px; }
+        
         .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
         .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
         .info-box-header svg { color: var(--color-primary); }
         .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
         .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
         .info-box p:last-child { margin-bottom: 0; }
-        .info-box a { color: var(--color-primary); text-decoration: none; }
-        .info-box a:hover { text-decoration: underline; }
-        .seo-content { margin-top: 48px; }
-        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .seo-content h2:first-child { margin-top: 0; }
-        .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
-        .seo-content a { color: var(--color-primary); text-decoration: none; }
-        .seo-content a:hover { text-decoration: underline; }
-        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
-        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
-        .callout-content { flex: 1; }
-        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
-        .callout-text { margin: 0; font-size: 0.9rem; }
-        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
-        .callout.tip .callout-icon { color: #4CAF50; }
-        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
-        .callout.warning .callout-icon { color: #FF9800; }
-        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
-        .callout.info .callout-icon { color: var(--color-primary); }
-        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
-        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
-        .info-table tr:last-child td { border-bottom: none; }
-        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
-        .info-table tr:hover td { background: var(--color-background); }
-        .timeline { position: relative; padding-left: 30px; margin: 24px 0; }
-        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: var(--color-border); border-radius: 3px; }
-        .timeline-item { position: relative; padding-bottom: 24px; }
-        .timeline-item:last-child { padding-bottom: 0; }
-        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 4px; width: 14px; height: 14px; background: var(--color-primary); border-radius: 50%; border: 3px solid var(--color-surface); }
-        .timeline-item h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); margin: 0 0 6px 0; }
-        .timeline-item p { color: var(--color-text-secondary); font-size: 0.9rem; margin: 0; line-height: 1.5; }
-        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
-        .collapsible-header { width: 100%; padding: 18px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: inherit; text-align: left; }
+        
+        /* Savings Grid - Matching bilkostnad.html exactly */
+        .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+        .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
+        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
+        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } }
+        
+        /* BigMac Section - Matching bilkostnad.html exactly */
+        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; display: none; }
+        .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
+        .bigmac-text { font-size: 0.9rem; color: #795548; margin-bottom: 8px; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: #F57C00; }
+        .bigmac-sub { font-size: 0.85rem; color: #795548; margin-top: 4px; }
+        
+        /* Regional Grid - Matching bilkostnad.html exactly */
+        .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+        .regional-card { background: white; border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; }
+        @media (max-width: 600px) { .regional-grid { grid-template-columns: 1fr; } }
+        
+        /* Collapsibles - Matching bilkostnad.html exactly */
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+        .collapsible-header { width: 100%; padding: 20px 24px; background: transparent; border: none; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; font-family: inherit; text-align: left; }
         .collapsible-header:hover { background: var(--color-background); }
-        .collapsible-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 10px; }
-        .collapsible-icon { transition: transform 0.3s; color: var(--color-text-secondary); }
+        .collapsible-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
+        .collapsible-icon { width: 20px; height: 20px; transition: transform 0.3s; }
         .collapsible.open .collapsible-icon { transform: rotate(180deg); }
-        .collapsible-content { display: none; padding: 0 24px 24px 24px; }
-        .collapsible.open .collapsible-content { display: block; }
+        .collapsible-content { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
+        .collapsible.open .collapsible-content { max-height: 2000px; padding: 0 24px 20px 24px; }
         .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
+        .collapsible-content p:last-child { margin-bottom: 0; }
         .collapsible-content ul { margin: 12px 0; padding-left: 20px; }
         .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
+        
+        /* Related Calculators - Matching bilkostnad.html exactly */
         .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
         .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
         .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
@@ -125,8 +224,30 @@
         .related-card-icon svg { width: 20px; height: 20px; }
         .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
         .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
+        
+        /* Disclaimer */
         .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
         .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
+        
+        /* Tables */
+        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
+        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+        .info-table tr:hover td { background: var(--color-background); }
+        
+        /* Email Modal */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: var(--color-surface); margin: 5% auto; padding: 30px; border: 1px solid var(--color-border); border-radius: 12px; width: 90%; max-width: 600px; }
+        .modal-close { color: var(--color-text-secondary); float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .modal-close:hover, .modal-close:focus { color: var(--color-text); }
+        .modal h3 { font-family: var(--font-display); margin: 0 0 16px 0; }
+        .modal textarea { width: 100%; min-height: 200px; padding: 12px; border: 1px solid var(--color-border); border-radius: 8px; font-family: monospace; font-size: 0.85rem; margin: 16px 0; resize: vertical; box-sizing: border-box; }
+        .modal-btn { padding: 12px 24px; background: var(--color-primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 8px; }
+        .modal-btn:hover { background: var(--color-primary-hover); }
+        
+        /* Header and dropdown - COPIED FROM ORIGINAL FILE */
         .dropdown-menu { position: relative; }
         .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .dropdown-btn:hover { border-color: var(--color-primary); background: var(--color-background); }
@@ -137,13 +258,9 @@
         .dropdown-category { padding: 12px 16px 6px 16px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-secondary); }
         .dropdown-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; text-decoration: none; color: var(--color-text); font-size: 0.9rem; transition: background 0.15s; }
         .dropdown-item:hover { background: var(--color-background); }
-        .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 500; }
+        .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
         .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
-        .dropdown-item-icon svg { width: 14px; height: 14px; }
-        .dropdown-item.active .dropdown-item-icon { background: var(--color-primary); }
-        .dropdown-item.active .dropdown-item-icon svg path { fill: white; }
-        .calc-page .header { background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
-        .calc-page .header-content { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+        .dropdown-item-icon svg { width: 16px; height: 16px; }
     </style>
 </head>
 <body class="calc-page">
@@ -152,7 +269,9 @@
             <div class="header-content">
                 <a href="index.html" class="logo">
                     <div class="logo-icon">
-                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/></svg>
+                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
+                        </svg>
                     </div>
                     <span class="logo-text">Kalkulatornorge.no</span>
                 </a>
@@ -187,157 +306,523 @@
     </header>
     
     <main class="calc-container">
-        <a href="index.html" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
+        <a href="index.html" class="back-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Tilbake til alle kalkulatorer
+        </a>
         
         <div class="calc-header">
-            <div class="calc-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M14 4.2666H18V16H0V4.2666H4V0H14V4.2666ZM7.5 11V15H10.5V11H7.5ZM2 11.9951H4V9.99512H2V11.9951ZM14 11.9951H16V9.99512H14V11.9951ZM2 7.99512H4V5.99512H2V7.99512ZM14 7.99512H16V5.99512H14V7.99512ZM8.25 3.95117H6.25V5.45117H8.25V7.45117H9.75V5.45117H11.75V3.95117H9.75V1.95117H8.25V3.95117Z" fill="#C4533A"/></svg></div>
+            <div class="calc-icon">
+                <svg viewBox="0 0 18 16" fill="none">
+                    <path d="M14 4.2666H18V16H0V4.2666H4V0H14V4.2666ZM7.5 11V15H10.5V11H7.5ZM2 11.9951H4V9.99512H2V11.9951ZM14 11.9951H16V9.99512H14V11.9951ZM2 7.99512H4V5.99512H2V7.99512ZM14 7.99512H16V5.99512H14V7.99512ZM8.25 3.95117H6.25V5.45117H8.25V7.45117H9.75V5.45117H11.75V3.95117H9.75V1.95117H8.25V3.95117Z" fill="#C4533A"/>
+                </svg>
+            </div>
             <h1>Sykepengekalkulator 2026</h1>
-            <p>Beregn hva du får utbetalt under sykefravær</p>
+            <p>Beregn hva du får i sykepenger fra arbeidsgiver og NAV</p>
         </div>
         
         <div class="calc-box">
             <div class="form-group">
-                <label class="form-label" for="salary">Månedslønn brutto (kr)</label>
-                <input type="number" class="form-input" id="salary" placeholder="f.eks. 50000" min="0" step="1000">
-                <span class="form-hint">Din faste månedslønn før skatt</span>
+                <label for="salary" class="form-label">Månedslønn (brutto)</label>
+                <input type="number" id="salary" class="form-input" placeholder="50000" step="1000" required>
+                <span class="form-hint">Din brutto månedslønn før skatt</span>
             </div>
+            
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label" for="sickDays">Antall sykedager</label>
-                    <input type="number" class="form-input" id="sickDays" placeholder="f.eks. 10" min="1" max="260">
+                    <label for="sickDays" class="form-label">Antall sykedager</label>
+                    <input type="number" id="sickDays" class="form-input" placeholder="10" min="1" max="260" required>
+                    <span class="form-hint">Hvor mange dager syk?</span>
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label" for="employmentType">Ansattforhold</label>
-                    <select class="form-select" id="employmentType">
+                    <label for="employmentType" class="form-label">Ansettelsesforhold</label>
+                    <select id="employmentType" class="form-select">
                         <option value="employee">Fast ansatt</option>
                         <option value="selfEmployed">Selvstendig næringsdrivende</option>
                     </select>
+                    <span class="form-hint">Din ansettelsestype</span>
                 </div>
             </div>
-            <button class="calc-btn" onclick="calculate()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Beregn Sykepenger</button>
             
-            <div class="results-section" id="results">
-                <table class="results-table">
-                    <thead><tr><th>Beskrivelse</th><th>Beløp</th></tr></thead>
-                    <tbody>
-                        <tr><td>Årslønn (beregnet)</td><td id="resultAarslonn">0 kr</td></tr>
-                        <tr class="highlight"><td>Dagssats (årslønn ÷ 260)</td><td id="resultDagssats">0 kr</td></tr>
-                        <tr><td>Antall betalte sykedager</td><td id="resultDager">0 dager</td></tr>
-                        <tr id="rowArbeidsgiver" style="display: none;"><td>Fra arbeidsgiver (dag 1-16)</td><td id="resultArbeidsgiver">0 kr</td></tr>
-                        <tr id="rowNAV" style="display: none;"><td>Fra NAV (dag 17+)</td><td id="resultNAV">0 kr</td></tr>
-                    </tbody>
-                </table>
-                <div class="results-total">
-                    <div class="total-left">
-                        <div class="total-label">Totale sykepenger</div>
-                        <div class="total-value" id="resultTotal">0 kr</div>
-                        <div class="total-sub" id="resultInfo">Før skatt</div>
-                    </div>
-                    <div class="total-right">
-                        <div class="monthly-label">Dekningsgrad</div>
-                        <div class="monthly-value" id="resultProsent">100%</div>
-                    </div>
-                </div>
-            </div>
+            <button class="calc-btn" onclick="calculate()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="4" y="2" width="16" height="20" rx="2"/>
+                    <line x1="8" y1="6" x2="16" y2="6"/>
+                    <line x1="8" y1="10" x2="16" y2="10"/>
+                    <line x1="8" y1="14" x2="12" y2="14"/>
+                </svg>
+                Beregn sykepenger
+            </button>
         </div>
         
-        <div class="info-box">
-            <div class="info-box-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><h3>Om beregningen</h3></div>
-            <p>Sykepenger beregnes av årsinntekt opp til <strong>6G (744 168 kr)</strong>. Dagssats = Årslønn ÷ 260 arbeidsdager.</p>
-            <p><strong>Kilde:</strong> <a href="https://www.nav.no/sykepenger" target="_blank" rel="noopener">NAV - Sykepenger</a></p>
-        </div>
-        
-        <div class="seo-content">
-            <h2>🏥 Slik fungerer sykepenger i Norge</h2>
-            <p>Sykepenger skal kompensere for tapt arbeidsinntekt når du er syk og arbeidsufør. Vår <strong>sykepengekalkulator</strong> beregner hva du får utbetalt basert på din lønn og antall sykedager.</p>
-            
-            <div class="callout info">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                <div class="callout-content">
-                    <div class="callout-title">Hva er 6G-grensen?</div>
-                    <p class="callout-text">Sykepenger beregnes av inntekt opp til 6G (grunnbeløpet × 6). I 2026 er dette ca. <strong>744 168 kr</strong>. Tjener du mer, får du ikke sykepenger for beløpet over.</p>
-                </div>
-            </div>
-            
-            <h2>📅 Tidslinje for sykepenger</h2>
-            <div class="timeline">
-                <div class="timeline-item"><h4>Dag 1-3: Egenmelding</h4><p>Du kan bruke egenmelding de første 3 dagene. Arbeidsgiver betaler 100% lønn.</p></div>
-                <div class="timeline-item"><h4>Dag 4-16: Arbeidsgiverperioden</h4><p>Arbeidsgiver betaler fortsatt 100% lønn. Fra dag 4 trenger du sykemelding fra lege.</p></div>
-                <div class="timeline-item"><h4>Dag 17+: NAV overtar</h4><p>NAV betaler sykepenger basert på årsinntekt (maks 6G). Du får fortsatt 100% dekningsgrad som ansatt.</p></div>
-            </div>
-            
-            <h2>📊 Sykepengeregler 2026</h2>
-            <table class="info-table">
-                <thead><tr><th>Type</th><th>Dag 1-16</th><th>Dag 17+</th><th>Dekningsgrad</th></tr></thead>
+        <!-- Results Section -->
+        <div id="results" class="results-section">
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Beskrivelse</th>
+                        <th>Beløp</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td><strong>Fast ansatt</strong></td><td>Arbeidsgiver betaler</td><td>NAV betaler</td><td><span class="rate-badge">100%</span></td></tr>
-                    <tr><td><strong>Selvstendig næringsdrivende</strong></td><td>Ingen utbetaling</td><td>NAV betaler</td><td><span class="rate-badge">80%</span></td></tr>
-                    <tr><td><strong>Frilanser</strong></td><td>Ingen utbetaling</td><td>NAV betaler</td><td><span class="rate-badge">100%</span></td></tr>
+                    <tr>
+                        <td>Årslønn (grunnlag)</td>
+                        <td id="resultAarslonn">-</td>
+                    </tr>
+                    <tr>
+                        <td>Dagssats</td>
+                        <td id="resultDagssats">-</td>
+                    </tr>
+                    <tr id="rowArbeidsgiver">
+                        <td>Fra arbeidsgiver (dag 1-16)</td>
+                        <td id="resultArbeidsgiver">-</td>
+                    </tr>
+                    <tr id="rowNAV">
+                        <td>Fra NAV (dag 17+)</td>
+                        <td id="resultNAV">-</td>
+                    </tr>
+                    <tr>
+                        <td>Sykedager betalt</td>
+                        <td id="resultDager">-</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>Dekningsgrad</td>
+                        <td id="resultProsent">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="results-total">
+                <div class="total-left">
+                    <div class="total-label">Totale sykepenger</div>
+                    <div class="total-value" id="resultTotal">0 kr</div>
+                    <div class="total-sub" id="resultInfo">Før skatt</div>
+                </div>
+                <div class="total-right">
+                    <div class="monthly-label">Per måned (ca.)</div>
+                    <div class="monthly-value" id="resultMaaned">0 kr</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Timeline Visualization -->
+        <div id="timelineVisual" class="timeline-visual">
+            <div class="feature-title">⏱️ Sykepenger over tid</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Slik fordeles sykepengeperiodene:
+            </p>
+            <div class="timeline-bars">
+                <div class="timeline-bar-wrapper">
+                    <div class="timeline-label">Dag 1-3</div>
+                    <div class="timeline-bar-container">
+                        <div class="timeline-bar egenmelding" id="bar1" style="width: 0%">
+                            <span id="barLabel1"></span>
+                        </div>
+                    </div>
+                    <div class="timeline-amount" id="amount1">0 kr</div>
+                </div>
+                
+                <div class="timeline-bar-wrapper">
+                    <div class="timeline-label">Dag 4-16</div>
+                    <div class="timeline-bar-container">
+                        <div class="timeline-bar arbeidsgiver" id="bar2" style="width: 0%">
+                            <span id="barLabel2"></span>
+                        </div>
+                    </div>
+                    <div class="timeline-amount" id="amount2">0 kr</div>
+                </div>
+                
+                <div class="timeline-bar-wrapper">
+                    <div class="timeline-label">Dag 17+</div>
+                    <div class="timeline-bar-container">
+                        <div class="timeline-bar nav" id="bar3" style="width: 0%">
+                            <span id="barLabel3"></span>
+                        </div>
+                    </div>
+                    <div class="timeline-amount" id="amount3">0 kr</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 6G Impact Section -->
+        <div id="sixgImpact" class="sixg-impact">
+            <h3><span style="font-size: 1.5rem;">⚠️</span> 6G-grensen påvirker deg</h3>
+            <p>Din årslønn overstiger 6G-grensen på 744 168 kr. Det betyr at du ikke får sykepenger for beløpet over denne grensen.</p>
+            
+            <div class="sixg-progress">
+                <div class="sixg-bar covered" id="sixgCovered" style="width: 0%"></div>
+                <div class="sixg-bar lost" id="sixgLost" style="width: 0%"></div>
+            </div>
+            
+            <div class="sixg-stats">
+                <div class="sixg-stat">
+                    <div class="sixg-stat-label">Din årslønn</div>
+                    <div class="sixg-stat-value" id="sixgSalary">0 kr</div>
+                </div>
+                <div class="sixg-stat">
+                    <div class="sixg-stat-label">Du mister ved langtidssykdom</div>
+                    <div class="sixg-stat-value" id="sixgLoss">0 kr</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PIE CHART SECTION -->
+        <div id="pie-chart-section" class="feature-section" style="display: none;">
+            <div class="feature-title">📊 Sykepenger fordeling</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Slik fordeler sykepengene seg:
+            </p>
+            <div style="max-width: 350px; margin: 0 auto;">
+                <canvas id="sykepengerChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Employer Cost Section -->
+        <div id="employerCost" class="employer-cost">
+            <h3>💼 Din arbeidsgivers faktiske kostnad</h3>
+            <p>Det du ser på lønnsslipp er ikke alt arbeidsgiver betaler. Her er den totale kostnaden:</p>
+            
+            <div class="employer-cost-grid">
+                <div class="employer-cost-card">
+                    <div class="employer-cost-label">Dine sykepenger</div>
+                    <div class="employer-cost-value" id="employerSickPay">0 kr</div>
+                </div>
+                <div class="employer-cost-card">
+                    <div class="employer-cost-label">Arbeidsgiveravgift (14,1%)</div>
+                    <div class="employer-cost-value" id="employerAGA">0 kr</div>
+                </div>
+                <div class="employer-cost-card">
+                    <div class="employer-cost-label">Total kostnad</div>
+                    <div class="employer-cost-value" id="employerTotal">0 kr</div>
+                </div>
+            </div>
+            
+            <p style="margin-top: 16px; font-size: 0.85rem; text-align: center;">Dette gjør arbeidsgiver mer forståelig for sykefravær – de betaler mer enn du ser!</p>
+        </div>
+        
+        <!-- ACTION BUTTONS - Matching bilkostnad exactly -->
+        <div id="action-buttons-section" class="feature-section" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📥 Last ned PDF</span>
+                </button>
+                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>✉️ Send til deg selv</span>
+                </button>
+            </div>
+            <div>
+                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet:</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
+                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
+                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
+                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
+                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SAVINGS VISUALIZER -->
+        <div id="savings-section" class="feature-section" style="display: none;">
+            <div class="feature-title">💰 Sparepotensial</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Slik kan du optimalisere sykepengene:
+            </p>
+            <div class="savings-grid">
+                <div class="savings-card">
+                    <div class="savings-label">Gradert 50% tilbake</div>
+                    <div class="savings-amount" id="savingsGradert">-</div>
+                    <div class="savings-sub">Raskere tilbake = mer inntekt</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Full retur etter 30 dager</div>
+                    <div class="savings-amount" id="savingsFull">-</div>
+                    <div class="savings-sub">Optimalt scenario</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Supplerende forsikring</div>
+                    <div class="savings-amount" id="savingsForsikring">-</div>
+                    <div class="savings-sub">Dekker over 6G</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BIGMAC INDEX -->
+        <div id="bigmac-section" class="bigmac-section" style="display: none;">
+            <div class="bigmac-icon">🍔</div>
+            <div class="bigmac-text">Sykepenger tilsvarer</div>
+            <div class="bigmac-value" id="bigmacCount">-</div>
+            <div class="bigmac-sub">Big Mac-måltider (125 kr/stk i Oslo)</div>
+        </div>
+        
+        <!-- REGIONAL COMPARISON -->
+        <div id="regional-section" class="feature-section" style="display: none;">
+            <div class="feature-title">🗺️ Kjøpekraft per region</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Samme beløp gir ulik kjøpekraft rundt i Norge:
+            </p>
+            <div class="regional-grid">
+                <div class="regional-card" style="background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Oslo</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">Dyreste byen (100%)</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="osloValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Kjøpekraft</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="regional-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Bergen</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">25% rimeligere</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="bergenValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Kjøpekraft</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="regional-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Trondheim</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">22% rimeligere</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="trondheimValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Kjøpekraft</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="regional-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Småbyer</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">30% rimeligere</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="smabyerValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Kjøpekraft</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EMAIL MODAL - ADDED -->
+        <div id="emailModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closeEmailModal()">&times;</span>
+                <h3>📧 Send resultater til deg selv</h3>
+                <p>Kopier teksten under og send til deg selv:</p>
+                <textarea id="emailText" readonly></textarea>
+                <button class="modal-btn" onclick="copyEmailText()">Kopier til utklippstavle</button>
+            </div>
+        </div>
+        
+        <!-- SEO CONTENT -->
+        <div style="margin-top: 48px;">
+            <h2 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin-bottom: 24px;">💰 Sykepenger i Norge 2026</h2>
+            
+            <div class="info-box">
+                <div class="info-box-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="currentColor"/></svg>
+                    <h3>Slik fungerer sykepenger i Norge</h3>
+                </div>
+                <p>Sykepenger skal sikre at du har inntekt når du er syk og ikke kan jobbe. Ordningen gir deg 100% av lønnen din opp til 6G (grunnbeløpet), som i 2026 er <strong>744 168 kr</strong>. Dette gjør Norge til ett av verdens mest sjenerøse land for sykelønnsordninger.</p>
+                <p>Arbeidsgiver betaler de første 16 kalenderdagene, deretter overtar NAV fra dag 17. For selvstendig næringsdrivende er det 16 dagers karens (ingen utbetaling), og de får 80% fra dag 17.</p>
+            </div>
+            
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>Periode</th>
+                        <th>Fast ansatt</th>
+                        <th>Selvstendig næringsdrivende</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Dag 1-3 (egenmelding)</td>
+                        <td><span class="rate-badge">100%</span> fra arbeidsgiver</td>
+                        <td>Ingen utbetaling</td>
+                    </tr>
+                    <tr>
+                        <td>Dag 4-16 (sykemelding)</td>
+                        <td><span class="rate-badge">100%</span> fra arbeidsgiver</td>
+                        <td>Ingen utbetaling</td>
+                    </tr>
+                    <tr>
+                        <td>Dag 17+ (NAV-periode)</td>
+                        <td><span class="rate-badge">100%</span> fra NAV</td>
+                        <td><span class="rate-badge">80%</span> fra NAV</td>
+                    </tr>
+                    <tr>
+                        <td>Maksimal ytelse</td>
+                        <td colspan="2">6G = 744 168 kr (2026)</td>
+                    </tr>
+                    <tr>
+                        <td>Maks varighet</td>
+                        <td colspan="2">52 uker (248 arbeidsdager)</td>
+                    </tr>
                 </tbody>
             </table>
             
-            <div class="callout warning">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div class="callout info">
+                <div class="callout-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="currentColor"/></svg>
+                </div>
                 <div class="callout-content">
-                    <div class="callout-title">Selvstendig næringsdrivende</div>
-                    <p class="callout-text">Som selvstendig må du vente 16 dager før du får sykepenger, og du får bare 80% dekningsgrad. Du kan kjøpe tilleggsforsikring fra NAV for bedre dekning.</p>
+                    <div class="callout-title">Hva er 6G-grensen?</div>
+                    <p class="callout-text">6G er seks ganger grunnbeløpet i folketrygden. I 2026 er ett G på 124 028 kr, så 6G blir 744 168 kr. Tjener du mer enn dette, får du IKKE sykepenger for beløpet over. En person med 900 000 kr i årslønn mister derfor ca. 156 000 kr i inntekt ved langtidssykdom.</p>
                 </div>
             </div>
             
-            <h2>🧩 Krav for å få sykepenger</h2>
-            <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Grunnleggende krav</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="callout warning">
+                <div class="callout-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L1 21H23L12 2ZM13 18H11V16H13V18ZM13 14H11V10H13V14Z" fill="currentColor"/></svg>
+                </div>
+                <div class="callout-content">
+                    <div class="callout-title">Viktig for høytlønnede</div>
+                    <p class="callout-text">Tjener du mer enn 744 168 kr? Da bør du vurdere supplerende sykeforsikring. Mange arbeidsgivere har avtaler som dekker full lønn selv over 6G, men sjekk din arbeidsavtale. Privat forsikring koster typisk 15-25 000 kr/år og kan være verdt det.</p>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">⏱️ Egenmelding vs sykemelding - når trenger jeg lege?</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
                 <div class="collapsible-content">
+                    <p><strong>Egenmelding:</strong></p>
                     <ul>
-                        <li>Du må ha vært i jobb i minst <strong>4 uker</strong> før du ble syk</li>
-                        <li>Du må ha en årsinntekt på minst <strong>½ G (ca. 62 000 kr)</strong></li>
-                        <li>Du må være <strong>100% arbeidsufør</strong> eller delvis (gradert sykemelding)</li>
-                        <li>Sykdommen må være dokumentert av lege fra dag 4</li>
+                        <li>Kan brukes de første 3 dagene (eller opptil 24 dager på et år hvis arbeidsgiver tillater)</li>
+                        <li>Gis direkte til arbeidsgiver, ingen lege involvert</li>
+                        <li>Du får 100% lønn fra arbeidsgiver</li>
+                        <li>Maks 3 påfølgende dager per sykdomstilfelle</li>
+                    </ul>
+                    
+                    <p><strong>Sykemelding fra lege:</strong></p>
+                    <ul>
+                        <li>Nødvendig fra dag 4 eller hvis egenmelding er oppbrukt</li>
+                        <li>Legen vurderer arbeidsuførhet og varighet</li>
+                        <li>Sendes digitalt til NAV og arbeidsgiver</li>
+                        <li>Kan være gradert (20%, 40%, 50%, 60%, 80%, 100%)</li>
                     </ul>
                 </div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Varighet og makstid</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">📊 Gradert sykmelding forklart</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
                 <div class="collapsible-content">
-                    <p>Du kan få sykepenger i opptil <strong>52 uker</strong> (248 arbeidsdager) i løpet av en treårsperiode.</p>
-                    <p>Etter 52 uker kan du søke om arbeidsavklaringspenger (AAP) eller uføretrygd hvis du fortsatt ikke kan jobbe.</p>
+                    <p>Gradert sykmelding betyr at du jobber deltid mens du er delvis sykmeldt. Dette er ofte gunstig både økonomisk og for å komme raskere tilbake i full jobb.</p>
+                    
+                    <p><strong>Slik fungerer det:</strong></p>
+                    <ul>
+                        <li><strong>20% sykmeldt:</strong> Jobber 80%, får 20% sykepenger</li>
+                        <li><strong>50% sykmeldt:</strong> Jobber 50%, får 50% sykepenger</li>
+                        <li><strong>80% sykmeldt:</strong> Jobber 20%, får 80% sykepenger</li>
+                    </ul>
                 </div>
             </div>
             
-            <h2>❓ Ofte stilte spørsmål</h2>
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Når trenger jeg sykemelding fra lege?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Du kan bruke <strong>egenmelding</strong> de første 3 dagene. Fra dag 4 må du ha sykemelding fra lege. Fra dag 8 må sykmeldingen sendes til NAV og arbeidsgiver.</p></div>
-            </div>
-            
-            <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Får jeg sykepenger i helger og helligdager?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Sykepenger utbetales for <strong>5 dager per uke</strong> (mandag-fredag). Helger og helligdager telles ikke som sykedager med sykepenger.</p></div>
-            </div>
-            
-            <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Hva skjer med feriepengene mine når jeg er syk?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Du opptjener feriepenger av sykepenger i inntil <strong>48 dager</strong> per år. Etter dette stopper feriepengeoppbygging fra sykepengene.</p><p>Se vår <a href="feriepenger.html">feriepengekalkulator</a> for mer info.</p></div>
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">🔁 Hva hvis jeg blir syk igjen?</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="collapsible-content">
+                    <p><strong>Ny sykdom innen 16 dager:</strong> Regnes som samme sykdomstilfelle. Arbeidsgiver betaler ikke på nytt, NAV fortsetter direkte.</p>
+                    
+                    <p><strong>Ny sykdom etter 16 dager:</strong> Regnes som nytt tilfelle. Arbeidsgiver betaler igjen dag 1-16.</p>
+                    
+                    <p><strong>Ny sykdom etter 52 uker:</strong> Hvis du har brukt opp 52 uker med sykepenger, må du være frisk i 26 uker før du har rett på nye 52 uker.</p>
+                </div>
             </div>
             
             <div class="callout tip">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                <div class="callout-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/></svg>
+                </div>
                 <div class="callout-content">
-                    <div class="callout-title">Tips: Sjekk forsikring</div>
-                    <p class="callout-text">Mange arbeidsgivere har forsikring som gir full lønn ved sykdom, selv over 6G-grensen. Sjekk med HR eller arbeidsavtalen din.</p>
+                    <div class="callout-title">Tips for å optimalisere sykepenger</div>
+                    <p class="callout-text">
+                        <strong>1. Vurder gradert retur:</strong> 50% sykmelding gir samme totale inntekt men raskere tilbake i jobb.<br>
+                        <strong>2. Sjekk arbeidsavtalen:</strong> Mange arbeidsgivere dekker full lønn selv over 6G.<br>
+                        <strong>3. Supplementforsikring:</strong> Hvis du tjener >750k, vurder privat forsikring.<br>
+                        <strong>4. Dokumentasjon:</strong> Hold orden på sykmeldinger og meldekort til NAV.
+                    </p>
                 </div>
             </div>
             
-            <h2>🔗 Relaterte kalkulatorer</h2>
+            <h2 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 24px 0;">🔗 Relaterte kalkulatorer</h2>
             <div class="related-grid">
-                <a href="brutto-netto.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Brutto/Netto Kalkulator</h4><p>Se hva du får utbetalt etter skatt</p></div></a>
-                <a href="feriepenger.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Feriepengekalkulator</h4><p>Beregn feriepenger for 2026</p></div></a>
-                <a href="skatt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Skattekalkulator</h4><p>Detaljert skatteberegning</p></div></a>
-                <a href="barnebidrag.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M1.5 15C2.32843 15 3 15.6716 3 16.5C3 17.3284 2.32843 18 1.5 18C0.671573 18 0 17.3284 0 16.5C0 15.6716 0.671573 15 1.5 15ZM12.5 15C13.3284 15 14 15.6716 14 16.5C14 17.3284 13.3284 18 12.5 18C11.6716 18 11 17.3284 11 16.5C11 15.6716 11.6716 15 12.5 15ZM16 6H14V14H0V7H12.5V4.5H16V6ZM8.5 6H0.5C0.5 2.68629 3.18629 0 6.5 0H8.5V6Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Barnebidragskalkulator</h4><p>Beregn barnebidrag</p></div></a>
+                <a href="skatt.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 17 16" fill="none">
+                            <path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Skattekalkulator</h4>
+                        <p>Beregn skatt på sykepenger</p>
+                    </div>
+                </a>
+                
+                <a href="brutto-netto.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 18 15" fill="none">
+                            <path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Brutto/Netto</h4>
+                        <p>Se hva du får utbetalt</p>
+                    </div>
+                </a>
+                
+                <a href="feriepenger.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 19 19" fill="none">
+                            <path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Feriepenger</h4>
+                        <p>Beregn feriepenger fra sykepenger</p>
+                    </div>
+                </a>
+                
+                <a href="arbeidsgiveravgift.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 18 15" fill="none">
+                            <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Arbeidsgiveravgift</h4>
+                        <p>Se hva arbeidsgiver betaler</p>
+                    </div>
+                </a>
             </div>
             
-            <div class="disclaimer"><p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler. Faktisk sykepengeutbetaling kan variere basert på arbeidsavtale, tariffavtaler og spesielle situasjoner. Kontakt NAV eller arbeidsgiver for nøyaktig informasjon.</p></div>
+            <div class="disclaimer">
+                <p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler for 2026. Faktisk sykepengeutbetaling kan variere basert på arbeidsavtale, tariffavtaler, fylke og spesielle situasjoner. Kontakt NAV eller arbeidsgiver for nøyaktig informasjon om dine rettigheter.</p>
+            </div>
         </div>
     </main>
     
@@ -353,20 +838,43 @@
     </footer>
     
     <script>
+        // Constants
+        const GRUNNBELOEP_2026 = 124028;
         const MAX_6G = 744168;
         const WORK_DAYS_PER_YEAR = 260;
-
+        const BIGMAC_PRICE = 125;
+        const AGA_RATE = 0.141;
+        
+        const REGIONAL_FACTORS = {
+            oslo: 1.00,
+            bergen: 0.75,
+            trondheim: 0.78,
+            smaabyer: 0.70
+        };
+        
+        let sykepengerChart = null;
+        
         function formatNumber(num) {
             return Math.round(num).toLocaleString('no-NO') + ' kr';
         }
-
+        
+        function formatNumberPlain(num) {
+            return Math.round(num).toLocaleString('no-NO');
+        }
+        
         function calculate() {
             const monthlySalary = parseFloat(document.getElementById('salary').value) || 0;
             const sickDays = parseInt(document.getElementById('sickDays').value) || 0;
             const employmentType = document.getElementById('employmentType').value;
             
-            if (monthlySalary <= 0) { alert('Vennligst oppgi en gyldig månedslønn'); return; }
-            if (sickDays <= 0 || sickDays > 260) { alert('Vennligst oppgi gyldige sykedager (1-260)'); return; }
+            if (monthlySalary <= 0) {
+                alert('Vennligst oppgi en gyldig månedslønn');
+                return;
+            }
+            if (sickDays <= 0 || sickDays > 260) {
+                alert('Vennligst oppgi gyldige sykedager (1-260)');
+                return;
+            }
             
             const annualSalary = monthlySalary * 12;
             const cappedSalary = Math.min(annualSalary, MAX_6G);
@@ -374,6 +882,7 @@
             
             let totalPay = 0, employerPay = 0, navPay = 0, paidDays = 0, coveragePercent = 100;
             
+            // Calculate payments based on employment type
             if (employmentType === 'employee') {
                 const employerDays = Math.min(sickDays, 16);
                 const navDays = Math.max(0, sickDays - 16);
@@ -382,6 +891,7 @@
                 totalPay = employerPay + navPay;
                 paidDays = sickDays;
                 coveragePercent = 100;
+                
                 document.getElementById('rowArbeidsgiver').style.display = '';
                 document.getElementById('rowNAV').style.display = navDays > 0 ? '' : 'none';
                 document.getElementById('resultArbeidsgiver').textContent = formatNumber(employerPay) + ' (' + employerDays + ' dager)';
@@ -392,50 +902,378 @@
                 totalPay = navPay;
                 paidDays = paidSickDays;
                 coveragePercent = 80;
+                
                 document.getElementById('rowArbeidsgiver').style.display = 'none';
                 document.getElementById('rowNAV').style.display = '';
                 document.getElementById('resultNAV').textContent = formatNumber(navPay) + ' (' + paidSickDays + ' dager)';
             }
             
+            // Update results table
             document.getElementById('resultAarslonn').textContent = formatNumber(cappedSalary) + (annualSalary > MAX_6G ? ' (maks 6G)' : '');
             document.getElementById('resultDagssats').textContent = formatNumber(dailyRate);
             document.getElementById('resultDager').textContent = paidDays + ' dager';
             document.getElementById('resultTotal').textContent = formatNumber(totalPay);
+            document.getElementById('resultMaaned').textContent = formatNumber(totalPay / (sickDays / 21.67));
             document.getElementById('resultProsent').textContent = coveragePercent + '%';
             document.getElementById('resultInfo').textContent = (employmentType === 'selfEmployed' && sickDays <= 16) ? 'Ingen utbetaling de første 16 dagene' : 'Før skatt';
             
+            // Show results
             document.getElementById('results').style.display = 'block';
+            
+            // Update Timeline Visualization
+            updateTimeline(employmentType, sickDays, dailyRate);
+            
+            // Update 6G Impact
+            update6GImpact(annualSalary, cappedSalary, sickDays, dailyRate);
+            
+            // Update Chart
+            updateChart(employmentType, employerPay, navPay);
+            
+            // Update Employer Cost
+            updateEmployerCost(employerPay);
+            
+            // Update Savings Scenarios
+            updateSavings(monthlySalary, sickDays, totalPay, annualSalary);
+            
+            // Update BigMac Index
+            populateBigMac(totalPay);
+            
+            // Update Regional Comparison
+            populateRegional(totalPay);
+            
+            // Show all feature sections
+            document.getElementById('pie-chart-section').style.display = 'block';
+            document.getElementById('action-buttons-section').style.display = 'block';
+            document.getElementById('savings-section').style.display = 'block';
+            document.getElementById('bigmac-section').style.display = 'block';
+            document.getElementById('regional-section').style.display = 'block';
+            
+            // Scroll to results
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        
+        function updateTimeline(employmentType, sickDays, dailyRate) {
+            const day1to3 = Math.min(sickDays, 3);
+            const day4to16 = Math.min(Math.max(0, sickDays - 3), 13);
+            const day17plus = Math.max(0, sickDays - 16);
+            
+            let amount1 = 0, amount2 = 0, amount3 = 0;
+            let label1 = '', label2 = '', label3 = '';
+            
+            if (employmentType === 'employee') {
+                amount1 = day1to3 * dailyRate;
+                amount2 = day4to16 * dailyRate;
+                amount3 = day17plus * dailyRate;
+                label1 = day1to3 > 0 ? '100% arbeidsgiver' : '';
+                label2 = day4to16 > 0 ? '100% arbeidsgiver' : '';
+                label3 = day17plus > 0 ? '100% NAV' : '';
+            } else {
+                amount1 = 0;
+                amount2 = 0;
+                amount3 = day17plus * dailyRate * 0.8;
+                label1 = day1to3 > 0 ? 'Ingen utbetaling' : '';
+                label2 = day4to16 > 0 ? 'Ingen utbetaling' : '';
+                label3 = day17plus > 0 ? '80% NAV' : '';
+            }
+            
+            const maxAmount = Math.max(amount1, amount2, amount3, 1);
+            
+            document.getElementById('bar1').style.width = ((amount1 / maxAmount) * 100) + '%';
+            document.getElementById('bar2').style.width = ((amount2 / maxAmount) * 100) + '%';
+            document.getElementById('bar3').style.width = ((amount3 / maxAmount) * 100) + '%';
+            
+            document.getElementById('barLabel1').textContent = label1;
+            document.getElementById('barLabel2').textContent = label2;
+            document.getElementById('barLabel3').textContent = label3;
+            
+            document.getElementById('amount1').textContent = formatNumber(amount1);
+            document.getElementById('amount2').textContent = formatNumber(amount2);
+            document.getElementById('amount3').textContent = formatNumber(amount3);
+            
+            document.getElementById('timelineVisual').style.display = 'block';
+        }
+        
+        function update6GImpact(annualSalary, cappedSalary, sickDays, dailyRate) {
+            if (annualSalary > MAX_6G) {
+                const loss = annualSalary - MAX_6G;
+                const lossFromSickness = (loss / WORK_DAYS_PER_YEAR) * sickDays;
+                
+                const coveredPercent = (cappedSalary / annualSalary) * 100;
+                const lostPercent = 100 - coveredPercent;
+                
+                document.getElementById('sixgCovered').style.width = coveredPercent + '%';
+                document.getElementById('sixgCovered').textContent = formatNumber(cappedSalary) + ' (dekket)';
+                document.getElementById('sixgLost').style.width = lostPercent + '%';
+                document.getElementById('sixgLost').textContent = formatNumber(loss) + ' (ikke dekket)';
+                
+                document.getElementById('sixgSalary').textContent = formatNumber(annualSalary);
+                document.getElementById('sixgLoss').textContent = formatNumber(lossFromSickness);
+                
+                document.getElementById('sixgImpact').style.display = 'block';
+            } else {
+                document.getElementById('sixgImpact').style.display = 'none';
+            }
+        }
+        
+        function updateChart(employmentType, employerPay, navPay) {
+            const ctx = document.getElementById('sykepengerChart');
+            
+            if (sykepengerChart) {
+                sykepengerChart.destroy();
+            }
+            
+            let labels, data, colors;
+            
+            if (employmentType === 'employee') {
+                labels = ['Arbeidsgiver (dag 1-16)', 'NAV (dag 17+)'];
+                data = [employerPay, navPay];
+                colors = ['#3B82F6', '#F59E0B'];
+            } else {
+                labels = ['NAV (dag 17+, 80%)'];
+                data = [navPay];
+                colors = ['#F59E0B'];
+            }
+            
+            sykepengerChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: '#FAF9F7',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + formatNumber(context.parsed);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateEmployerCost(employerPay) {
+            if (employerPay > 0) {
+                const aga = employerPay * AGA_RATE;
+                const total = employerPay + aga;
+                
+                document.getElementById('employerSickPay').textContent = formatNumber(employerPay);
+                document.getElementById('employerAGA').textContent = formatNumber(aga);
+                document.getElementById('employerTotal').textContent = formatNumber(total);
+                
+                document.getElementById('employerCost').style.display = 'block';
+            } else {
+                document.getElementById('employerCost').style.display = 'none';
+            }
+        }
+        
+        function updateSavings(monthlySalary, sickDays, totalPay, annualSalary) {
+            const cappedSalary = Math.min(annualSalary, MAX_6G);
+            const dailyRate = cappedSalary / WORK_DAYS_PER_YEAR;
+            
+            // Scenario 1: Gradert 50% tilbake raskere
+            const halfSickDays = Math.ceil(sickDays / 2);
+            const gradertIncome = (halfSickDays * dailyRate * 0.5) + (halfSickDays * dailyRate * 1.0);
+            
+            // Scenario 2: Full retur etter 30 dager
+            const thirtyDays = Math.min(sickDays, 30);
+            const fullReturnIncome = thirtyDays * dailyRate;
+            const savedFromEarlyReturn = (sickDays - thirtyDays) * dailyRate;
+            
+            // Scenario 3: Supplerende forsikring
+            let insuranceValue = 0;
+            if (annualSalary > MAX_6G) {
+                insuranceValue = ((annualSalary - MAX_6G) / WORK_DAYS_PER_YEAR) * sickDays;
+            }
+            
+            document.getElementById('savingsGradert').textContent = formatNumber(gradertIncome);
+            document.getElementById('savingsFull').textContent = formatNumber(fullReturnIncome + savedFromEarlyReturn);
+            document.getElementById('savingsForsikring').textContent = insuranceValue > 0 ? formatNumber(insuranceValue) : 'Ikke relevant';
+        }
+        
+        function populateBigMac(totalPay) {
+            const bigmacCount = Math.floor(totalPay / BIGMAC_PRICE);
+            document.getElementById('bigmacCount').textContent = formatNumberPlain(bigmacCount);
+        }
+        
+        function populateRegional(totalPay) {
+            document.getElementById('osloValue').textContent = formatNumber(totalPay);
+            document.getElementById('bergenValue').textContent = formatNumber(totalPay / REGIONAL_FACTORS.bergen);
+            document.getElementById('trondheimValue').textContent = formatNumber(totalPay / REGIONAL_FACTORS.trondheim);
+            document.getElementById('smabyerValue').textContent = formatNumber(totalPay / REGIONAL_FACTORS.smaabyer);
+        }
+        
+        // PDF Download
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const monthlySalary = document.getElementById('salary').value;
+            const sickDays = document.getElementById('sickDays').value;
+            const employmentType = document.getElementById('employmentType').value === 'employee' ? 'Fast ansatt' : 'Selvstendig næringsdrivende';
+            const total = document.getElementById('resultTotal').textContent;
+            
+            doc.setFontSize(20);
+            doc.setTextColor(196, 83, 58);
+            doc.text('Sykepenger Beregning 2026', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            const today = new Date().toLocaleDateString('no-NO');
+            doc.text('Dato: ' + today, 20, 30);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0);
+            doc.text('Månedslønn: ' + monthlySalary + ' kr', 20, 50);
+            doc.text('Sykedager: ' + sickDays, 20, 60);
+            doc.text('Type: ' + employmentType, 20, 70);
+            doc.text('Totalt: ' + total, 20, 80);
+            
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text('Generert av Kalkulatornorge.no', 20, 280);
+            doc.text('Dette er et estimat. Kontakt NAV for nøyaktig informasjon.', 20, 285);
+            
+            doc.save('sykepenger-2026.pdf');
+        }
+        
+        // Social Sharing
+        function shareToX() {
+            const text = 'Jeg brukte Sykepengekalkulator på Kalkulatornorge.no for å beregne mine sykepenger! 💰🏥';
+            const url = 'https://kalkulatornorge.no/sykepenger.html';
+            window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank');
+        }
+        
+        function shareToFacebook() {
+            const url = 'https://kalkulatornorge.no/sykepenger.html';
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank');
+        }
+        
+        function shareToLinkedIn() {
+            const url = 'https://kalkulatornorge.no/sykepenger.html';
+            window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url), '_blank');
+        }
+        
+        function copyToClipboard() {
+            const url = 'https://kalkulatornorge.no/sykepenger.html';
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ Lenke kopiert til utklippstavlen!');
+            }).catch(() => {
+                alert('❌ Kunne ikke kopiere lenke');
+            });
+        }
+        
+        // Email Results
+        function emailResults() {
+            const monthlySalary = document.getElementById('salary').value;
+            const sickDays = document.getElementById('sickDays').value;
+            const total = document.getElementById('resultTotal').textContent;
+            
+            const emailText = `Sykepenger Beregning fra Kalkulatornorge.no
 
-        function toggleDropdown() { document.getElementById('dropdownMenu').classList.toggle('open'); }
-        document.addEventListener('click', function(e) { const dropdown = document.getElementById('dropdownMenu'); if (!dropdown.contains(e.target)) { dropdown.classList.remove('open'); } });
-        function toggleCollapsible(element) { element.classList.toggle('open'); }
-        document.getElementById('salary').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
-        document.getElementById('sickDays').addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+Dato: ${new Date().toLocaleDateString('no-NO')}
+
+DINE INNDATA:
+Månedslønn: ${monthlySalary} kr
+Sykedager: ${sickDays}
+
+RESULTAT:
+Totale sykepenger: ${total}
+
+Besøk https://kalkulatornorge.no/sykepenger.html for fullstendig beregning.
+
+Viktig: Dette er et estimat. Kontakt NAV for nøyaktig informasjon.`;
+            
+            document.getElementById('emailText').value = emailText;
+            document.getElementById('emailModal').style.display = 'block';
+        }
+        
+        function closeEmailModal() {
+            document.getElementById('emailModal').style.display = 'none';
+        }
+        
+        function copyEmailText() {
+            const emailText = document.getElementById('emailText');
+            emailText.select();
+            document.execCommand('copy');
+            alert('✅ Kopiert til utklippstavle!');
+        }
+        
+        // Utility functions
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('open');
+        }
+        
+        function toggleCollapsible(element) {
+            element.classList.toggle('open');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('emailModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Enter key support
+        document.getElementById('salary').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculate();
+        });
+        document.getElementById('sickDays').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculate();
+        });
     </script>
-<!-- Schema Markup -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Sykepengekalkulator 2026",
-  "description": "Beregn sykepenger fra NAV og arbeidsgiver. Se hva du får utbetalt ved sykdom.",
-  "url": "https://kalkulatornorge.no/sykepenger.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Any",
-  "inLanguage": "nb-NO",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "NOK"
-  },
-  "creator": {
-    "@type": "Organization",
-    "name": "Kalkulatornorge.no",
-    "url": "https://kalkulatornorge.no"
-  }
-}
-</script>
+    
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Sykepengekalkulator 2026",
+      "description": "Beregn sykepenger fra NAV og arbeidsgiver. Se 6G-grense effekt og arbeidsgiver kostnad.",
+      "url": "https://kalkulatornorge.no/sykepenger.html",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "nb-NO",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "NOK"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "Kalkulatornorge.no",
+        "url": "https://kalkulatornorge.no"
+      }
+    }
+    </script>
 </body>
 </html>
