@@ -4,9 +4,9 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bilkostnad Kalkulator 2026 - Beregn årlige bilutgifter | Kalkulatornorge.no</title>
-    <meta name="description" content="Gratis bilkostnadskalkulator. Beregn alle utgifter ved å eie bil: drivstoff, forsikring, verditap, vedlikehold og avgifter. Sammenlign elbil vs bensin.">
-    <meta name="keywords" content="bilkostnad, bilutgifter, hva koster bil, bilkalkulator, elbil kostnad, bilhold, verditap bil">
+    <title>Bilkostnad Kalkulator 2026 - Se de VIRKELIGE bilkostnadene | Kalkulatornorge.no</title>
+    <meta name="description" content="Beregn totalkostnad bil - ikke bare kjøpeprisen. Sammenlign elbil vs bensin med 2026 avgifter. Basert på NAF-data. Verditap, forsikring, drivstoff, service.">
+    <meta name="keywords" content="bilkostnad, totalkostnad bil, elbil vs bensin, bilkalkulator 2026, verditap bil, virkelige bilkostnader, skjulte bilutgifter">
     <link rel="canonical" href="https://kalkulatornorge.no/bilkostnad.html">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,22 +14,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <meta property="og:title" content="Bilkostnad Kalkulator 2026 | Kalkulatornorge.no">
-    <meta property="og:description" content="Beregn alle kostnader ved å eie bil - drivstoff, forsikring, verditap og mer.">
+    <meta property="og:description" content="Se de VIRKELIGE bilkostnadene - ikke bare kjøpeprisen. Sammenlign elbil vs bensin.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalkulatornorge.no/bilkostnad.html">
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        {"@type": "Question", "name": "Hva koster det å ha bil i Norge per år?", "acceptedAnswer": {"@type": "Answer", "text": "En gjennomsnittlig mellomklassebil koster typisk 80 000-120 000 kr per år. Verditap utgjør den største kostnaden (35-50%), etterfulgt av drivstoff, forsikring og vedlikehold."}},
-        {"@type": "Question", "name": "Hva er kjøregodtgjørelse-satsen i 2026?", "acceptedAnswer": {"@type": "Answer", "text": "Skattefri kjøregodtgjørelse er 3,50 kr per kilometer i 2026. Denne satsen gjelder når du bruker privat bil i jobbsammenheng og skal dekke alle kostnader inkludert drivstoff, slitasje og verditap."}},
-        {"@type": "Question", "name": "Er elbil billigere enn bensinbil?", "acceptedAnswer": {"@type": "Answer", "text": "Elbiler har lavere drivstoff- og servicekostnader, men ofte høyere forsikring. Ifølge NAF koster en elbil ca. 111 000 kr årlig, mens bensin/diesel er litt dyrere. Elbiler får også rabatt på bompenger og ofte gratis parkering."}}
+        {"@type": "Question", "name": "Hva koster det å ha bil i Norge per år?", "acceptedAnswer": {"@type": "Answer", "text": "En gjennomsnittlig mellomklassebil koster typisk 80 000-120 000 kr per år ifølge NAF. Verditap utgjør den største kostnaden (35-50%), etterfulgt av drivstoff, forsikring og vedlikehold."}},
+        {"@type": "Question", "name": "Er elbil billigere enn bensinbil i 2026?", "acceptedAnswer": {"@type": "Answer", "text": "Ifølge NAF 2025-data koster en elbil (685k) ca. 141 198 kr årlig, mens dieselbil (515k) koster 130 306 kr. Elbil har lavere drivstoff og service, men høyere forsikring. Med 2026 momsendringer blir elbiler 50k+ dyrere ved kjøp."}},
+        {"@type": "Question", "name": "Hva er kjøregodtgjørelse-satsen i 2026?", "acceptedAnswer": {"@type": "Answer", "text": "Skattefri kjøregodtgjørelse er 3,50 kr per kilometer i 2026. Denne satsen gjelder når du bruker privat bil i jobbsammenheng og skal dekke alle kostnader inkludert drivstoff, slitasje og verditap."}}
       ]
     }
     </script>
+    
     <style>
+        /* Base Calculator Styles - Following arbeidsgiveravgift.html exactly */
         .calc-page { background: var(--color-background); min-height: 100vh; }
         .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
         .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
@@ -40,6 +50,18 @@
         .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
         .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
         .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+        
+        /* Advanced Mode Toggle */
+        .mode-toggle { display: flex; justify-content: center; margin-bottom: 24px; }
+        .mode-toggle-btn { padding: 10px 20px; background: var(--color-background); border: 1px solid var(--color-border); color: var(--color-text-secondary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
+        .mode-toggle-btn:first-child { border-radius: 8px 0 0 8px; }
+        .mode-toggle-btn:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+        .mode-toggle-btn.active { background: var(--color-primary); color: white !important; border-color: var(--color-primary); }
+        .mode-toggle-btn:not(.active):hover { background: rgba(196, 83, 58, 0.05); }
+        
+        .advanced-inputs { display: none; }
+        
+        /* Form Styles */
         .form-group { margin-bottom: 20px; }
         .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
         .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
@@ -47,9 +69,14 @@
         .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        
+        .section-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--color-text); margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid var(--color-border); }
+        
         .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
         .calc-btn:hover { background: var(--color-primary-hover); }
         .calc-btn:active { transform: scale(0.98); }
+        
+        /* Results Table */
         .results-section { margin-top: 24px; display: none; }
         .results-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--color-border); border-bottom: none; }
         .results-table thead { background: var(--color-primary); color: white; }
@@ -61,7 +88,7 @@
         .results-table tbody tr:hover { background: var(--color-background); }
         .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
         .results-table tr.highlight td:last-child { color: var(--color-primary); }
-        .results-table tr.subtotal td { font-weight: 600; background: var(--color-background); }
+        
         .results-total { background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
         .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
         .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
@@ -70,6 +97,25 @@
         .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
         .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
         @media (max-width: 480px) { .results-total { flex-direction: column; text-align: center; gap: 16px; } .total-right { text-align: center; } .total-value { font-size: 1.75rem; } }
+        
+        /* Feature Sections - Matching arbeidsgiveravgift.html exactly */
+        .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; display: none; }
+        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        
+        /* Callouts */
+        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
+        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
+        .callout-content { flex: 1; }
+        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
+        .callout-text { margin: 0; font-size: 0.9rem; line-height: 1.6; }
+        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
+        .callout.warning .callout-icon { color: #FF9800; }
+        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.info .callout-icon { color: var(--color-primary); }
+        
+        .callout ul { margin: 8px 0; padding-left: 20px; line-height: 1.7; }
+        .callout li { margin-bottom: 6px; }
+        
         .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
         .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
         .info-box-header svg { color: var(--color-primary); }
@@ -78,40 +124,42 @@
         .info-box p:last-child { margin-bottom: 0; }
         .info-box a { color: var(--color-primary); text-decoration: none; }
         .info-box a:hover { text-decoration: underline; }
-        .seo-content { margin-top: 48px; }
-        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .seo-content h2:first-child { margin-top: 0; }
-        .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
-        .seo-content a { color: var(--color-primary); text-decoration: none; }
-        .seo-content a:hover { text-decoration: underline; }
-        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
-        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
-        .callout-content { flex: 1; }
-        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
-        .callout-text { margin: 0; font-size: 0.9rem; }
-        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
-        .callout.tip .callout-icon { color: #4CAF50; }
-        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
-        .callout.warning .callout-icon { color: #FF9800; }
-        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
-        .callout.info .callout-icon { color: var(--color-primary); }
-        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
-        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
-        .info-table tr:last-child td { border-bottom: none; }
-        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
-        .info-table tr:hover td { background: var(--color-background); }
-        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
-        .collapsible-header { width: 100%; padding: 18px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: inherit; text-align: left; }
+        
+        /* Savings Grid - Matching arbeidsgiveravgift.html exactly */
+        .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+        .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
+        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
+        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
+        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } }
+        
+        /* BigMac Section - Matching arbeidsgiveravgift.html exactly */
+        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; display: none; }
+        .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
+        .bigmac-text { font-size: 0.9rem; color: #795548; margin-bottom: 8px; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: #F57C00; }
+        .bigmac-sub { font-size: 0.85rem; color: #795548; margin-top: 4px; }
+        
+        /* Regional Grid - Matching arbeidsgiveravgift.html exactly */
+        .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+        .regional-card { background: white; border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; }
+        @media (max-width: 600px) { .regional-grid { grid-template-columns: 1fr; } }
+        
+        /* Collapsibles */
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+        .collapsible-header { width: 100%; padding: 20px 24px; background: transparent; border: none; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; font-family: inherit; text-align: left; }
         .collapsible-header:hover { background: var(--color-background); }
-        .collapsible-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 10px; }
-        .collapsible-icon { transition: transform 0.3s; color: var(--color-text-secondary); }
+        .collapsible-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
+        .collapsible-icon { width: 20px; height: 20px; transition: transform 0.3s; }
         .collapsible.open .collapsible-icon { transform: rotate(180deg); }
-        .collapsible-content { display: none; padding: 0 24px 24px 24px; }
-        .collapsible.open .collapsible-content { display: block; }
-        .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
-        .collapsible-content ul, .collapsible-content ol { margin: 12px 0; padding-left: 20px; }
-        .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
+        .collapsible-content { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
+        .collapsible.open .collapsible-content { max-height: 2000px; padding: 0 24px 20px 24px; }
+        .collapsible-content p { color: var(--color-text-secondary); line-height: 1.6; margin: 0 0 12px 0; }
+        .collapsible-content ul { margin: 8px 0 0 0; padding-left: 20px; }
+        .collapsible-content li { color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 6px; }
+        .collapsible-content strong { color: var(--color-text); }
+        
+        /* Related Calculators Grid */
         .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
         .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
         .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
@@ -119,8 +167,24 @@
         .related-card-icon svg { width: 20px; height: 20px; }
         .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
         .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
-        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
-        .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
+        
+        /* Info Table */
+        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
+        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table tbody tr:hover { background: var(--color-background); }
+        .rate-badge { display: inline-block; padding: 4px 8px; background: var(--color-primary-light); color: var(--color-primary); border-radius: 6px; font-weight: 600; font-size: 0.85rem; }
+        
+        /* SEO Content */
+        .seo-content { margin-top: 48px; }
+        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .seo-content h2:first-child { margin-top: 0; }
+        .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+        .seo-content a { color: var(--color-primary); text-decoration: none; }
+        .seo-content a:hover { text-decoration: underline; }
+        
+        /* Dropdown styles from arbeidsgiveravgift */
         .dropdown-menu { position: relative; }
         .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .dropdown-btn:hover { border-color: var(--color-primary); }
@@ -132,12 +196,6 @@
         .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
         .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
         .dropdown-item-icon svg { width: 16px; height: 16px; }
-        .fuel-type-toggle { display: flex; gap: 12px; margin-bottom: 20px; }
-        .fuel-type-btn { flex: 1; padding: 14px 20px; border: 2px solid var(--color-border); border-radius: 10px; background: var(--color-surface); font-family: inherit; font-size: 0.95rem; font-weight: 500; color: var(--color-text-secondary); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .fuel-type-btn:hover { border-color: var(--color-primary); }
-        .fuel-type-btn.active { border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
-        .fuel-type-btn svg { width: 20px; height: 20px; }
-        .section-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
     </style>
 </head>
 <body class="calc-page">
@@ -183,112 +241,169 @@
     </header>
     
     <main class="calc-container">
-        <a href="index.html" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
+        <a href="index.html" class="back-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Tilbake til alle kalkulatorer
+        </a>
         
         <div class="calc-header">
-            <div class="calc-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></div>
+            <div class="calc-icon">
+                <svg viewBox="0 0 20 16" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/>
+                </svg>
+            </div>
             <h1>Bilkostnad Kalkulator 2026</h1>
-            <p>Beregn de reelle årlige kostnadene ved å eie bil</p>
+            <p>Se de VIRKELIGE bilkostnadene - ikke bare kjøpeprisen</p>
+        </div>
+        
+        <!-- MODE TOGGLE -->
+        <div class="mode-toggle">
+            <button class="mode-toggle-btn active" id="btnSimple" onclick="setMode('simple')">
+                <span>📊</span> Enkel
+            </button>
+            <button class="mode-toggle-btn" id="btnAdvanced" onclick="setMode('advanced')">
+                <span>⚙️</span> Avansert
+            </button>
         </div>
         
         <div class="calc-box">
-            <div class="fuel-type-toggle">
-                <button class="fuel-type-btn active" id="btnFossil" onclick="setFuelType('fossil')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 22h12M5 22V12M17 22V2M17 2l4 4M17 2l-4 4M5 12l2-2 2 2M5 12V2h4v10"/></svg>
-                    Bensin/Diesel
-                </button>
-                <button class="fuel-type-btn" id="btnElectric" onclick="setFuelType('electric')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    Elbil
-                </button>
+            <!-- SIMPLE MODE INPUTS -->
+            <div class="section-title">Velg biltype</div>
+            <div class="form-group">
+                <label class="form-label" for="biltype">Type bil</label>
+                <select class="form-select" id="biltype" onchange="updateBiltype()">
+                    <option value="elbil">⚡ Elbil</option>
+                    <option value="bensin">⛽ Bensin</option>
+                    <option value="diesel">🛢️ Diesel</option>
+                    <option value="hybrid">🔋 Hybrid</option>
+                </select>
             </div>
             
-            <div class="section-title">Bil og kjøring</div>
-            
+            <div class="section-title">Grunnleggende info</div>
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label" for="carValue">Bilens verdi (kr)</label>
-                    <input type="number" class="form-input" id="carValue" placeholder="f.eks. 350000" min="0" step="10000">
-                    <span class="form-hint">Nåværende markedsverdi</span>
+                    <label class="form-label" for="kjopspris">Kjøpspris (kr)</label>
+                    <input type="number" class="form-input" id="kjopspris" placeholder="f.eks. 400000" min="0" step="10000">
+                    <span class="form-hint">Nåværende verdi eller kjøpspris</span>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="yearlyKm">Årlig kjørelengde (km)</label>
-                    <input type="number" class="form-input" id="yearlyKm" placeholder="f.eks. 14000" value="14000" min="0">
-                    <span class="form-hint">Gjennomsnitt: 12 000-15 000 km</span>
-                </div>
-            </div>
-            
-            <div class="section-title">Drivstoff/strøm</div>
-            
-            <div class="form-row" id="fossilInputs">
-                <div class="form-group">
-                    <label class="form-label" for="fuelConsumption">Forbruk (liter/mil)</label>
-                    <input type="number" class="form-input" id="fuelConsumption" placeholder="f.eks. 0.7" value="0.7" min="0" step="0.1">
-                    <span class="form-hint">Typisk: 0,5-0,9 l/mil</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="fuelPrice">Drivstoffpris (kr/liter)</label>
-                    <input type="number" class="form-input" id="fuelPrice" placeholder="f.eks. 18" value="18" min="0" step="0.5">
-                    <span class="form-hint">Bensin ca. 18 kr, diesel ca. 17 kr</span>
+                    <label class="form-label" for="kmAar">Årlig kjørelengde (km)</label>
+                    <input type="number" class="form-input" id="kmAar" placeholder="f.eks. 15000" value="15000" min="0" step="1000">
+                    <span class="form-hint">Gjennomsnitt: 12 000-18 000 km</span>
                 </div>
             </div>
             
-            <div class="form-row" id="electricInputs" style="display: none;">
-                <div class="form-group">
-                    <label class="form-label" for="electricConsumption">Forbruk (kWh/mil)</label>
-                    <input type="number" class="form-input" id="electricConsumption" placeholder="f.eks. 1.8" value="1.8" min="0" step="0.1">
-                    <span class="form-hint">Typisk: 1,5-2,5 kWh/mil</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="electricPrice">Strømpris (kr/kWh)</label>
-                    <input type="number" class="form-input" id="electricPrice" placeholder="f.eks. 1.5" value="1.5" min="0" step="0.1">
-                    <span class="form-hint">Inkl. nettleie, ca. 1-2 kr/kWh</span>
-                </div>
+            <div class="form-group" id="homeChargingGroup" style="display: none;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="checkbox" id="homeCharging" style="width: 18px; height: 18px; cursor: pointer;">
+                    <span class="form-label" style="margin: 0;">Jeg har mulighet til hjemmelading</span>
+                </label>
+                <span class="form-hint">Hjemmelading koster ca. 2 kr/kWh vs 6 kr/kWh på hurtiglader</span>
             </div>
             
-            <div class="section-title">Faste kostnader</div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="insurance">Forsikring (kr/år)</label>
-                    <input type="number" class="form-input" id="insurance" placeholder="f.eks. 10000" value="10000" min="0">
-                    <span class="form-hint">Kasko typisk 8 000-15 000 kr</span>
+            <!-- ADVANCED MODE INPUTS -->
+            <div class="advanced-inputs" id="advancedInputs">
+                <div class="section-title">Drivstoff/Strøm (detaljert)</div>
+                <div class="form-row" id="fossilInputs">
+                    <div class="form-group">
+                        <label class="form-label" for="forbruk">Forbruk (l/10km)</label>
+                        <input type="number" class="form-input" id="forbruk" placeholder="f.eks. 0.7" value="0.7" min="0" step="0.1">
+                        <span class="form-hint">Typisk: 0,5-0,9 l/10km</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="drivstoffpris">Drivstoffpris (kr/l)</label>
+                        <input type="number" class="form-input" id="drivstoffpris" placeholder="19.5" value="19.5" min="0" step="0.5">
+                        <span class="form-hint">Bensin ~19,5 kr, Diesel ~21 kr (jan 2026)</span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="service">Service/vedlikehold (kr/år)</label>
-                    <input type="number" class="form-input" id="service" placeholder="f.eks. 6000" value="6000" min="0">
-                    <span class="form-hint">Elbil: ca. 3 000, fossil: 5 000-10 000</span>
+                
+                <div class="form-row" id="elbilInputs" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="stroemforbruk">Forbruk (kWh/10km)</label>
+                        <input type="number" class="form-input" id="stroemforbruk" placeholder="2.0" value="2.0" min="0" step="0.1">
+                        <span class="form-hint">Typisk: 1,5-2,5 kWh/10km</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="stroempris">Strømpris (kr/kWh)</label>
+                        <input type="number" class="form-input" id="stroempris" placeholder="2.0" value="2.0" min="0" step="0.1">
+                        <span class="form-hint" id="stroemHint">Hjem: ~2 kr/kWh, Hurtiglader: ~6 kr/kWh</span>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="depreciation">Verditap (% per år)</label>
-                    <input type="number" class="form-input" id="depreciation" placeholder="f.eks. 12" value="12" min="0" max="50">
-                    <span class="form-hint">Nyere bil: 15-20%, eldre: 8-12%</span>
+                
+                <div class="section-title">Faste kostnader (detaljert)</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="forsikring">Forsikring (kr/år)</label>
+                        <input type="number" class="form-input" id="forsikring" placeholder="10000" value="10000" min="0" step="1000">
+                        <span class="form-hint">Kasko: 8 000-15 000 kr</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="service">Service/vedlikehold (kr/år)</label>
+                        <input type="number" class="form-input" id="service" placeholder="6000" value="6000" min="0" step="1000">
+                        <span class="form-hint" id="serviceHint">Elbil: ~4 000 kr, Fossil: ~7 000 kr</span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="other">Andre kostnader (kr/år)</label>
-                    <input type="number" class="form-input" id="other" placeholder="f.eks. 5000" value="5000" min="0">
-                    <span class="form-hint">Dekk, vask, bompenger, parkering</span>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="verditap">Verditap (% per år)</label>
+                        <input type="number" class="form-input" id="verditap" placeholder="12" value="12" min="0" max="50" step="1">
+                        <span class="form-hint">Ny bil: 15-20%, Brukt: 8-12%</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="andreKost">Andre kostnader (kr/år)</label>
+                        <input type="number" class="form-input" id="andreKost" placeholder="5000" value="5000" min="0" step="1000">
+                        <span class="form-hint">Dekk, vask, bom, parkering</span>
+                    </div>
                 </div>
             </div>
             
             <button class="calc-btn" onclick="calculate()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="4" y="2" width="16" height="20" rx="2"/>
+                    <line x1="8" y1="6" x2="16" y2="6"/>
+                    <line x1="8" y1="10" x2="16" y2="10"/>
+                    <line x1="8" y1="14" x2="12" y2="14"/>
+                </svg>
                 Beregn bilkostnad
             </button>
             
+            <!-- RESULTS SECTION -->
             <div class="results-section" id="results">
                 <table class="results-table">
-                    <thead><tr><th>Kostnadspost</th><th>Årlig kostnad</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>Kostnadspost</th>
+                            <th>Årlig kostnad</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        <tr class="highlight"><td>Verditap (avskrivning)</td><td id="resultDepreciation">0 kr</td></tr>
-                        <tr><td id="fuelLabel">Drivstoff</td><td id="resultFuel">0 kr</td></tr>
-                        <tr><td>Forsikring</td><td id="resultInsurance">0 kr</td></tr>
-                        <tr><td>Trafikkforsikringsavgift</td><td id="resultTax">0 kr</td></tr>
-                        <tr><td>Service/vedlikehold</td><td id="resultService">0 kr</td></tr>
-                        <tr><td>Andre kostnader</td><td id="resultOther">0 kr</td></tr>
+                        <tr class="highlight">
+                            <td>Verditap (avskrivning)</td>
+                            <td id="resultVerditap">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td id="drivstoffLabel">Drivstoff</td>
+                            <td id="resultDrivstoff">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Forsikring</td>
+                            <td id="resultForsikring">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Trafikkforsikringsavgift</td>
+                            <td id="resultAvgift">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Service og vedlikehold</td>
+                            <td id="resultService">0 kr</td>
+                        </tr>
+                        <tr>
+                            <td>Andre kostnader</td>
+                            <td id="resultAndre">0 kr</td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="results-total">
@@ -299,24 +414,214 @@
                     </div>
                     <div class="total-right">
                         <div class="monthly-label">Per måned</div>
-                        <div class="monthly-value" id="resultMonthly">0 kr</div>
+                        <div class="monthly-value" id="resultMaaned">0 kr</div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="info-box">
-            <div class="info-box-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><h3>Om beregningen</h3></div>
-            <p>Bilkostnaden inkluderer alle utgifter ved å eie bil. <strong>Verditap</strong> er ofte den største kostnaden og ofte undervurdert. Trafikkforsikringsavgift er <strong>2 329 kr</strong> for personbil og <strong>3 270 kr</strong> for elbil (2025).</p>
-            <p><strong>Kilde:</strong> <a href="https://www.naf.no/bilkostnader" target="_blank" rel="noopener">NAF – Bilkostnader</a></p>
+        <!-- 2026 TAX CHANGES CALLOUT -->
+        <div id="tax-changes-section" class="feature-section" style="display: none;">
+            <div class="callout warning">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <div class="callout-content">
+                    <div class="callout-title">⚠️ 2026 Avgiftsendringer - Viktig!</div>
+                    <ul style="margin: 8px 0; padding-left: 20px; line-height: 1.7;">
+                        <li><strong>Elbil moms:</strong> Senket fra 500k til 300k - populære familiebiler blir 50 000+ kr dyrere</li>
+                        <li><strong>Bensin/diesel:</strong> 20-30k prisøkning pga nye vektavgiftsregler (260 kr/kg over 1200 kg)</li>
+                        <li><strong>Trafikkforsikringsavgift:</strong> Elbil 3 270 kr, fossilbil 2 329 kr</li>
+                    </ul>
+                    <small style="color: var(--color-text-secondary); display: block; margin-top: 8px;">
+                        Kilde: <a href="https://ofv.no/aktuelt/2025/ofvs-avgiftskalkulator-for-2026" target="_blank" style="color: #E65100;">OFV Avgiftskalkulator 2026</a>
+                    </small>
+                </div>
+            </div>
         </div>
         
+        <!-- PIE CHART SECTION -->
+        <div id="pie-chart-section" class="feature-section" style="display: none;">
+            <div class="feature-title">📊 Kostnadsfordeling</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Slik fordeler de årlige bilkostnadene seg:
+            </p>
+            <div style="max-width: 350px; margin: 0 auto;">
+                <canvas id="bilPieChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- ELBIL VS BENSIN COMPARISON - HERO FEATURE -->
+        <div id="comparison-section" class="feature-section" style="display: none;">
+            <div class="feature-title">⚡ Elbil vs Bensin/Diesel</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Sammenligning basert på NAF-data (oktober 2025):
+            </p>
+            <div style="max-width: 600px; margin: 0 auto;">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+            <div style="margin-top: 16px; padding: 16px; background: rgba(59, 130, 246, 0.05); border-radius: 8px; border-left: 4px solid #3B82F6;">
+                <strong>Konklusjon:</strong> <span id="comparisonConclusion">-</span>
+                <br><small style="color: var(--color-text-secondary); display: block; margin-top: 8px;">
+                    Kilde: <a href="https://www.naf.no/bilhold/kostnader/hva-koster-det-a-eie-bil" target="_blank" style="color: #1565C0;">NAF bilkostnadsrapport 2025</a>
+                </small>
+            </div>
+        </div>
+        
+        <!-- ACTION BUTTONS - Matching arbeidsgiveravgift exactly -->
+        <div id="action-buttons-section" class="feature-section" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📥 Last ned PDF</span>
+                </button>
+                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>✉️ Send til deg selv</span>
+                </button>
+            </div>
+            <div>
+                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet:</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
+                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
+                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
+                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
+                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SAVINGS VISUALIZER -->
+        <div id="savings-section" class="feature-section" style="display: none;">
+            <div class="feature-title">💰 Sparepotensial</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Slik kan du redusere bilkostnadene:
+            </p>
+            <div class="savings-grid">
+                <div class="savings-card">
+                    <div class="savings-label">Kjøp brukt (3 år)</div>
+                    <div class="savings-amount" id="savingsBrukt">-</div>
+                    <div class="savings-sub">Mindre verditap</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Reduser 5000 km/år</div>
+                    <div class="savings-amount" id="savingsKm">-</div>
+                    <div class="savings-sub">Lavere drivstoffkostnad</div>
+                </div>
+                <div class="savings-card">
+                    <div class="savings-label">Hjemmelading (elbil)</div>
+                    <div class="savings-amount" id="savingsLading">-</div>
+                    <div class="savings-sub">vs hurtiglading</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BIGMAC INDEX -->
+        <div id="bigmac-section" class="bigmac-section" style="display: none;">
+            <div class="bigmac-icon">🍔</div>
+            <div class="bigmac-text">Årlig bilkostnad tilsvarer</div>
+            <div class="bigmac-value" id="bigmacCount">-</div>
+            <div class="bigmac-sub">Big Mac-måltider (125 kr/stk i Oslo)</div>
+        </div>
+        
+        <!-- REGIONAL COMPARISON -->
+        <div id="regional-section" class="feature-section" style="display: none;">
+            <div class="feature-title">🗺️ Kjøpekraft per region</div>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                Samme bilbudsjett gir ulik kjøpekraft rundt i Norge:
+            </p>
+            <div class="regional-grid">
+                <div class="regional-card" style="background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Oslo</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">Dyreste byen (100%)</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="osloValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Kjøpekraft</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="regional-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Bergen</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">25% rimeligere</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="bergenValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Tilsvarende verdi</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="regional-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Trondheim</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">22% rimeligere</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="trondheimValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Tilsvarende verdi</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="regional-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Småbyer</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">30% rimeligere</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary);" id="smabyerValue">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Tilsvarende verdi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Email Modal -->
+        <div id="emailModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
+            <div style="background: white; margin: 10% auto; padding: 32px; border-radius: 12px; max-width: 600px; position: relative;">
+                <span onclick="closeEmailModal()" style="position: absolute; right: 20px; top: 20px; font-size: 28px; font-weight: bold; color: #999; cursor: pointer;">&times;</span>
+                <h3 style="font-family: var(--font-display); margin-bottom: 16px;">📧 E-post innhold</h3>
+                <p style="color: var(--color-text-secondary); margin-bottom: 16px;">Kopier teksten under og lim inn i din e-post:</p>
+                <textarea id="emailContent" readonly style="width: 100%; min-height: 250px; padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9rem; margin-bottom: 16px;"></textarea>
+                <button onclick="copyEmailContent()" style="width: 100%; padding: 12px; background: #C4533A; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Kopier til utklippstavle</button>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <div class="info-box-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <h3>Om beregningen</h3>
+            </div>
+            <p>Beregningen er basert på <strong>NAF-data fra oktober 2025</strong> og tar hensyn til 2026-avgifter. <strong>Verditap</strong> er ofte den største kostnaden og blir lett undervurdert av bilkjøpere.</p>
+            <p>Kalkulatoren viser <strong>de VIRKELIGE kostnadene</strong> ved bilhold - ikke bare kjøpeprisen. Dette inkluderer verditap, forsikring, drivstoff/strøm, service, avgifter og andre løpende utgifter.</p>
+            <p><strong>Kilder:</strong> <a href="https://www.naf.no/bilhold/kostnader" target="_blank" rel="noopener">NAF Bilkostnader</a> | <a href="https://ofv.no" target="_blank" rel="noopener">OFV Avgifter 2026</a></p>
+        </div>
+        
+        <div class="disclaimer" style="background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0;">
+            <p style="margin: 0; color: var(--color-text); font-size: 0.9rem;"><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på typiske verdier og NAF-data. Faktiske kostnader vil variere basert på din spesifikke bil, kjøremønster, forsikringsbonus og lokale forhold. For nøyaktige tall, kontakt din forsikringsleverandør og bilforhandler.</p>
+        </div>
+        
+        <!-- SEO CONTENT SECTIONS -->
         <div class="seo-content">
             <h2>🚗 Hva koster det å eie bil i Norge?</h2>
             <p>Å eie bil i Norge koster mer enn mange tror. Verditap, forsikring, drivstoff og vedlikehold summerer seg raskt. Vår kalkulator hjelper deg å beregne de reelle årlige kostnadene — enten du har elbil, bensin eller diesel.</p>
             
             <div class="callout info">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
                 <div class="callout-content">
                     <div class="callout-title">Verditap er den største kostnaden!</div>
                     <p class="callout-text">En ny bil mister typisk 20% av verdien første året, deretter 10-14% årlig. En bil til 400 000 kr kan tape <strong>80 000 kr</strong> i verdi bare det første året.</p>
@@ -325,79 +630,243 @@
             
             <h2>📊 Typiske bilkostnader per år</h2>
             <table class="info-table">
-                <thead><tr><th>Kostnadspost</th><th>Mellomklassebil</th><th>Andel</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Kostnadspost</th>
+                        <th>Mellomklassebil</th>
+                        <th>Andel</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td><strong>Verditap</strong></td><td>40 000 - 60 000 kr</td><td><span class="rate-badge">35-50%</span></td></tr>
-                    <tr><td><strong>Drivstoff/strøm</strong></td><td>15 000 - 25 000 kr</td><td>15-20%</td></tr>
-                    <tr><td><strong>Forsikring</strong></td><td>8 000 - 15 000 kr</td><td>8-12%</td></tr>
-                    <tr><td><strong>Service/vedlikehold</strong></td><td>5 000 - 10 000 kr</td><td>5-8%</td></tr>
-                    <tr><td><strong>Trafikkforsikringsavgift</strong></td><td>2 329 kr*</td><td>2%</td></tr>
-                    <tr><td><strong>Dekk, vask, etc.</strong></td><td>3 000 - 5 000 kr</td><td>3-5%</td></tr>
-                    <tr><td><strong>Totalt årlig</strong></td><td><strong>80 000 - 120 000 kr</strong></td><td>100%</td></tr>
+                    <tr>
+                        <td><strong>Verditap</strong></td>
+                        <td>40 000 - 60 000 kr</td>
+                        <td><span class="rate-badge">35-50%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Drivstoff/strøm</strong></td>
+                        <td>15 000 - 25 000 kr</td>
+                        <td>15-20%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Forsikring</strong></td>
+                        <td>8 000 - 15 000 kr</td>
+                        <td>8-12%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Service/vedlikehold</strong></td>
+                        <td>5 000 - 10 000 kr</td>
+                        <td>5-8%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trafikkforsikringsavgift</strong></td>
+                        <td>2 329 kr*</td>
+                        <td>2%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dekk, vask, etc.</strong></td>
+                        <td>3 000 - 5 000 kr</td>
+                        <td>3-5%</td>
+                    </tr>
+                    <tr style="background: var(--color-background);">
+                        <td><strong>Totalt årlig</strong></td>
+                        <td><strong>80 000 - 120 000 kr</strong></td>
+                        <td><strong>100%</strong></td>
+                    </tr>
                 </tbody>
             </table>
             <p style="font-size: 0.85rem; color: var(--color-text-secondary);">*Elbil: 3 270 kr i trafikkforsikringsavgift</p>
             
-            <div class="callout warning">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <div class="callout-content">
-                    <div class="callout-title">Elbil vs fossilbil</div>
-                    <p class="callout-text">Ifølge NAF koster en elbil ca. 111 000 kr årlig de første 8 årene, mens en bensin/dieselbil er litt dyrere. Elbiler har lavere drivstoffkostnader, men ofte høyere forsikring og verditap.</p>
-                </div>
-            </div>
-            
-            <h2>🧩 Kostnadskomponenter forklart</h2>
             <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Verditap (avskrivning)</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">🧩 Kostnadskomponenter forklart</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
                 <div class="collapsible-content">
-                    <p>Den største kostnaden ved bilhold. Beregnes som differansen mellom kjøpspris og salgspris over eiertiden. Bruktbiler har lavere prosentvis verditap enn nye biler.</p>
+                    <p><strong>Verditap (avskrivning):</strong> Den største kostnaden. Beregnes som differansen mellom kjøpspris og salgspris over eiertiden. Bruktbiler har lavere prosentvis verditap enn nye biler. En ny bil mister typisk 20% av verdien første året, deretter 10-14% årlig.</p>
+                    
+                    <p><strong>Drivstoff/strøm:</strong> Avhenger av kjørelengde, forbruk og pris. Elbiler har typisk 1,5-2,5 kWh/10km. Bensinbiler bruker 0,5-0,9 liter/10km. Med hjemmelading koster elbil ca. 2 kr/kWh, mens hurtiglading koster 5-7 kr/kWh.</p>
+                    
+                    <p><strong>Forsikring:</strong> Varierer med bilens verdi, førerens alder/erfaring og bonus. Ansvarsforsikring er lovpålagt. Kaskoforsikring dekker skade på egen bil og koster typisk 8 000-15 000 kr årlig.</p>
+                    
+                    <p><strong>Trafikkforsikringsavgift:</strong> Erstattet årsavgiften i 2018. Betales sammen med bilforsikringen. 2 329 kr for personbil, 3 270 kr for elbil (2026).</p>
+                    
+                    <p><strong>Service og vedlikehold:</strong> Elbiler har lavere servicekostnader (ca. 4 000 kr/år) sammenlignet med fossil (6 000-8 000 kr/år) fordi de har færre bevegelige deler og ikke trenger oljeskift.</p>
                 </div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Elbil vs fossilbil sammenligning</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">⚡ Elbil vs fossilbil - Detaljert sammenligning</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
                 <div class="collapsible-content">
-                    <p><strong>Elbil fordeler:</strong> Lavere drivstoffkostnad, lavere servicekostnader, rabatt på bompenger, ofte gratis/rabattert parkering.</p>
-                    <p><strong>Elbil ulemper:</strong> Ofte høyere forsikring, kan ha høyere verditap på eldre modeller, høyere trafikkforsikringsavgift.</p>
+                    <table class="info-table">
+                        <thead>
+                            <tr>
+                                <th>Faktor</th>
+                                <th>Elbil</th>
+                                <th>Bensin/diesel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Drivstoffkostnad</strong></td>
+                                <td>Lavere (hjemmelading 2-3 kr/10km)</td>
+                                <td>Høyere (bensin 13-15 kr/10km)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Service</strong></td>
+                                <td>Lavere (~4 000 kr/år)</td>
+                                <td>Høyere (~7 000 kr/år)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Verditap</strong></td>
+                                <td>Varierer (ofte høyere %)</td>
+                                <td>Varierer</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Forsikring</strong></td>
+                                <td>Ofte høyere</td>
+                                <td>Lavere</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bompenger</strong></td>
+                                <td>Rabatt (50-100%)</td>
+                                <td>Full pris</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Parkering</strong></td>
+                                <td>Ofte gratis/rabatt</td>
+                                <td>Full pris</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Avgifter (2026)</strong></td>
+                                <td>3 270 kr + moms over 300k</td>
+                                <td>2 329 kr + vektavgift</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 16px;"><strong>NAF-data (oktober 2025):</strong> En elbil til 685 000 kr koster ca. 141 198 kr årlig over 8 år. En dieselbil til 515 000 kr koster 130 306 kr årlig. Elbilen er altså dyrere totalt sett, men forskjellen er liten når man tar hensyn til kjøpsprisen.</p>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">💡 Tips for å spare på bilhold</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="collapsible-content">
+                    <ul>
+                        <li><strong>Kjøp brukt (2-3 år gammel):</strong> Du unngår det verste verditapet de første årene, og bilen har fortsatt garanti. Kan spare 50 000-100 000 kr sammenlignet med ny bil.</li>
+                        <li><strong>Velg forsikring med høy egenandel:</strong> Kan redusere premien med 20-30%. Sørg bare for at du har råd til egenandelen ved skade.</li>
+                        <li><strong>Reduser kjørelengden:</strong> Hver 1 000 km mindre årlig sparer ca. 1 000-2 000 kr i drivstoff og reduserer verditapet.</li>
+                        <li><strong>Hjemmelading for elbil:</strong> Sparer 4-5 kr/10km sammenlignet med hurtiglading. For 15 000 km/år betyr dette 6 000-7 500 kr spart.</li>
+                        <li><strong>Gjør enkel vedlikehold selv:</strong> Bytte av dekk, lyspærer, og vindusviskerblader kan spare flere tusen kroner årlig.</li>
+                        <li><strong>Sammenlign forsikring årlig:</strong> Prisene varierer mye mellom selskaper. Bruk sammenligningsverktøy som Finansportalen.no.</li>
+                        <li><strong>Vurder bilkollektiv/deling:</strong> For dem som kjører under 8 000 km/år kan bilkollektiv eller bildeling være billigere enn å eie.</li>
+                    </ul>
                 </div>
             </div>
             
             <h2>❓ Ofte stilte spørsmål</h2>
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Hva koster det å kjøre én kilometer?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>For en gjennomsnittlig mellomklassebil ligger totalkostnaden på ca. <strong>7-8 kr per km</strong>. Dette inkluderer alle kostnader — også verditap, forsikring og service.</p></div>
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">Hva koster det å kjøre én kilometer?</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>For en gjennomsnittlig mellomklassebil ligger totalkostnaden på ca. <strong>7-8 kr per km</strong>. Dette inkluderer alle kostnader — også verditap, forsikring og service, ikke bare drivstoff.</p>
+                    <p>Kun drivstoffkostnad (marginalkostnad) er ca. 1,3-1,5 kr/km for bensin og 0,2-0,6 kr/km for elbil avhengig av lademetode.</p>
+                </div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Er det billigere å lease eller eie bil?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Det kommer an på situasjonen. Leasing har forutsigbare kostnader, men du eier ikke bilen. Ved kjøp tar du verditapet selv, men kan selge bilen når du vil. Beregn totalkostnad over 3-5 år for å sammenligne.</p></div>
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">Er det billigere å lease eller eie bil?</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Det kommer an på situasjonen. <strong>Leasing</strong> har forutsigbare kostnader og inkluderer ofte service, men du eier ikke bilen og har kilometerbe grensninger. <strong>Ved kjøp</strong> tar du verditapet selv, men kan selge bilen når du vil og kjøre ubegrenset.</p>
+                    <p>Generelt: Leasing lønner seg for dem som vil ha ny bil hver 3-4 år. Kjøp lønner seg for dem som vil beholde bilen i 8+ år.</p>
+                </div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Hva er kjøregodtgjørelse-satsen i 2026?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>Skattefri kjøregodtgjørelse er <strong>3,50 kr/km</strong> i 2026 (uendret fra 2025). Dette gjelder når du bruker privat bil i jobb. Satsen skal dekke slitasje, drivstoff, forsikring og verditap.</p></div>
-            </div>
-            
-            <div class="callout tip">
-                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
-                <div class="callout-content">
-                    <div class="callout-title">Spar penger på bil</div>
-                    <p class="callout-text">Kjøp en 2-3 år gammel bil i stedet for ny. Da unngår du det verste verditapet, og bilen har fortsatt garanti.</p>
+                <button class="collapsible-header">
+                    <h3 class="collapsible-title">Hva er kjøregodtgjørelse-satsen i 2026?</h3>
+                    <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="collapsible-content">
+                    <p>Skattefri kjøregodtgjørelse er <strong>3,50 kr/km i 2026</strong> (uendret fra 2025). Dette gjelder når du bruker privat bil i jobb. Satsen skal dekke slitasje, drivstoff, forsikring og verditap.</p>
+                    <p>Merk: Arbeidsgivere kan velge å betale mer, men beløp over 3,50 kr/km blir skattepliktig for arbeidstaker.</p>
                 </div>
             </div>
             
             <h2>🔗 Relaterte kalkulatorer</h2>
             <div class="related-grid">
-                <a href="pendlerfradrag.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Pendlerfradrag</h4><p>Beregn reisefradrag til jobb</p></div></a>
-                <a href="stromkostnad.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Strømkostnad</h4><p>For elbil-lading hjemme</p></div></a>
-                <a href="skatt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Skattekalkulator</h4><p>Detaljert skatteberegning</p></div></a>
-                <a href="tilhengervekt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Tilhengervekt</h4><p>Sjekk hva du kan trekke</p></div></a>
+                <a href="pendlerfradrag.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 20 14" fill="none">
+                            <path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Pendlerfradrag</h4>
+                        <p>Beregn skattefradrag for reise til jobb</p>
+                    </div>
+                </a>
+                <a href="skatt.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 17 16" fill="none">
+                            <path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Skattekalkulator</h4>
+                        <p>Beregn din netto etter skatt</p>
+                    </div>
+                </a>
+                <a href="stromkostnad.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 16 18" fill="none">
+                            <path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Strømkostnad</h4>
+                        <p>Beregn strømutgifter for elbil hjemmelading</p>
+                    </div>
+                </a>
+                <a href="tilhengervekt.html" class="related-card">
+                    <div class="related-card-icon">
+                        <svg viewBox="0 0 20 16" fill="none">
+                            <path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/>
+                        </svg>
+                    </div>
+                    <div class="related-card-text">
+                        <h4>Tilhengervekt</h4>
+                        <p>Sjekk om du kan trekke tilhenger lovlig</p>
+                    </div>
+                </a>
             </div>
-            
-            <div class="disclaimer"><p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat. Faktiske kostnader varierer basert på bilmodell, kjøremønster, bonustrinn og markedsforhold. Bruk kalkulatoren som utgangspunkt for budsjettering.</p></div>
         </div>
+        
     </main>
     
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
@@ -409,85 +878,545 @@
         </div>
     </footer>
     
+    <!-- JAVASCRIPT -->
     <script>
-        // Constants
-        const TRAFFIC_TAX_FOSSIL = 2329;
-        const TRAFFIC_TAX_ELECTRIC = 3270;
+        // ============================================
+        // CONSTANTS - NAF/OFV 2026 DATA
+        // ============================================
+        const NAF_DATA_2025 = {
+            elbil: { purchasePrice: 685000, annualCost: 141198, fuel: 0.18, depreciation: 0.45 },
+            diesel: { purchasePrice: 515000, annualCost: 130306, fuel: 0.22, depreciation: 0.42 }
+        };
         
-        let fuelType = 'fossil';
-
+        const TAX_2026 = {
+            elbil: { trafficFee: 3270, momsThreshold: 300000 },
+            fossil: { trafficFee: 2329 }
+        };
+        
+        const CHARGING = { home: 2.0, public: 6.0, consumption: 0.2 };
+        const FUEL = { bensin: 19.5, diesel: 21.0, consumptionBensin: 0.07, consumptionDiesel: 0.06 };
+        
+        const BIGMAC_PRICE = 125;  // NOK per meal in Oslo
+        const REGIONAL_FACTORS = {
+            oslo: 1.00,
+            bergen: 0.75,
+            trondheim: 0.78,
+            smabyer: 0.70
+        };
+        
+        // Chart instances
+        let pieChart = null;
+        let comparisonChart = null;
+        
+        // ============================================
+        // MODE TOGGLE
+        // ============================================
+        function setMode(mode) {
+            const simple = document.getElementById('btnSimple');
+            const advanced = document.getElementById('btnAdvanced');
+            const advancedInputs = document.getElementById('advancedInputs');
+            
+            if (mode === 'simple') {
+                simple.classList.add('active');
+                advanced.classList.remove('active');
+                advancedInputs.style.display = 'none';
+            } else {
+                simple.classList.remove('active');
+                advanced.classList.add('active');
+                advancedInputs.style.display = 'block';
+            }
+        }
+        
+        // ============================================
+        // BILTYPE UPDATE
+        // ============================================
+        function updateBiltype() {
+            const biltype = document.getElementById('biltype').value;
+            const homeChargingGroup = document.getElementById('homeChargingGroup');
+            const fossilInputs = document.getElementById('fossilInputs');
+            const elbilInputs = document.getElementById('elbilInputs');
+            const serviceHint = document.getElementById('serviceHint');
+            
+            // Show/hide home charging option
+            if (biltype === 'elbil') {
+                homeChargingGroup.style.display = 'block';
+                if (fossilInputs) fossilInputs.style.display = 'none';
+                if (elbilInputs) elbilInputs.style.display = 'grid';
+                if (serviceHint) serviceHint.textContent = 'Elbil: ~4 000 kr, Fossil: ~7 000 kr';
+                document.getElementById('service').value = '4000';
+            } else {
+                homeChargingGroup.style.display = 'none';
+                if (fossilInputs) fossilInputs.style.display = 'grid';
+                if (elbilInputs) elbilInputs.style.display = 'none';
+                if (serviceHint) serviceHint.textContent = 'Elbil: ~4 000 kr, Fossil: ~7 000 kr';
+                document.getElementById('service').value = '6000';
+                
+                // Update fuel price hint
+                if (biltype === 'diesel') {
+                    document.getElementById('drivstoffpris').value = '21.0';
+                } else {
+                    document.getElementById('drivstoffpris').value = '19.5';
+                }
+            }
+            
+            // Update home charging electricity price hint
+            updateHomeChargingPrice();
+        }
+        
+        function updateHomeChargingPrice() {
+            const isHome = document.getElementById('homeCharging').checked;
+            const stroempris = document.getElementById('stroempris');
+            const stroemHint = document.getElementById('stroemHint');
+            
+            if (stroempris) {
+                if (isHome) {
+                    stroempris.value = '2.0';
+                    if (stroemHint) stroemHint.textContent = 'Hjemmelading: ~2 kr/kWh';
+                } else {
+                    stroempris.value = '6.0';
+                    if (stroemHint) stroemHint.textContent = 'Hurtiglading: ~6 kr/kWh';
+                }
+            }
+        }
+        
+        // Add event listener
+        if (document.getElementById('homeCharging')) {
+            document.getElementById('homeCharging').addEventListener('change', updateHomeChargingPrice);
+        }
+        
+        // ============================================
+        // NUMBER FORMATTING
+        // ============================================
         function formatNumber(num) {
-            return Math.round(num).toLocaleString('nb-NO');
+            return Math.round(num).toLocaleString('no-NO') + ' kr';
         }
         
-        function setFuelType(type) {
-            fuelType = type;
-            
-            // Update buttons
-            document.getElementById('btnFossil').classList.toggle('active', type === 'fossil');
-            document.getElementById('btnElectric').classList.toggle('active', type === 'electric');
-            
-            // Show/hide inputs
-            document.getElementById('fossilInputs').style.display = type === 'fossil' ? 'grid' : 'none';
-            document.getElementById('electricInputs').style.display = type === 'electric' ? 'grid' : 'none';
-            
-            // Update service default
-            document.getElementById('service').value = type === 'electric' ? 3000 : 6000;
+        function formatNumberPlain(num) {
+            return Math.round(num).toLocaleString('no-NO');
         }
-
+        
+        // ============================================
+        // MAIN CALCULATION
+        // ============================================
         function calculate() {
-            const carValue = parseFloat(document.getElementById('carValue').value) || 0;
-            const yearlyKm = parseFloat(document.getElementById('yearlyKm').value) || 14000;
-            const insurance = parseFloat(document.getElementById('insurance').value) || 0;
-            const service = parseFloat(document.getElementById('service').value) || 0;
-            const depreciationRate = parseFloat(document.getElementById('depreciation').value) || 12;
-            const other = parseFloat(document.getElementById('other').value) || 0;
+            const biltype = document.getElementById('biltype').value;
+            const kjopspris = parseFloat(document.getElementById('kjopspris').value) || 0;
+            const kmAar = parseFloat(document.getElementById('kmAar').value) || 15000;
             
-            if (carValue <= 0) {
-                alert('Vennligst oppgi bilens verdi');
+            if (kjopspris <= 0) {
+                alert('Vennligst oppgi en gyldig kjøpespris');
                 return;
             }
             
-            // Calculate fuel/electricity cost
-            let fuelCost = 0;
-            if (fuelType === 'fossil') {
-                const consumption = parseFloat(document.getElementById('fuelConsumption').value) || 0.7;
-                const price = parseFloat(document.getElementById('fuelPrice').value) || 18;
-                fuelCost = (yearlyKm / 10) * consumption * price; // km -> mil
+            // Get values (check if advanced mode is active)
+            const advancedMode = document.getElementById('advancedInputs').style.display === 'block';
+            
+            let drivstoffKostnad, avgift, verditapKr, forsikring, service, andre;
+            
+            if (advancedMode) {
+                // Advanced mode - use detailed inputs
+                forsikring = parseFloat(document.getElementById('forsikring').value) || 10000;
+                service = parseFloat(document.getElementById('service').value) || 6000;
+                const verditapProsent = parseFloat(document.getElementById('verditap').value) || 12;
+                verditapKr = kjopspris * (verditapProsent / 100);
+                andre = parseFloat(document.getElementById('andreKost').value) || 5000;
+                
+                if (biltype === 'elbil') {
+                    const forbruk = parseFloat(document.getElementById('stroemforbruk').value) || 2.0;
+                    const pris = parseFloat(document.getElementById('stroempris').value) || 2.0;
+                    drivstoffKostnad = (kmAar / 10) * forbruk * pris;
+                } else {
+                    const forbruk = parseFloat(document.getElementById('forbruk').value) || 0.7;
+                    const pris = parseFloat(document.getElementById('drivstoffpris').value) || 19.5;
+                    drivstoffKostnad = (kmAar / 10) * forbruk * pris;
+                }
             } else {
-                const consumption = parseFloat(document.getElementById('electricConsumption').value) || 1.8;
-                const price = parseFloat(document.getElementById('electricPrice').value) || 1.5;
-                fuelCost = (yearlyKm / 10) * consumption * price; // km -> mil
+                // Simple mode - use estimated values
+                forsikring = 10000;
+                verditapKr = kjopspris * 0.12; // 12% default
+                andre = 5000;
+                
+                if (biltype === 'elbil') {
+                    const homeCharging = document.getElementById('homeCharging').checked;
+                    const elpris = homeCharging ? CHARGING.home : CHARGING.public;
+                    drivstoffKostnad = (kmAar / 10) * 2.0 * elpris;
+                    service = 4000;
+                } else if (biltype === 'diesel') {
+                    drivstoffKostnad = (kmAar / 10) * 0.6 * FUEL.diesel;
+                    service = 7000;
+                } else {
+                    drivstoffKostnad = (kmAar / 10) * 0.7 * FUEL.bensin;
+                    service = 6000;
+                }
             }
             
-            // Calculate depreciation
-            const depreciation = carValue * (depreciationRate / 100);
-            
-            // Traffic tax
-            const trafficTax = fuelType === 'electric' ? TRAFFIC_TAX_ELECTRIC : TRAFFIC_TAX_FOSSIL;
+            // Traffic fee
+            avgift = biltype === 'elbil' ? TAX_2026.elbil.trafficFee : TAX_2026.fossil.trafficFee;
             
             // Total
-            const total = depreciation + fuelCost + insurance + trafficTax + service + other;
-            const monthly = total / 12;
-            const perKm = yearlyKm > 0 ? total / yearlyKm : 0;
+            const totalAar = verditapKr + drivstoffKostnad + forsikring + avgift + service + andre;
+            const totalMaaned = totalAar / 12;
+            const perKm = totalAar / kmAar;
             
             // Update results
-            document.getElementById('resultDepreciation').textContent = formatNumber(depreciation) + ' kr';
-            document.getElementById('fuelLabel').textContent = fuelType === 'electric' ? 'Strøm' : 'Drivstoff';
-            document.getElementById('resultFuel').textContent = formatNumber(fuelCost) + ' kr';
-            document.getElementById('resultInsurance').textContent = formatNumber(insurance) + ' kr';
-            document.getElementById('resultTax').textContent = formatNumber(trafficTax) + ' kr';
-            document.getElementById('resultService').textContent = formatNumber(service) + ' kr';
-            document.getElementById('resultOther').textContent = formatNumber(other) + ' kr';
-            document.getElementById('resultTotal').textContent = formatNumber(total) + ' kr';
-            document.getElementById('resultMonthly').textContent = formatNumber(monthly) + ' kr';
-            document.getElementById('resultPerKm').textContent = perKm.toFixed(2).replace('.', ',') + ' kr/km';
+            document.getElementById('resultVerditap').textContent = formatNumber(verditapKr);
+            document.getElementById('resultDrivstoff').textContent = formatNumber(drivstoffKostnad);
+            document.getElementById('resultForsikring').textContent = formatNumber(forsikring);
+            document.getElementById('resultAvgift').textContent = formatNumber(avgift);
+            document.getElementById('resultService').textContent = formatNumber(service);
+            document.getElementById('resultAndre').textContent = formatNumber(andre);
+            document.getElementById('resultTotal').textContent = formatNumber(totalAar);
+            document.getElementById('resultMaaned').textContent = formatNumber(totalMaaned);
+            document.getElementById('resultPerKm').textContent = perKm.toFixed(2) + ' kr/km';
+            
+            // Update label
+            document.getElementById('drivstoffLabel').textContent = biltype === 'elbil' ? 'Strøm (lading)' : 'Drivstoff';
             
             // Show results
             document.getElementById('results').style.display = 'block';
+            
+            // Show all enhanced features
+            document.getElementById('tax-changes-section').style.display = 'block';
+            document.getElementById('pie-chart-section').style.display = 'block';
+            document.getElementById('comparison-section').style.display = 'block';
+            document.getElementById('action-buttons-section').style.display = 'block';
+            document.getElementById('savings-section').style.display = 'block';
+            document.getElementById('bigmac-section').style.display = 'block';
+            document.getElementById('regional-section').style.display = 'block';
+            
+            // Generate charts
+            generatePieChart(verditapKr, drivstoffKostnad, forsikring, avgift, service, andre);
+            generateComparisonChart(biltype, totalAar);
+            
+            // Populate savings scenarios
+            populateSavings(biltype, kjopspris, kmAar, totalAar, drivstoffKostnad);
+            
+            // Populate BigMac index
+            populateBigMac(totalAar);
+            
+            // Populate regional comparison
+            populateRegional(totalAar);
+            
+            // Scroll to results
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        
+        // ============================================
+        // PIE CHART
+        // ============================================
+        function generatePieChart(verditap, drivstoff, forsikring, avgift, service, andre) {
+            const ctx = document.getElementById('bilPieChart').getContext('2d');
+            
+            if (pieChart && typeof pieChart.destroy === 'function') {
+                pieChart.destroy();
+            }
+            
+            pieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Verditap', 'Drivstoff/Strøm', 'Forsikring', 'Avgifter', 'Service', 'Andre'],
+                    datasets: [{
+                        data: [verditap, drivstoff, forsikring, avgift, service, andre],
+                        backgroundColor: [
+                            '#3B82F6',  // Blue
+                            '#F59E0B',  // Amber
+                            '#10B981',  // Green
+                            '#C4533A',  // Rust
+                            '#8B5CF6',  // Purple
+                            '#6B7280'   // Gray
+                        ],
+                        borderColor: '#FAF9F7',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Inter', sans-serif", size: 12 },
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = Math.round(context.parsed).toLocaleString('no-NO');
+                                    const total = context.dataset.data.reduce((a,b) => a+b, 0);
+                                    const percent = ((context.parsed / total) * 100).toFixed(1);
+                                    return label + ': ' + value + ' kr (' + percent + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // ============================================
+        // COMPARISON CHART (ELBIL VS BENSIN)
+        // ============================================
+        function generateComparisonChart(userBiltype, userTotal) {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            if (comparisonChart && typeof comparisonChart.destroy === 'function') {
+                comparisonChart.destroy();
+            }
+            
+            // NAF data
+            const elbilTotal = NAF_DATA_2025.elbil.annualCost;
+            const dieselTotal = NAF_DATA_2025.diesel.annualCost;
+            
+            comparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Elbil (NAF)', 'Diesel (NAF)', 'Din bil'],
+                    datasets: [{
+                        label: 'Årlig totalkostnad',
+                        data: [elbilTotal, dieselTotal, userTotal],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',  // Blue for elbil
+                            'rgba(245, 158, 11, 0.8)',  // Amber for diesel
+                            'rgba(196, 83, 58, 0.8)'    // Rust for user
+                        ],
+                        borderColor: [
+                            '#3B82F6',
+                            '#F59E0B',
+                            '#C4533A'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return formatNumber(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return (value/1000).toFixed(0) + 'k';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Update conclusion
+            let conclusion = '';
+            if (userBiltype === 'elbil') {
+                const diff = userTotal - elbilTotal;
+                if (Math.abs(diff) < 10000) {
+                    conclusion = 'Din elbil ligger nær NAF-snittet for elbiler.';
+                } else if (diff > 0) {
+                    conclusion = `Din elbil koster ${formatNumber(diff)} mer enn NAF-snittet, trolig pga høyere kjøpspris eller forsikring.`;
+                } else {
+                    conclusion = `Din elbil koster ${formatNumber(Math.abs(diff))} mindre enn NAF-snittet! God økonomi.`;
+                }
+            } else {
+                const diff = userTotal - dieselTotal;
+                conclusion = `Sammenlignet med NAF-data for dieselbil: ${diff > 0 ? '+' : ''}${formatNumber(diff)} forskjell.`;
+            }
+            
+            document.getElementById('comparisonConclusion').textContent = conclusion;
+        }
+        
+        // ============================================
+        // POPULATE SAVINGS SCENARIOS
+        // ============================================
+        function populateSavings(biltype, kjopspris, kmAar, totalAar, drivstoffKostnad) {
+            // Scenario 1: Buy used (3 years old) - saves on depreciation
+            const nyBilVerditap = kjopspris * 0.20; // 20% first year for new car
+            const bruktBilVerditap = kjopspris * 0.80 * 0.12; // 12% on 3-year value
+            const verditapSaving = nyBilVerditap - bruktBilVerditap;
+            document.getElementById('savingsBrukt').textContent = formatNumber(verditapSaving);
+            
+            // Scenario 2: Reduce 5000 km/year - saves on fuel
+            const kmReduction = 5000;
+            let fuelSaving;
+            if (biltype === 'elbil') {
+                const homeCharging = document.getElementById('homeCharging')?.checked || false;
+                const elpris = homeCharging ? CHARGING.home : CHARGING.public;
+                fuelSaving = (kmReduction / 10) * 2.0 * elpris;
+            } else {
+                const fuelPrice = biltype === 'diesel' ? FUEL.diesel : FUEL.bensin;
+                fuelSaving = (kmReduction / 10) * 0.7 * fuelPrice;
+            }
+            document.getElementById('savingsKm').textContent = formatNumber(fuelSaving);
+            
+            // Scenario 3: Home charging vs fast charging (only for elbil)
+            if (biltype === 'elbil') {
+                const homePrice = CHARGING.home;
+                const publicPrice = CHARGING.public;
+                const chargingSaving = (kmAar / 10) * 2.0 * (publicPrice - homePrice);
+                document.getElementById('savingsLading').textContent = formatNumber(chargingSaving);
+            } else {
+                // For fossil cars, show maintenance saving
+                const maintenanceSaving = 3000; // Elbil saves ~3000 kr/year on service
+                document.getElementById('savingsLading').textContent = formatNumber(maintenanceSaving);
+                document.querySelector('#savings-section .savings-grid .savings-card:last-child .savings-label').textContent = 'Bytt til elbil';
+                document.querySelector('#savings-section .savings-grid .savings-card:last-child .savings-sub').textContent = 'Lavere service';
+            }
+        }
+        
+        // ============================================
+        // POPULATE BIGMAC INDEX
+        // ============================================
+        function populateBigMac(totalAar) {
+            const bigmacCount = Math.floor(totalAar / BIGMAC_PRICE);
+            document.getElementById('bigmacCount').textContent = formatNumberPlain(bigmacCount);
+        }
+        
+        // ============================================
+        // POPULATE REGIONAL COMPARISON
+        // ============================================
+        function populateRegional(totalAar) {
+            // Oslo is baseline (100%)
+            document.getElementById('osloValue').textContent = formatNumber(totalAar);
+            
+            // Other cities have better purchasing power (lower costs)
+            document.getElementById('bergenValue').textContent = formatNumber(totalAar / REGIONAL_FACTORS.bergen);
+            document.getElementById('trondheimValue').textContent = formatNumber(totalAar / REGIONAL_FACTORS.trondheim);
+            document.getElementById('smabyerValue').textContent = formatNumber(totalAar / REGIONAL_FACTORS.smabyer);
+        }
+        
+        // ============================================
+        // COLLAPSIBLE TOGGLE
+        // ============================================
+        function toggleCollapsible(element) {
+            element.classList.toggle('open');
+        }
+        
+        // ============================================
+        // PDF DOWNLOAD
+        // ============================================
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const biltype = document.getElementById('biltype').options[document.getElementById('biltype').selectedIndex].text;
+            const total = document.getElementById('resultTotal').textContent;
+            const maaned = document.getElementById('resultMaaned').textContent;
+            const perKm = document.getElementById('resultPerKm').textContent;
+            
+            doc.setFontSize(20);
+            doc.setTextColor(196, 83, 58);
+            doc.text('Bilkostnad Beregning 2026', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            const today = new Date().toLocaleDateString('no-NO');
+            doc.text('Dato: ' + today, 20, 30);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0);
+            doc.text('Biltype: ' + biltype, 20, 50);
+            doc.text('Total årlig kostnad: ' + total, 20, 60);
+            doc.text('Per måned: ' + maaned, 20, 70);
+            doc.text('Kostnad per km: ' + perKm, 20, 80);
+            
+            doc.setFontSize(10);
+            doc.text('Se detaljert oversikt på kalkulatoren for fullstendig kostnadsfordeling.', 20, 100);
+            
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text('Generert av Kalkulatornorge.no - Basert på NAF-data', 20, 280);
+            doc.text('Dette er et estimat. Faktiske kostnader kan variere.', 20, 285);
+            
+            doc.save('bilkostnad-2026.pdf');
+        }
+        
+        // ============================================
+        // SOCIAL SHARING
+        // ============================================
+        function shareToX() {
+            const text = 'Sjekk de VIRKELIGE bilkostnadene - ikke bare kjøpeprisen! Bruk denne gratis kalkulatoren:';
+            const url = 'https://kalkulatornorge.no/bilkostnad.html';
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function shareToFacebook() {
+            const url = 'https://kalkulatornorge.no/bilkostnad.html';
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function shareToLinkedIn() {
+            const url = 'https://kalkulatornorge.no/bilkostnad.html';
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function copyToClipboard() {
+            const url = 'https://kalkulatornorge.no/bilkostnad.html';
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ Lenke kopiert til utklippstavlen!');
+            }).catch(() => {
+                alert('❌ Kunne ikke kopiere lenke');
+            });
+        }
+        
+        // ============================================
+        // EMAIL RESULTS
+        // ============================================
+        function emailResults() {
+            const biltype = document.getElementById('biltype').options[document.getElementById('biltype').selectedIndex].text;
+            const total = document.getElementById('resultTotal').textContent;
+            const maaned = document.getElementById('resultMaaned').textContent;
+            const perKm = document.getElementById('resultPerKm').textContent;
+            
+            const emailText = `Mine bilkostnader 2026:
 
+Biltype: ${biltype}
+Total årlig kostnad: ${total}
+Per måned: ${maaned}
+Kostnad per km: ${perKm}
+
+Beregnet med Kalkulatornorge.no
+https://kalkulatornorge.no/bilkostnad.html
+
+---
+Dette er et estimat basert på NAF-data. Faktiske kostnader kan variere.`;
+            
+            document.getElementById('emailContent').value = emailText;
+            document.getElementById('emailModal').style.display = 'block';
+        }
+        
+        function closeEmailModal() {
+            document.getElementById('emailModal').style.display = 'none';
+        }
+        
+        function copyEmailContent() {
+            const emailText = document.getElementById('emailContent');
+            emailText.select();
+            document.execCommand('copy');
+            alert('✅ Innhold kopiert! Lim inn i din e-post.');
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('emailModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // ============================================
+        // DROPDOWN TOGGLE
+        // ============================================
         function toggleDropdown() {
             document.getElementById('dropdownMenu').classList.toggle('open');
         }
@@ -499,37 +1428,8 @@
             }
         });
         
-        function toggleCollapsible(element) {
-            element.classList.toggle('open');
-        }
-        
-        // Enter key to calculate
-        document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
-        });
+        // Initialize
+        updateBiltype();
     </script>
-<!-- Schema Markup -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Bilkostnad Kalkulator 2026",
-  "description": "Beregn årlige bilutgifter: drivstoff, forsikring, verditap og vedlikehold. Sammenlign elbil vs bensin.",
-  "url": "https://kalkulatornorge.no/bilkostnad.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Any",
-  "inLanguage": "nb-NO",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "NOK"
-  },
-  "creator": {
-    "@type": "Organization",
-    "name": "Kalkulatornorge.no",
-    "url": "https://kalkulatornorge.no"
-  }
-}
-</script>
 </body>
 </html>
