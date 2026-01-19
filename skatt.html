@@ -62,6 +62,34 @@
         .back-link:hover {
             color: var(--color-primary);
         }
+
+        /* Ad container styling - matches your rust/cream design */
+            .ad-container {
+                background: rgba(196, 83, 58, 0.02); /* Very subtle rust tint */
+                border: 1px solid #E5E7EB;
+                border-radius: 10px;
+                padding: 16px;
+                margin: 40px 0;
+                text-align: center;
+            }
+
+            .ad-label {
+                display: block;
+                font-size: 0.75rem;
+                color: #6B7280;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 12px;
+                font-family: 'Inter', sans-serif;
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 600px) {
+                .ad-container {
+                    padding: 12px;
+                    margin: 30px 0;
+                }
+        }
         
         /* Calculator Header */
         .calc-header {
@@ -1114,6 +1142,23 @@
                         <div class="monthly-value" id="resultNettoMaaned">0 kr</div>
                     </div>
                 </div>
+                <!-- AD UNIT 1 GOES HERE -->
+                <div class="ad-container">
+                    <span class="ad-label">Annonse</span>
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764"
+
+                    crossorigin="anonymous"></script>
+                    <!-- Calculator - Below Results -->
+                    <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-4100900262694764"
+                    data-ad-slot="6014935858"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
         </div>
 <!-- Add this right after your main tax result display -->
@@ -1514,7 +1559,22 @@
             <div class="disclaimer">
                 <p><strong>Viktig:</strong> Denne kalkulatoren gir et estimat basert på standardregler. For nøyaktig skatteberegning, bruk <a href="https://www.skatteetaten.no/person/skatt/skattekort/skatteberegning/" target="_blank" rel="noopener">Skatteetatens offisielle kalkulator</a> eller kontakt en autorisert regnskapsfører.</p>
             </div>
-            
+            <!-- AD UNIT 2 GOES HERE -->
+            <div class="ad-container">
+                <span class="ad-label">Annonse</span>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764"
+                crossorigin="anonymous"></script>
+                <!-- Calculator - Bottom Page -->
+                <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4100900262694764"
+                data-ad-slot="7800443206"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </div>
     </main>
     
