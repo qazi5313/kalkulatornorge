@@ -4,7 +4,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendlerfradrag Kalkulator 2026 - Beregn reisefradrag | Kalkulatornorge.no</title>
+    <title>Pendlerfradrag Kalkulator 2026 – Beregn reisefradrag</title>
     <meta name="description" content="Gratis pendlerfradragskalkulator for 2026. Beregn skattefradrag for reise til jobb med nye satser: 1,90 kr/km og kun 12 000 kr i bunnfradrag.">
     <meta name="keywords" content="pendlerfradrag, reisefradrag, pendlerfradrag 2026, skattefradrag, kilometer fradrag, arbeidsreise, pendler">
     <link rel="canonical" href="https://kalkulatornorge.no/pendlerfradrag.html">
@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/components.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
     <meta property="og:title" content="Pendlerfradrag Kalkulator 2026 | Kalkulatornorge.no">
     <meta property="og:description" content="Beregn skattefradrag for reise til jobb. Nye 2026-satser: 1,90 kr/km, kun 12 000 kr bunnfradrag.">
@@ -30,134 +30,6 @@
         {"@type": "Question", "name": "Får begge ektefeller fradrag hvis de kjører sammen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, hvis to personer kjører sammen til jobb, får begge fullt reisefradrag. Dette gjelder også for ektefeller og samboere."}}
       ]
     }
-
-        // Micro-tool: Load common route
-        function loadCommonRoute() {
-            const route = document.getElementById('commonRoute').value;
-            if (route) {
-                document.getElementById('distance').value = route;
-            }
-        }
-        
-        // PDF Download
-        function downloadPDF() {
-            const distance = parseFloat(document.getElementById('distance').value) || 0;
-            const workdays = parseInt(document.getElementById('workdays').value) || 230;
-            const extraCosts = parseFloat(document.getElementById('extraCosts').value) || 0;
-            const dailyKm = document.getElementById('resultDailyKm').textContent;
-            const yearlyKm = document.getElementById('resultYearlyKm').textContent;
-            const travelCost = document.getElementById('resultTravelCost').textContent;
-            const totalCost = document.getElementById('resultTotalCost').textContent;
-            const deduction = document.getElementById('resultDeduction').textContent;
-            const savings = document.getElementById('resultSavings').textContent;
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(16);
-            doc.text('Pendlerfradrag 2026 - Resultat', 20, 20);
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(10);
-            doc.text('Generert: ' + new Date().toLocaleDateString('nb-NO'), 20, 30);
-            
-            doc.setFontSize(11);
-            let y = 45;
-            
-            doc.text('INNDATA:', 20, y); y += 8;
-            doc.text('Avstand (en vei): ' + distance + ' km', 25, y); y += 8;
-            doc.text('Arbeidsdager: ' + workdays, 25, y); y += 8;
-            if (extraCosts > 0) {
-                doc.text('Bom/ferge: ' + formatNumber(extraCosts) + ' kr', 25, y); y += 8;
-            }
-            y += 4;
-            
-            doc.text('BEREGNING:', 20, y); y += 8;
-            doc.text('Daglig kjoreavstand: ' + dailyKm, 25, y); y += 8;
-            doc.text('Arlig kjoreavstand: ' + yearlyKm, 25, y); y += 8;
-            doc.text('Reisekostnad (1,90 kr/km): ' + travelCost, 25, y); y += 8;
-            doc.text('Total reisekostnad: ' + totalCost, 25, y); y += 12;
-            
-            doc.setFont('helvetica', 'bold');
-            doc.text('Reisefradrag: ' + deduction, 25, y); y += 8;
-            doc.text('Skattebesparelse: ' + savings, 25, y);
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(9);
-            doc.text('Beregnet med Kalkulatornorge.no', 20, doc.internal.pageSize.height - 10);
-            
-            doc.save('pendlerfradrag-2026.pdf');
-        }
-
-        // Social Sharing
-        function shareToX() {
-            const text = 'Jeg har beregnet mitt pendlerfradrag for 2026 med Kalkulatornorge.no - gratis og enkelt!';
-            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-        }
-
-        function shareToFacebook() {
-            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-        }
-
-        function shareToLinkedIn() {
-            const url = 'https://kalkulatornorge.no/pendlerfradrag.html';
-            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
-        }
-
-        function copyToClipboard() {
-            const text = 'Beregn ditt pendlerfradrag for 2026 med Kalkulatornorge.no! https://kalkulatornorge.no/pendlerfradrag.html';
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Teksten er kopiert til utklippstavlen!');
-            }).catch(err => {
-                console.error('Kunne ikke kopiere:', err);
-            });
-        }
-
-        // Email Results
-        function emailResults() {
-            const distance = parseFloat(document.getElementById('distance').value) || 0;
-            const workdays = parseInt(document.getElementById('workdays').value) || 230;
-            const dailyKm = document.getElementById('resultDailyKm').textContent;
-            const yearlyKm = document.getElementById('resultYearlyKm').textContent;
-            const deduction = document.getElementById('resultDeduction').textContent;
-            const savings = document.getElementById('resultSavings').textContent;
-            
-            const emailContent = `PENDLERFRADRAG 2026 - RESULTAT
-
-Beregnet: ${new Date().toLocaleDateString('nb-NO')}
-
-INNDATA:
-- Avstand (en vei): ${distance} km
-- Arbeidsdager: ${workdays}
-
-RESULTAT:
-- Daglig kjoreavstand: ${dailyKm}
-- Arlig kjoreavstand: ${yearlyKm}
-- Reisefradrag: ${deduction}
-- Skattebesparelse (22%): ${savings}
-
-Beregnet med Kalkulatornorge.no
-https://kalkulatornorge.no/pendlerfradrag.html`;
-            
-            const modal = document.createElement('div');
-            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
-            modal.innerHTML = `
-                <div style="background: white; border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
-                    <h3 style="margin: 0 0 16px 0; font-family: 'Source Serif 4', serif;">Send resultat til deg selv</h3>
-                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p>
-                    <textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">${emailContent}</textarea>
-                    <div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;">
-                        <button onclick="navigator.clipboard.writeText(\`${emailContent.replace(/`/g, '\`')}\`); alert('Kopiert!'); this.closest('[style*=fixed]').remove();" style="padding: 12px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button>
-                        <button onclick="this.closest('[style*=fixed]').remove();" style="padding: 12px 20px; background: #E2E8F0; color: #2D3748; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
-        }
     </script>
     <style>
         .calc-page { background: var(--color-background); min-height: 100vh; }
@@ -326,7 +198,7 @@ https://kalkulatornorge.no/pendlerfradrag.html`;
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="index.html" class="logo">
+                <a href="/" class="logo">
                     <div class="logo-icon">
                         <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
                             <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
@@ -357,7 +229,7 @@ https://kalkulatornorge.no/pendlerfradrag.html`;
                         <a href="pendlerfradrag.html" class="dropdown-item active"><span class="dropdown-item-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></span>Pendlerfradrag</a>
                         <a href="tilhengervekt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg></span>Tilhengervekt</a>
                         <div class="dropdown-category">Næring</div>
-                        <a href="timelonn-frilanser.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Timelønn Frilansere</a>
+                        <a href="timelonn-frilanser.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M0 0H2V14H18V16H0V0ZM4 6H7V12H4V6ZM8 2H11V12H8V2ZM12 8H15V12H12V8Z" fill="#C4533A"/></svg></span>Timelønn Frilansere</a>
                     </div>
                 </div>
             </div>
@@ -365,7 +237,7 @@ https://kalkulatornorge.no/pendlerfradrag.html`;
     </header>
     
     <main class="calc-container">
-        <a href="index.html" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
+        <a href="/" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
         
         <div class="calc-header">
             <div class="calc-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></div>
@@ -446,8 +318,6 @@ https://kalkulatornorge.no/pendlerfradrag.html`;
                 <!-- AD UNIT 1 GOES HERE -->
                 <div class="ad-container">
                     <span class="ad-label">Annonse</span>
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764"
-                    crossorigin="anonymous"></script>
                 <!-- Calculator - Below Results -->
                 <ins class="adsbygoogle"
                     style="display:block"
@@ -664,8 +534,6 @@ https://kalkulatornorge.no/pendlerfradrag.html`;
         <!-- AD UNIT 2 GOES HERE -->
             <div class="ad-container">
                 <span class="ad-label">Annonse</span>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764"
-                crossorigin="anonymous"></script>
                 <!-- Calculator - Bottom Page -->
                 <ins class="adsbygoogle"
                 style="display:block"
@@ -682,7 +550,7 @@ https://kalkulatornorge.no/pendlerfradrag.html`;
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
-                <a href="index.html" class="footer-link">Alle kalkulatorer</a>
+                <a href="/" class="footer-link">Alle kalkulatorer</a>
                 <a href="personvern.html" class="footer-link">Personvern</a>
                 <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
             </div>
