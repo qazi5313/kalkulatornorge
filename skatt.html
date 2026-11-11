@@ -4,8 +4,8 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skattekalkulator 2026 - Beregn din skatt gratis | Kalkulatornorge.no</title>
-    <meta name="description" content="Gratis skattekalkulator for 2026. Beregn trinnskatt, trygdeavgift og total skatt basert på offisielle norske skattesatser. Se hvor mye du får utbetalt etter skatt.">
+    <title>Skattekalkulator 2026 – Beregn skatten din gratis</title>
+    <meta name="description" content="Gratis skattekalkulator for 2026. Beregn trinnskatt, trygdeavgift og total skatt med offisielle satser, og se hva du får utbetalt etter skatt.">
     <meta name="keywords" content="skattekalkulator, skatt 2026, trinnskatt, trygdeavgift, norsk skatt, skatteberegning">
     <link rel="canonical" href="https://kalkulatornorge.no/skatt.html">
     
@@ -22,10 +22,10 @@
     <link rel="stylesheet" href="css/components.css">
     
     <!-- Chart.js Library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
     
     <!-- jsPDF Library for PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     
     <!-- Open Graph -->
     <meta property="og:title" content="Skattekalkulator 2026 | Kalkulatornorge.no">
@@ -917,8 +917,38 @@
             }
         }
     </style>
-<!-- Add this in the <head> section, before closing </head> -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hvor mye skatt på 500 000 kr i årslønn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Med 500 000 kr i årsinntekt betaler du ca. 120 000 - 125 000 kr i skatt, avhengig av dine fradrag. Dette gir en gjennomsnittlig skatteprosent på ca. 24-25%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hva er marginalskatt?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Marginalskatt er skatten du betaler på den siste kronen du tjener. I Norge kan marginalskatten være opptil ca. 47% for de høyeste inntektene. For de fleste vanlige lønnsmottakere ligger den på 34-44%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Betaler jeg skatt av feriepenger?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja, feriepenger er skattepliktig inntekt. Men i praksis betaler du ikke skatt når feriepengene utbetales (vanligvis i juni), fordi skatten allerede er fordelt over de andre månedene."
+      }
+    }
+  ]
+}
+    </script>
 </head>
 <body class="calc-page">
     
@@ -926,7 +956,7 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="index.html" class="logo">
+                <a href="/" class="logo">
                     <div class="logo-icon">
                         <svg width="20" height="17" viewBox="0 0 18 15" fill="none">
                             <path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/>
@@ -1027,7 +1057,8 @@
                         <div class="dropdown-category">Næring</div>
                         <a href="timelonn-frilanser.html" class="dropdown-item">
                             <span class="dropdown-item-icon">
-                                <svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg>
+                                <svg viewBox="0 0 18 16" fill="none">
+                                <path d="M0 0H2V14H18V16H0V0ZM4 6H7V12H4V6ZM8 2H11V12H8V2ZM12 8H15V12H12V8Z" fill="#C4533A"/></svg>
                             </span>
                             Timelønn Frilansere
                         </a>
@@ -1041,7 +1072,7 @@
     <main class="calc-container">
         
         <!-- Back Link -->
-        <a href="index.html" class="back-link">
+        <a href="/" class="back-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
@@ -1144,9 +1175,6 @@
                 <!-- AD UNIT 1 GOES HERE -->
                 <div class="ad-container">
                     <span class="ad-label">Annonse</span>
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764"
-
-                    crossorigin="anonymous"></script>
                     <!-- Calculator - Below Results -->
                     <ins class="adsbygoogle"
                     style="display:block"
@@ -1561,8 +1589,6 @@
             <!-- AD UNIT 2 GOES HERE -->
             <div class="ad-container">
                 <span class="ad-label">Annonse</span>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764"
-                crossorigin="anonymous"></script>
                 <!-- Calculator - Bottom Page -->
                 <ins class="adsbygoogle"
                 style="display:block"
@@ -1581,7 +1607,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
-                <a href="index.html" class="footer-link">Alle kalkulatorer</a>
+                <a href="/" class="footer-link">Alle kalkulatorer</a>
                 <a href="personvern.html" class="footer-link">Personvern</a>
                 <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
             </div>
