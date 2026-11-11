@@ -102,12 +102,13 @@
             <!-- Search Bar -->
             <div class="search-container">
                 <div class="search-bar">
-                    <input type="text" class="search-input" id="search" placeholder="Søk etter kalkulator... (f.eks. skatt, lønn, feriepenger)">
+                    <input type="search" class="search-input" id="search" placeholder="Søk etter kalkulator... (f.eks. skatt, lønn, feriepenger)" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" aria-label="Søk etter kalkulator">
                     <svg class="search-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <circle cx="11" cy="11" r="8"/>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
                 </div>
+                <ul class="search-results" id="search-results" role="listbox" aria-label="Søkeresultater" hidden></ul>
             </div>
             
             <!-- Quick Access -->
@@ -367,19 +368,131 @@
         </div>
     </footer>
     
-    <!-- Search Script -->
+    <!-- Search Script: suggestion dropdown built from the calculator cards -->
     <script>
-        document.getElementById('search').addEventListener('input', function(e) {
-            const query = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.calculator-card');
-            
-            cards.forEach(card => {
-                const title = card.querySelector('.card-title').textContent.toLowerCase();
-                const desc = card.querySelector('.card-description').textContent.toLowerCase();
-                const match = title.includes(query) || desc.includes(query);
-                card.style.display = match ? 'block' : 'none';
-            });
+    (function () {
+        var input = document.getElementById('search');
+        var list = document.getElementById('search-results');
+        if (!input || !list) return;
+
+        // Extra words people search for that are not in the card text
+        var KEYWORDS = {
+            'skatt.html': 'trinnskatt trygdeavgift skattetrekk inntektsskatt marginalskatt skatteprosent',
+            'brutto-netto.html': 'lønn etter skatt nettolønn bruttolønn månedslønn utbetalt lønnskalkulator',
+            'feriepenger.html': 'ferie feriepengegrunnlag 10,2 12 prosent',
+            'overtid.html': 'overtidstillegg overtidsbetaling 40% 50% 100% overtidstimer',
+            'arbeidsgiveravgift.html': 'aga sone arbeidsgiver kommune',
+            'timelonn-frilanser.html': 'timepris frilans frilanser enk enkeltpersonforetak selvstendig konsulent timesats',
+            'stromkostnad.html': 'strøm strømregning strømstøtte norgespris kwh strømpris',
+            'bilkostnad.html': 'bil elbil drivstoff bensin diesel bilhold kilometerpris',
+            'barnebidrag.html': 'bidrag barn samvær nav',
+            'sykepenger.html': 'syk sykemelding sykmelding nav sykefravær',
+            'pendlerfradrag.html': 'reisefradrag pendler pendling kjøring km arbeidsreise',
+            'tilhengervekt.html': 'tilhenger henger b96 be førerkort hengervekt campingvogn'
+        };
+
+        function norm(t) {
+            return (t || '').toLowerCase()
+                .replace(/æ/g, 'ae').replace(/ø/g, 'o').replace(/å/g, 'a')
+                .replace(/\s+/g, ' ').trim();
+        }
+
+        var items = Array.prototype.map.call(document.querySelectorAll('.calculator-card'), function (card) {
+            var href = card.getAttribute('href');
+            var title = card.querySelector('.card-title').textContent.trim();
+            var desc = card.querySelector('.card-description').textContent.trim();
+            var tags = Array.prototype.map.call(card.querySelectorAll('.card-tag'), function (t) { return t.textContent; }).join(' ');
+            var icon = card.querySelector('svg');
+            return {
+                href: href, title: title, desc: desc,
+                icon: icon ? icon.outerHTML : '',
+                nTitle: norm(title),
+                nOther: norm(tags + ' ' + (KEYWORDS[href] || '')),
+                nDesc: norm(desc)
+            };
         });
+
+        var results = [], active = -1;
+
+        function score(item, q) {
+            var words = q.split(' '), total = 0;
+            for (var i = 0; i < words.length; i++) {
+                var w = words[i];
+                if (item.nTitle.indexOf(w) === 0) total += 100;
+                else if (item.nTitle.indexOf(w) > -1) total += 60;
+                else if (item.nOther.indexOf(w) > -1) total += 40;
+                else if (item.nDesc.indexOf(w) > -1) total += 20;
+                else return 0; // every word must match somewhere
+            }
+            return total;
+        }
+
+        function escapeHtml(t) {
+            return t.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+        }
+
+        function render() {
+            var q = norm(input.value);
+            if (!q) { close(); return; }
+            results = items
+                .map(function (it) { return { it: it, s: score(it, q) }; })
+                .filter(function (r) { return r.s > 0; })
+                .sort(function (a, b) { return b.s - a.s; })
+                .slice(0, 6)
+                .map(function (r) { return r.it; });
+            active = results.length ? 0 : -1;
+
+            if (!results.length) {
+                list.innerHTML = '<li class="search-empty" role="option" aria-disabled="true">Ingen kalkulator passer til «' +
+                    escapeHtml(input.value.trim()) + '». <a href="#kalkulatorer">Se alle kalkulatorer</a></li>';
+            } else {
+                list.innerHTML = results.map(function (it, i) {
+                    return '<li role="option" id="search-opt-' + i + '" aria-selected="' + (i === active) + '">' +
+                        '<a href="' + it.href + '" class="search-result' + (i === active ? ' is-active' : '') + '" tabindex="-1">' +
+                        '<span class="search-result-icon">' + it.icon + '</span>' +
+                        '<span class="search-result-text"><span class="search-result-title">' + escapeHtml(it.title) + '</span>' +
+                        '<span class="search-result-desc">' + escapeHtml(it.desc) + '</span></span></a></li>';
+                }).join('');
+            }
+            list.hidden = false;
+            input.setAttribute('aria-expanded', 'true');
+            input.setAttribute('aria-activedescendant', active > -1 ? 'search-opt-' + active : '');
+        }
+
+        function setActive(i) {
+            if (!results.length) return;
+            active = (i + results.length) % results.length;
+            var links = list.querySelectorAll('.search-result');
+            for (var k = 0; k < links.length; k++) {
+                links[k].classList.toggle('is-active', k === active);
+                links[k].parentNode.setAttribute('aria-selected', k === active);
+            }
+            input.setAttribute('aria-activedescendant', 'search-opt-' + active);
+            links[active].scrollIntoView({ block: 'nearest' });
+        }
+
+        function close() {
+            list.hidden = true;
+            list.innerHTML = '';
+            results = []; active = -1;
+            input.setAttribute('aria-expanded', 'false');
+            input.removeAttribute('aria-activedescendant');
+        }
+
+        input.addEventListener('input', render);
+        input.addEventListener('focus', function () { if (input.value) render(); });
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); if (list.hidden) render(); else setActive(active + 1); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+            else if (e.key === 'Enter') {
+                if (active > -1 && results[active]) { e.preventDefault(); window.location.href = results[active].href; }
+            }
+            else if (e.key === 'Escape') { close(); }
+        });
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.search-container')) close();
+        });
+    })();
     </script>
     
 </body>
