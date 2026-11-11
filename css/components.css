@@ -1168,6 +1168,232 @@ a.contact-card-value:hover {
 }
 
 /* ========================================
+   GUIDER (articles)
+   Reuses .prose, .note-box, .info-table, .check-list, .cta-button
+   ======================================== */
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+}
+
+.breadcrumb a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: var(--color-primary);
+}
+
+.article-header {
+    padding: var(--space-12) 0 var(--space-6);
+}
+
+.article-header h1 {
+    font-size: var(--text-4xl);
+    line-height: 1.2;
+    max-width: 20ch;
+    margin-bottom: var(--space-4);
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+.article-meta a {
+    color: var(--color-text);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.article-meta a:hover {
+    color: var(--color-primary);
+}
+
+.article-meta-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text-muted);
+}
+
+.summary-box {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin: 0 0 var(--space-8);
+}
+
+.summary-box h2 {
+    font-family: var(--font-body);
+    font-size: var(--text-xs) !important;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-4) !important;
+}
+
+.summary-box .check-list {
+    margin: 0;
+}
+
+.prose h3 {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin: var(--space-8) 0 var(--space-3);
+}
+
+.prose ul:not(.check-list) {
+    padding-left: var(--space-6);
+    margin: 0 0 var(--space-4);
+}
+
+.prose ul:not(.check-list) li {
+    margin-bottom: var(--space-2);
+    line-height: 1.7;
+}
+
+.prose .info-table td:last-child {
+    font-variant-numeric: tabular-nums;
+}
+
+.calc-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    background: var(--color-primary-lighter);
+    border: 1px solid var(--color-primary-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin: var(--space-8) 0;
+}
+
+.calc-cta-text strong {
+    display: block;
+    font-size: var(--text-base);
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+}
+
+.calc-cta-text span {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+.calc-cta .cta-button {
+    color: #FFFFFF;
+    white-space: nowrap;
+}
+
+.guide-list {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-6) 0 var(--space-16);
+}
+
+.guide-card {
+    display: block;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-decoration: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.guide-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.guide-card-tag {
+    display: inline-block;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--space-2);
+}
+
+.guide-card h2 {
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    margin: 0 0 var(--space-2);
+}
+
+.guide-card p {
+    font-size: var(--text-sm);
+    margin: 0 0 var(--space-3);
+}
+
+.guide-card-meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+.guide-teaser {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-8) 0 0;
+    text-decoration: none;
+    color: var(--color-text);
+    text-align: left;
+}
+
+.guide-teaser:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.guide-teaser small {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.guide-teaser span {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .article-header {
+        padding-top: var(--space-8);
+    }
+    .article-header h1 {
+        font-size: var(--text-3xl);
+    }
+    .calc-cta .cta-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ========================================
    SOURCES BOX (on every calculator)
    ======================================== */
 .sources-box {
