@@ -67,8 +67,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/design-system.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/design-system.css?v=20261111">
+    <link rel="stylesheet" href="css/components.css?v=20261111">
 
     <!-- Cookie Consent -->
     <script src="js/cookie-consent.js" defer></script>
@@ -109,10 +109,17 @@
             <div class="container">
                 <div class="prose">
                     <div class="contact-grid">
-                        <a class="contact-card" href="mailto:kontakt@kalkulatornorge.no">
+                        <div class="contact-card contact-card--email">
                             <span class="contact-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
-                            <span><span class="contact-card-label">E-post</span><span class="contact-card-value">kontakt@kalkulatornorge.no</span><span class="contact-card-hint">Raskest å få svar her</span></span>
-                        </a>
+                            <span class="contact-card-body">
+                                <span class="contact-card-label">E-post</span>
+                                <a class="contact-card-value" href="mailto:kontakt@kalkulatornorge.no">kontakt@<wbr>kalkulatornorge.no</a>
+                                <span class="contact-card-actions">
+                                    <button type="button" class="copy-button" data-copy="kontakt@kalkulatornorge.no" aria-live="polite">Kopier adresse</button>
+                                    <span class="contact-card-hint">Raskest å få svar her</span>
+                                </span>
+                            </span>
+                        </div>
                         <a class="contact-card" href="tel:+4794095005">
                             <span class="contact-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
                             <span><span class="contact-card-label">Telefon</span><span class="contact-card-value">940 95 005</span></span>
@@ -140,7 +147,7 @@
                         <tbody>
                             <tr><th scope="row">Foretaksnavn</th><td>Khan Nordverk Digital</td></tr>
                             <tr><th scope="row">Organisasjonsform</th><td>Enkeltpersonforetak</td></tr>
-                            <tr><th scope="row">Org.nr</th><td><a href="https://virksomhet.brreg.no/nb/oppslag/enheter/936391842" target="_blank" rel="noopener">936 391 842</a></td></tr>
+                            <tr><th scope="row">Org.nr</th><td>936 391 842</td></tr>
                             <tr><th scope="row">Innehaver</th><td>Qazi Imran Khan</td></tr>
                             <tr><th scope="row">Sted</th><td>Askim, Indre Østfold</td></tr>
                             <tr><th scope="row">E-post</th><td><a href="mailto:kontakt@kalkulatornorge.no">kontakt@kalkulatornorge.no</a></td></tr>
@@ -166,5 +173,29 @@
         </div>
     </footer>
 
+    <script>
+    (function () {
+        document.querySelectorAll('.copy-button').forEach(function (btn) {
+            var original = btn.textContent;
+            btn.addEventListener('click', function () {
+                var text = btn.getAttribute('data-copy');
+                function done(ok) {
+                    btn.textContent = ok ? 'Kopiert ✓' : text;
+                    btn.classList.toggle('is-copied', ok);
+                    setTimeout(function () { btn.textContent = original; btn.classList.remove('is-copied'); }, 2000);
+                }
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+                } else {
+                    var t = document.createElement('textarea');
+                    t.value = text; t.setAttribute('readonly', ''); t.style.position = 'absolute'; t.style.left = '-9999px';
+                    document.body.appendChild(t); t.select();
+                    var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+                    document.body.removeChild(t); done(ok);
+                }
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
