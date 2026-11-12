@@ -37,7 +37,7 @@
         banner.innerHTML = `
             <div style="position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a1a; color: white; padding: 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 9999; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                 <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 300px;">
+                    <div style="flex: 1; min-width: min(300px, 100%);">
                         <p style="margin: 0; font-size: 14px; line-height: 1.5;">
                             Vi bruker informasjonskapsler (cookies) for å forbedre brukeropplevelsen og analysere trafikk.
                             <a href="personvern.html" style="color: #E9937D; text-decoration: underline;">Les mer om personvern</a>
