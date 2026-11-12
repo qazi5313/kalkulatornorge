@@ -15,8 +15,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/design-system.css?v=20261111-2">
-    <link rel="stylesheet" href="css/components.css?v=20261111-2">
+    <link rel="stylesheet" href="css/design-system.css?v=20261112">
+    <link rel="stylesheet" href="css/components.css?v=20261112">
+    <link rel="stylesheet" href="css/calculator.css?v=20261112">
+    <script src="js/theme.js?v=20261112"></script>
     
     <!-- Chart.js for visualizations -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -42,191 +44,83 @@
     </script>
     
     <style>
-        /* Base Calculator Styles - Following arbeidsgiveravgift.html exactly */
-        .calc-page { background: var(--color-background); min-height: 100vh; }
-        .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
-        .back-link:hover { color: var(--color-primary); }
-        /* Ad container styling - matches your rust/cream design */
-        .ad-container {
-            background: rgba(196, 83, 58, 0.02); /* Very subtle rust tint */
-            border: 1px solid #E5E7EB;
-            border-radius: 10px;
-            padding: 16px;
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .ad-label {
-            display: block;
-            font-size: 0.75rem;
-            color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .ad-container {
-                padding: 12px;
-                margin: 30px 0;
-            }
-        }
-        .calc-header { text-align: center; margin-bottom: 32px; }
-        .calc-icon { width: 64px; height: 64px; background: var(--color-primary-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-        .calc-icon svg { width: 32px; height: 32px; }
-        .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
-        .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
-        .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
-        
-        /* Advanced Mode Toggle */
         .mode-toggle { display: flex; justify-content: center; margin-bottom: 24px; }
         .mode-toggle-btn { padding: 10px 20px; background: var(--color-background); border: 1px solid var(--color-border); color: var(--color-text-secondary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
         .mode-toggle-btn:first-child { border-radius: 8px 0 0 8px; }
         .mode-toggle-btn:last-child { border-radius: 0 8px 8px 0; border-left: none; }
         .mode-toggle-btn.active { background: var(--color-primary); color: white !important; border-color: var(--color-primary); }
         .mode-toggle-btn:not(.active):hover { background: rgba(196, 83, 58, 0.05); }
-        
         .advanced-inputs { display: none; }
-        
-        /* Form Styles */
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
         .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
         .form-input:focus, .form-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
-        .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
-        
         .section-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--color-text); margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid var(--color-border); }
-        
-        .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
-        .calc-btn:hover { background: var(--color-primary-hover); }
-        .calc-btn:active { transform: scale(0.98); }
-        
-        /* Results Table */
-        .results-section { margin-top: 24px; display: none; }
-        .results-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--color-border); border-bottom: none; }
-        .results-table thead { background: var(--color-primary); color: white; }
-        .results-table th { padding: 14px 20px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .results-table th:last-child { text-align: right; }
-        .results-table td { padding: 14px 20px; font-size: 0.9rem; border-bottom: 1px solid var(--color-border); }
-        .results-table td:first-child { color: var(--color-text-secondary); }
-        .results-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text); }
-        .results-table tbody tr:hover { background: var(--color-background); }
         .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
         .results-table tr.highlight td:last-child { color: var(--color-primary); }
-        
-        .results-total { background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .results-total { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
         .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
         .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
         .total-sub { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
-        .total-right { text-align: right; }
         .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
         .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
-        @media (max-width: 480px) { .results-total { flex-direction: column; text-align: center; gap: 16px; } .total-right { text-align: center; } .total-value { font-size: 1.75rem; } }
-        
-        /* Feature Sections - Matching arbeidsgiveravgift.html exactly */
+        @media (max-width: 480px) {
+            .results-total { flex-direction: column; text-align: center; gap: 16px; }
+            .total-value { font-size: 1.75rem; }
+        }
         .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; display: none; }
-        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        
-        /* Callouts */
         .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
-        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
-        .callout-content { flex: 1; }
-        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
         .callout-text { margin: 0; font-size: 0.9rem; line-height: 1.6; }
-        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
-        .callout.warning .callout-icon { color: #FF9800; }
-        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.warning .callout-icon { color: var(--color-warning-text); }
         .callout.info .callout-icon { color: var(--color-primary); }
-        
         .callout ul { margin: 8px 0; padding-left: 20px; line-height: 1.7; }
         .callout li { margin-bottom: 6px; }
-        
-        .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-        .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
         .info-box-header svg { color: var(--color-primary); }
         .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
         .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
-        .info-box p:last-child { margin-bottom: 0; }
         .info-box a { color: var(--color-primary); text-decoration: none; }
         .info-box a:hover { text-decoration: underline; }
-        
-        /* Savings Grid - Matching arbeidsgiveravgift.html exactly */
         .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
         .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
-        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
         .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
-        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
-        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } }
-        
-        /* BigMac Section - Matching arbeidsgiveravgift.html exactly */
-        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; display: none; }
+        @media (max-width: 600px) {
+            .savings-grid { grid-template-columns: 1fr; }
+        }
+        .bigmac-section { background: var(--color-warning-bg); border: 1px solid var(--color-warning-border); border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; display: none; }
         .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
-        .bigmac-text { font-size: 0.9rem; color: #795548; margin-bottom: 8px; }
-        .bigmac-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: #F57C00; }
-        .bigmac-sub { font-size: 0.85rem; color: #795548; margin-top: 4px; }
-        
-        /* Regional Grid - Matching arbeidsgiveravgift.html exactly */
+        .bigmac-text { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--color-warning-text); }
+        .bigmac-sub { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 4px; }
         .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
-        .regional-card { background: white; border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; }
-        @media (max-width: 600px) { .regional-grid { grid-template-columns: 1fr; } }
-        
-        /* Collapsibles */
+        .regional-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; }
+        @media (max-width: 600px) {
+            .regional-grid { grid-template-columns: 1fr; }
+        }
         .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
         .collapsible-header { width: 100%; padding: 20px 24px; background: transparent; border: none; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; font-family: inherit; text-align: left; }
-        .collapsible-header:hover { background: var(--color-background); }
         .collapsible-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
         .collapsible-icon { width: 20px; height: 20px; transition: transform 0.3s; }
-        .collapsible.open .collapsible-icon { transform: rotate(180deg); }
         .collapsible-content { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
         .collapsible.open .collapsible-content { max-height: 2000px; padding: 0 24px 20px 24px; }
         .collapsible-content p { color: var(--color-text-secondary); line-height: 1.6; margin: 0 0 12px 0; }
         .collapsible-content ul { margin: 8px 0 0 0; padding-left: 20px; }
         .collapsible-content li { color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 6px; }
         .collapsible-content strong { color: var(--color-text); }
-        
-        /* Related Calculators Grid */
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
         .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
-        .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
         .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .related-card-icon svg { width: 20px; height: 20px; }
         .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
         .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
-        
-        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
         .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
-        /* Info Table */
-        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
-        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
-        .info-table tr:last-child td { border-bottom: none; }
         .info-table tbody tr:hover { background: var(--color-background); }
         .rate-badge { display: inline-block; padding: 4px 8px; background: var(--color-primary-light); color: var(--color-primary); border-radius: 6px; font-weight: 600; font-size: 0.85rem; }
-        
-        /* SEO Content */
-        .seo-content { margin-top: 48px; }
-        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .seo-content h2:first-child { margin-top: 0; }
         .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
         .seo-content a { color: var(--color-primary); text-decoration: none; }
         .seo-content a:hover { text-decoration: underline; }
-        
-        /* Dropdown styles from arbeidsgiveravgift */
-        .dropdown-menu { position: relative; }
-        .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .dropdown-btn:hover { border-color: var(--color-primary); }
         .dropdown-content { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.12); min-width: 260px; z-index: 1000; padding: 8px; max-height: 70vh; overflow-y: auto; }
         .dropdown-menu.open .dropdown-content { display: block; }
         .dropdown-category { font-size: 0.75rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 12px 6px 12px; }
         .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--color-text); text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: background 0.15s; }
-        .dropdown-item:hover { background: var(--color-background); }
         .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
-        .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
         .dropdown-item-icon svg { width: 16px; height: 16px; }
     </style>
 </head>
@@ -482,7 +376,7 @@
                         <li><strong>Trafikkforsikringsavgift:</strong> Elbil 3 270 kr, fossilbil 2 329 kr</li>
                     </ul>
                     <small style="color: var(--color-text-secondary); display: block; margin-top: 8px;">
-                        Kilde: <a href="https://ofv.no/aktuelt/2025/ofvs-avgiftskalkulator-for-2026" target="_blank" style="color: #E65100;">OFV Avgiftskalkulator 2026</a>
+                        Kilde: <a href="https://ofv.no/aktuelt/2025/ofvs-avgiftskalkulator-for-2026" target="_blank" style="color: var(--color-warning-text);">OFV Avgiftskalkulator 2026</a>
                     </small>
                 </div>
             </div>
@@ -517,29 +411,10 @@
         </div>
         
         <!-- ACTION BUTTONS - Matching arbeidsgiveravgift exactly -->
-        <div id="action-buttons-section" class="feature-section" style="display: none;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <span>📥 Last ned PDF</span>
-                </button>
-                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <span>✉️ Send til deg selv</span>
-                </button>
-            </div>
-            <div>
-                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet:</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
-                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
-                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
-                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
-                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
-                </div>
-            </div>
-        </div>
         
         <!-- SAVINGS VISUALIZER -->
         <div id="savings-section" class="feature-section" style="display: none;">
-            <div class="feature-title">💰 Sparepotensial</div>
+            <div class="feature-title">💰 Hva betyr dette for deg?</div>
             <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
                 Slik kan du redusere bilkostnadene:
             </p>
@@ -572,7 +447,7 @@
         
         <!-- REGIONAL COMPARISON -->
         <div id="regional-section" class="feature-section" style="display: none;">
-            <div class="feature-title">🗺️ Kjøpekraft per region</div>
+            <div class="feature-title">🗺️ Regionalt perspektiv</div>
             <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
                 Samme bilbudsjett gir ulik kjøpekraft rundt i Norge:
             </p>
@@ -627,15 +502,30 @@
                 </div>
             </div>
         </div>
+
+        <div id="action-buttons-section" class="share-bar" style="display: none;">
+            <h3 class="share-bar-title">Del og lagre</h3>
+            <div class="share-bar-actions">
+                <button type="button" class="share-btn share-btn-primary" onclick="downloadPDF()">Last ned PDF</button>
+                <button type="button" class="share-btn share-btn-primary" onclick="emailResults()">Send på e-post</button>
+            </div>
+            <p class="share-bar-hint">Del kalkulatoren med andre:</p>
+            <div class="share-bar-social">
+                <button type="button" class="share-btn" onclick="shareToX()">X</button>
+                <button type="button" class="share-btn" onclick="shareToFacebook()">Facebook</button>
+                <button type="button" class="share-btn" onclick="shareToLinkedIn()">LinkedIn</button>
+                <button type="button" class="share-btn" onclick="copyToClipboard()">Kopier</button>
+            </div>
+        </div>
         
         <!-- Email Modal -->
         <div id="emailModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
-            <div style="background: white; margin: 10% auto; padding: 32px; border-radius: 12px; max-width: 600px; position: relative;">
-                <span onclick="closeEmailModal()" style="position: absolute; right: 20px; top: 20px; font-size: 28px; font-weight: bold; color: #999; cursor: pointer;">&times;</span>
+            <div style="background: var(--color-surface); margin: 10% auto; padding: 32px; border-radius: 12px; max-width: 600px; position: relative;">
+                <span onclick="closeEmailModal()" style="position: absolute; right: 20px; top: 20px; font-size: 28px; font-weight: bold; color: var(--color-text-muted); cursor: pointer;">&times;</span>
                 <h3 style="font-family: var(--font-display); margin-bottom: 16px;">📧 E-post innhold</h3>
                 <p style="color: var(--color-text-secondary); margin-bottom: 16px;">Kopier teksten under og lim inn i din e-post:</p>
                 <textarea id="emailContent" readonly style="width: 100%; min-height: 250px; padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9rem; margin-bottom: 16px;"></textarea>
-                <button onclick="copyEmailContent()" style="width: 100%; padding: 12px; background: #C4533A; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Kopier til utklippstavle</button>
+                <button onclick="copyEmailContent()" style="width: 100%; padding: 12px; background: var(--color-primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Kopier til utklippstavle</button>
             </div>
         </div>
         
@@ -1193,15 +1083,8 @@
                     labels: ['Verditap', 'Drivstoff/Strøm', 'Forsikring', 'Avgifter', 'Service', 'Andre'],
                     datasets: [{
                         data: [verditap, drivstoff, forsikring, avgift, service, andre],
-                        backgroundColor: [
-                            '#3B82F6',  // Blue
-                            '#F59E0B',  // Amber
-                            '#10B981',  // Green
-                            '#C4533A',  // Rust
-                            '#8B5CF6',  // Purple
-                            '#6B7280'   // Gray
-                        ],
-                        borderColor: '#FAF9F7',
+                        backgroundColor: KalkTheme.segmentColor,
+                        borderColor: KalkTheme.surfaceColor,
                         borderWidth: 2
                     }]
                 },
@@ -1254,16 +1137,8 @@
                     datasets: [{
                         label: 'Årlig totalkostnad',
                         data: [elbilTotal, dieselTotal, userTotal],
-                        backgroundColor: [
-                            'rgba(59, 130, 246, 0.8)',  // Blue for elbil
-                            'rgba(245, 158, 11, 0.8)',  // Amber for diesel
-                            'rgba(196, 83, 58, 0.8)'    // Rust for user
-                        ],
-                        borderColor: [
-                            '#3B82F6',
-                            '#F59E0B',
-                            '#C4533A'
-                        ],
+                        backgroundColor: ctx => KalkTheme.chartColor([1, 2, 0][ctx.dataIndex]),
+                        borderColor: ctx => KalkTheme.chartColor([1, 2, 0][ctx.dataIndex]),
                         borderWidth: 2
                     }]
                 },

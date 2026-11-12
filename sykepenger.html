@@ -15,8 +15,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/design-system.css?v=20261111-2">
-    <link rel="stylesheet" href="css/components.css?v=20261111-2">
+    <link rel="stylesheet" href="css/design-system.css?v=20261112">
+    <link rel="stylesheet" href="css/components.css?v=20261112">
+    <link rel="stylesheet" href="css/calculator.css?v=20261112">
+    <script src="js/theme.js?v=20261112"></script>
     
     <!-- Chart.js for visualizations -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -79,195 +81,95 @@
     </script>
     
     <style>
-        /* Base Calculator Styles - Following bilkostnad.html exactly */
-        .calc-page { background: var(--color-background); min-height: 100vh; }
-        .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
-        .back-link:hover { color: var(--color-primary); }
-        /* Ad container styling - matches your rust/cream design */
-        .ad-container {
-            background: rgba(196, 83, 58, 0.02); /* Very subtle rust tint */
-            border: 1px solid #E5E7EB;
-            border-radius: 10px;
-            padding: 16px;
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .ad-label {
-            display: block;
-            font-size: 0.75rem;
-            color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .ad-container {
-                padding: 12px;
-                margin: 30px 0;
-            }
-        }
-        .calc-header { text-align: center; margin-bottom: 32px; }
-        .calc-icon { width: 64px; height: 64px; background: var(--color-primary-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-        .calc-icon svg { width: 32px; height: 32px; }
-        .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
-        .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
-        .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
-        
-        /* Form Styles */
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
         .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
         .form-input:focus, .form-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
-        .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
-        
-        .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
-        .calc-btn:hover { background: var(--color-primary-hover); }
-        .calc-btn:active { transform: scale(0.98); }
-        
-        /* Results Table */
-        .results-section { margin-top: 24px; display: none; }
-        .results-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--color-border); border-bottom: none; }
-        .results-table thead { background: var(--color-primary); color: white; }
-        .results-table th { padding: 14px 20px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .results-table th:last-child { text-align: right; }
-        .results-table td { padding: 14px 20px; font-size: 0.9rem; border-bottom: 1px solid var(--color-border); }
-        .results-table td:first-child { color: var(--color-text-secondary); }
-        .results-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text); }
-        .results-table tbody tr:hover { background: var(--color-background); }
         .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
         .results-table tr.highlight td:last-child { color: var(--color-primary); }
-        
-        .results-total { background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .results-total { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
         .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
         .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
         .total-sub { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
-        .total-right { text-align: right; }
         .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
         .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
-        @media (max-width: 480px) { .results-total { flex-direction: column; text-align: center; gap: 16px; } .total-right { text-align: center; } .total-value { font-size: 1.75rem; } }
-        
-        /* Feature Sections - Matching bilkostnad.html exactly */
+        @media (max-width: 480px) {
+            .results-total { flex-direction: column; text-align: center; gap: 16px; }
+            .total-value { font-size: 1.75rem; }
+        }
         .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; display: none; }
-        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        
-        /* Timeline Visualization */
         .timeline-visual { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
         .timeline-bars { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
         .timeline-bar-wrapper { display: flex; align-items: center; gap: 12px; }
         .timeline-label { flex: 0 0 100px; font-size: 0.85rem; font-weight: 600; color: var(--color-text); }
-        .timeline-bar-container { flex: 1; height: 40px; background: #F3F4F6; border-radius: 8px; position: relative; overflow: hidden; }
+        .timeline-bar-container { flex: 1; height: 40px; background: var(--color-background-alt); border-radius: 8px; position: relative; overflow: hidden; }
         .timeline-bar { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.85rem; transition: width 0.5s ease; }
-        .timeline-bar.egenmelding { background: linear-gradient(135deg, #10B981, #059669); }
-        .timeline-bar.arbeidsgiver { background: linear-gradient(135deg, #3B82F6, #2563EB); }
-        .timeline-bar.nav { background: linear-gradient(135deg, #F59E0B, #D97706); }
+        .timeline-bar.egenmelding { background: var(--chart-4); }
+        .timeline-bar.arbeidsgiver { background: var(--chart-1); }
+        .timeline-bar.nav { background: var(--chart-2); }
         .timeline-amount { flex: 0 0 120px; text-align: right; font-weight: 700; color: var(--color-text); font-size: 0.9rem; }
-        
-        /* 6G Impact Section */
-        .sixg-impact { background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%); border: 2px solid #FF9800; border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
+        .sixg-impact { background: var(--color-warning-bg); border: 2px solid #FF9800; border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
         .sixg-impact h3 { font-family: var(--font-display); font-size: 1.2rem; margin: 0 0 16px 0; color: var(--color-text); display: flex; align-items: center; gap: 8px; }
-        .sixg-progress { background: white; height: 40px; border-radius: 8px; overflow: hidden; position: relative; margin: 16px 0; border: 1px solid #FFB300; display: flex; }
+        .sixg-progress { background: var(--color-surface); height: 40px; border-radius: 8px; overflow: hidden; position: relative; margin: 16px 0; border: 1px solid var(--color-warning-border); display: flex; }
         .sixg-bar { height: 100%; display: flex; align-items: center; padding: 0 12px; font-weight: 600; font-size: 0.85rem; }
-        .sixg-bar.covered { background: linear-gradient(135deg, #10B981, #059669); color: white; }
-        .sixg-bar.lost { background: linear-gradient(135deg, #EF4444, #DC2626); color: white; }
+        .sixg-bar.covered { background: var(--color-success); color: white; }
+        .sixg-bar.lost { background: var(--color-error); color: white; }
         .sixg-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
-        .sixg-stat { background: white; padding: 16px; border-radius: 8px; border: 1px solid #FFB300; }
+        .sixg-stat { background: var(--color-surface); padding: 16px; border-radius: 8px; border: 1px solid var(--color-warning-border); }
         .sixg-stat-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 4px; }
         .sixg-stat-value { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
-        
-        /* Employer Cost Section */
-        .employer-cost { background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); border: 2px solid #4CAF50; border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
+        .employer-cost { background: var(--color-success-bg); border: 2px solid var(--color-success); border-radius: 12px; padding: 24px; margin: 24px 0; display: none; }
         .employer-cost h3 { font-family: var(--font-display); font-size: 1.2rem; margin: 0 0 16px 0; color: var(--color-text); display: flex; align-items: center; gap: 8px; }
         .employer-cost-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; }
-        .employer-cost-card { background: white; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #81C784; }
+        .employer-cost-card { background: var(--color-surface); padding: 16px; border-radius: 8px; text-align: center; border: 1px solid var(--color-success-border); }
         .employer-cost-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 8px; }
         .employer-cost-value { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--color-primary); }
-        @media (max-width: 600px) { .employer-cost-grid { grid-template-columns: 1fr; } }
-        
-        /* Callouts */
+        @media (max-width: 600px) {
+            .employer-cost-grid { grid-template-columns: 1fr; }
+        }
         .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
-        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
-        .callout-content { flex: 1; }
-        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
         .callout-text { margin: 0; font-size: 0.9rem; line-height: 1.6; }
-        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
-        .callout.warning .callout-icon { color: #FF9800; }
-        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.warning .callout-icon { color: var(--color-warning-text); }
         .callout.info .callout-icon { color: var(--color-primary); }
-        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
-        .callout.tip .callout-icon { color: #4CAF50; }
+        .callout.tip { background: var(--color-success-bg); border-left: 4px solid var(--color-success); }
+        .callout.tip .callout-icon { color: var(--color-success); }
         .callout ul { margin: 8px 0; padding-left: 20px; line-height: 1.7; }
         .callout li { margin-bottom: 6px; }
-        
-        .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-        .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
         .info-box-header svg { color: var(--color-primary); }
         .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
         .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
-        .info-box p:last-child { margin-bottom: 0; }
-        
-        /* Savings Grid - Matching bilkostnad.html exactly */
         .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
         .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
-        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
         .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
-        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
-        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } }
-        
-        /* BigMac Section - Matching bilkostnad.html exactly */
-        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; display: none; }
+        @media (max-width: 600px) {
+            .savings-grid { grid-template-columns: 1fr; }
+        }
+        .bigmac-section { background: var(--color-warning-bg); border: 1px solid var(--color-warning-border); border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; display: none; }
         .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
-        .bigmac-text { font-size: 0.9rem; color: #795548; margin-bottom: 8px; }
-        .bigmac-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: #F57C00; }
-        .bigmac-sub { font-size: 0.85rem; color: #795548; margin-top: 4px; }
-        
-        /* Regional Grid - Matching bilkostnad.html exactly */
+        .bigmac-text { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--color-warning-text); }
+        .bigmac-sub { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 4px; }
         .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
-        .regional-card { background: white; border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; }
-        @media (max-width: 600px) { .regional-grid { grid-template-columns: 1fr; } }
-        
-        /* Collapsibles - Matching bilkostnad.html exactly */
+        .regional-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; }
+        @media (max-width: 600px) {
+            .regional-grid { grid-template-columns: 1fr; }
+        }
         .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
         .collapsible-header { width: 100%; padding: 20px 24px; background: transparent; border: none; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; font-family: inherit; text-align: left; }
-        .collapsible-header:hover { background: var(--color-background); }
         .collapsible-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
         .collapsible-icon { width: 20px; height: 20px; transition: transform 0.3s; }
-        .collapsible.open .collapsible-icon { transform: rotate(180deg); }
         .collapsible-content { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
         .collapsible.open .collapsible-content { max-height: 2000px; padding: 0 24px 20px 24px; }
         .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
         .collapsible-content p:last-child { margin-bottom: 0; }
         .collapsible-content ul { margin: 12px 0; padding-left: 20px; }
         .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
-        
-        /* Related Calculators - Matching bilkostnad.html exactly */
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
         .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
-        .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
         .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .related-card-icon svg { width: 20px; height: 20px; }
         .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
         .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
-        
-        /* Disclaimer */
-        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
         .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
-        
-        /* Tables */
-        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
-        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
-        .info-table tr:last-child td { border-bottom: none; }
         .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
         .info-table tr:hover td { background: var(--color-background); }
-        
-        /* Email Modal */
         .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
         .modal-content { background-color: var(--color-surface); margin: 5% auto; padding: 30px; border: 1px solid var(--color-border); border-radius: 12px; width: 90%; max-width: 600px; }
         .modal-close { color: var(--color-text-secondary); float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
@@ -276,10 +178,6 @@
         .modal textarea { width: 100%; min-height: 200px; padding: 12px; border: 1px solid var(--color-border); border-radius: 8px; font-family: monospace; font-size: 0.85rem; margin: 16px 0; resize: vertical; box-sizing: border-box; }
         .modal-btn { padding: 12px 24px; background: var(--color-primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 8px; }
         .modal-btn:hover { background: var(--color-primary-hover); }
-        
-        /* Header and dropdown - COPIED FROM ORIGINAL FILE */
-        .dropdown-menu { position: relative; }
-        .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .dropdown-btn:hover { border-color: var(--color-primary); background: var(--color-background); }
         .dropdown-btn svg:last-child { transition: transform 0.2s; }
         .dropdown-menu.open .dropdown-btn svg:last-child { transform: rotate(180deg); }
@@ -287,9 +185,7 @@
         .dropdown-menu.open .dropdown-content { opacity: 1; visibility: visible; transform: translateY(0); }
         .dropdown-category { padding: 12px 16px 6px 16px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-secondary); }
         .dropdown-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; text-decoration: none; color: var(--color-text); font-size: 0.9rem; transition: background 0.15s; }
-        .dropdown-item:hover { background: var(--color-background); }
         .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
-        .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
         .dropdown-item-icon svg { width: 16px; height: 16px; }
     </style>
 </head>
@@ -547,29 +443,10 @@
         </div>
         
         <!-- ACTION BUTTONS - Matching bilkostnad exactly -->
-        <div id="action-buttons-section" class="feature-section" style="display: none;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <span>📥 Last ned PDF</span>
-                </button>
-                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <span>✉️ Send til deg selv</span>
-                </button>
-            </div>
-            <div>
-                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet:</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
-                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
-                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
-                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
-                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
-                </div>
-            </div>
-        </div>
         
         <!-- SAVINGS VISUALIZER -->
         <div id="savings-section" class="feature-section" style="display: none;">
-            <div class="feature-title">💰 Sparepotensial</div>
+            <div class="feature-title">💰 Hva betyr dette for deg?</div>
             <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
                 Slik kan du optimalisere sykepengene:
             </p>
@@ -602,7 +479,7 @@
         
         <!-- REGIONAL COMPARISON -->
         <div id="regional-section" class="feature-section" style="display: none;">
-            <div class="feature-title">🗺️ Kjøpekraft per region</div>
+            <div class="feature-title">🗺️ Regionalt perspektiv</div>
             <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
                 Samme beløp gir ulik kjøpekraft rundt i Norge:
             </p>
@@ -657,6 +534,21 @@
                 </div>
             </div>
         </div>
+
+        <div id="action-buttons-section" class="share-bar" style="display: none;">
+            <h3 class="share-bar-title">Del og lagre</h3>
+            <div class="share-bar-actions">
+                <button type="button" class="share-btn share-btn-primary" onclick="downloadPDF()">Last ned PDF</button>
+                <button type="button" class="share-btn share-btn-primary" onclick="emailResults()">Send på e-post</button>
+            </div>
+            <p class="share-bar-hint">Del kalkulatoren med andre:</p>
+            <div class="share-bar-social">
+                <button type="button" class="share-btn" onclick="shareToX()">X</button>
+                <button type="button" class="share-btn" onclick="shareToFacebook()">Facebook</button>
+                <button type="button" class="share-btn" onclick="shareToLinkedIn()">LinkedIn</button>
+                <button type="button" class="share-btn" onclick="copyToClipboard()">Kopier</button>
+            </div>
+        </div>
         
         <!-- EMAIL MODAL - ADDED -->
         <div id="emailModal" class="modal">
@@ -676,7 +568,7 @@
             <div class="info-box">
                 <div class="info-box-header">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="currentColor"/></svg>
-                    <h3>Slik fungerer sykepenger i Norge</h3>
+                    <h3>Om beregningen</h3>
                 </div>
                 <p>Sykepenger skal sikre at du har inntekt når du er syk og ikke kan jobbe. Ordningen gir deg 100% av lønnen din opp til 6G (grunnbeløpet), som i 2026 er <strong>744 168 kr</strong>. Dette gjør Norge til ett av verdens mest sjenerøse land for sykelønnsordninger.</p>
                 <p>Arbeidsgiver betaler de første 16 kalenderdagene, deretter overtar NAV fra dag 17. For selvstendig næringsdrivende er det 16 dagers karens (ingen utbetaling), og de får 80% fra dag 17.</p>
@@ -1100,11 +992,11 @@
             if (employmentType === 'employee') {
                 labels = ['Arbeidsgiver (dag 1-16)', 'NAV (dag 17+)'];
                 data = [employerPay, navPay];
-                colors = ['#3B82F6', '#F59E0B'];
+                colors = [0, 1];
             } else {
                 labels = ['NAV (dag 17+, 80%)'];
                 data = [navPay];
-                colors = ['#F59E0B'];
+                colors = [1];
             }
             
             sykepengerChart = new Chart(ctx, {
@@ -1113,8 +1005,8 @@
                     labels: labels,
                     datasets: [{
                         data: data,
-                        backgroundColor: colors,
-                        borderColor: '#FAF9F7',
+                        backgroundColor: ctx => KalkTheme.chartColor(colors[ctx.dataIndex]),
+                        borderColor: KalkTheme.surfaceColor,
                         borderWidth: 2
                     }]
                 },

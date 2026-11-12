@@ -40,14 +40,14 @@
                     <div style="flex: 1; min-width: 300px;">
                         <p style="margin: 0; font-size: 14px; line-height: 1.5;">
                             Vi bruker informasjonskapsler (cookies) for å forbedre brukeropplevelsen og analysere trafikk.
-                            <a href="personvern.html" style="color: #4a9eff; text-decoration: underline;">Les mer om personvern</a>
+                            <a href="personvern.html" style="color: #E9937D; text-decoration: underline;">Les mer om personvern</a>
                         </p>
                     </div>
                     <div style="display: flex; gap: 10px; flex-shrink: 0;">
                         <button id="cookie-reject" style="padding: 10px 20px; background: transparent; color: white; border: 1px solid #666; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s;">
                             Avvis
                         </button>
-                        <button id="cookie-accept" style="padding: 10px 20px; background: #4a9eff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s;">
+                        <button id="cookie-accept" style="padding: 10px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s;">
                             Aksepter
                         </button>
                     </div>
@@ -61,10 +61,10 @@
         const rejectBtn = document.getElementById('cookie-reject');
 
         acceptBtn.addEventListener('mouseenter', () => {
-            acceptBtn.style.background = '#3a8eef';
+            acceptBtn.style.background = '#A8452F';
         });
         acceptBtn.addEventListener('mouseleave', () => {
-            acceptBtn.style.background = '#4a9eff';
+            acceptBtn.style.background = '#C4533A';
         });
 
         rejectBtn.addEventListener('mouseenter', () => {

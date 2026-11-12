@@ -15,8 +15,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/design-system.css?v=20261111-2">
-    <link rel="stylesheet" href="css/components.css?v=20261111-2">
+    <link rel="stylesheet" href="css/design-system.css?v=20261112">
+    <link rel="stylesheet" href="css/components.css?v=20261112">
+    <link rel="stylesheet" href="css/calculator.css?v=20261112">
+    <script src="js/theme.js?v=20261112"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
     <meta property="og:title" content="Arbeidsgiveravgift Kalkulator 2026 | Kalkulatornorge.no">
@@ -35,154 +37,73 @@
     }
     </script>
     <style>
-        .calc-page { background: var(--color-background); min-height: 100vh; }
-        .calc-container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s; }
-        .back-link:hover { color: var(--color-primary); }
-        /* Ad container styling - matches your rust/cream design */
-        .ad-container {
-            background: rgba(196, 83, 58, 0.02); /* Very subtle rust tint */
-            border: 1px solid #E5E7EB;
-            border-radius: 10px;
-            padding: 16px;
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .ad-label {
-            display: block;
-            font-size: 0.75rem;
-            color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .ad-container {
-                padding: 12px;
-                margin: 30px 0;
-            }
-        }
-        .calc-header { text-align: center; margin-bottom: 32px; }
-        .calc-icon { width: 64px; height: 64px; background: var(--color-primary-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-        .calc-icon svg { width: 32px; height: 32px; }
-        .calc-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px 0; }
-        .calc-header p { color: var(--color-text-secondary); font-size: 1rem; margin: 0; }
-        .calc-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-size: 0.9rem; }
         .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
         .form-input:focus, .form-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
-        .form-hint { display: block; font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 6px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
-        .calc-btn { width: 100%; padding: 16px 24px; background: var(--color-primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.1s; }
-        .calc-btn:hover { background: var(--color-primary-hover); }
-        .calc-btn:active { transform: scale(0.98); }
-        .results-section { margin-top: 24px; display: none; }
-        .results-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--color-border); border-bottom: none; }
-        .results-table thead { background: var(--color-primary); color: white; }
-        .results-table th { padding: 14px 20px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .results-table th:last-child { text-align: right; }
-        .results-table td { padding: 14px 20px; font-size: 0.9rem; border-bottom: 1px solid var(--color-border); }
-        .results-table td:first-child { color: var(--color-text-secondary); }
-        .results-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text); }
-        .results-table tbody tr:hover { background: var(--color-background); }
         .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
         .results-table tr.highlight td:last-child { color: var(--color-primary); }
-        .results-total { background: linear-gradient(135deg, #C4533A 0%, #A8452F 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .results-total { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
         .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
         .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
         .total-sub { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
-        .total-right { text-align: right; }
         .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
         .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
-        @media (max-width: 480px) { .results-total { flex-direction: column; text-align: center; gap: 16px; } .total-right { text-align: center; } .total-value { font-size: 1.75rem; } }
-        .info-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-        .info-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        @media (max-width: 480px) {
+            .results-total { flex-direction: column; text-align: center; gap: 16px; }
+            .total-value { font-size: 1.75rem; }
+        }
         .info-box-header svg { color: var(--color-primary); }
         .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
         .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
-        .info-box p:last-child { margin-bottom: 0; }
         .info-box a { color: var(--color-primary); text-decoration: none; }
         .info-box a:hover { text-decoration: underline; }
-        .seo-content { margin-top: 48px; }
-        .seo-content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-text); margin: 40px 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .seo-content h2:first-child { margin-top: 0; }
         .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
         .seo-content a { color: var(--color-primary); text-decoration: none; }
         .seo-content a:hover { text-decoration: underline; }
         .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
-        .callout-icon { flex-shrink: 0; width: 24px; height: 24px; }
-        .callout-content { flex: 1; }
-        .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--color-text); }
         .callout-text { margin: 0; font-size: 0.9rem; }
-        .callout.tip { background: #E8F5E9; border-left: 4px solid #4CAF50; }
-        .callout.tip .callout-icon { color: #4CAF50; }
-        .callout.warning { background: #FFF3E0; border-left: 4px solid #FF9800; }
-        .callout.warning .callout-icon { color: #FF9800; }
-        .callout.info { background: rgba(196, 83, 58, 0.08); border-left: 4px solid var(--color-primary); }
+        .callout.tip { background: var(--color-success-bg); border-left: 4px solid var(--color-success); }
+        .callout.tip .callout-icon { color: var(--color-success); }
+        .callout.warning .callout-icon { color: var(--color-warning-text); }
         .callout.info .callout-icon { color: var(--color-primary); }
-        .info-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: var(--color-surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); }
-        .info-table th { background: var(--color-primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-        .info-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
-        .info-table tr:last-child td { border-bottom: none; }
         .info-table tbody tr:hover { background: var(--color-background); }
         .rate-badge { display: inline-block; padding: 4px 8px; background: var(--color-primary-light); color: var(--color-primary); border-radius: 6px; font-weight: 600; font-size: 0.85rem; }
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
         .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; }
-        .related-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
         .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .related-card-icon svg { width: 20px; height: 20px; }
         .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; }
         .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; }
-        .disclaimer { background: rgba(196, 83, 58, 0.06); border-left: 4px solid var(--color-primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
         .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
-                .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
         .collapsible-header { width: 100%; padding: 20px 24px; background: transparent; border: none; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; font-family: inherit; text-align: left; }
-        .collapsible-header:hover { background: var(--color-background); }
         .collapsible-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
         .collapsible-icon { width: 20px; height: 20px; transition: transform 0.3s; }
-        .collapsible.open .collapsible-icon { transform: rotate(180deg); }
         .collapsible-content { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
         .collapsible.open .collapsible-content { max-height: 1000px; padding: 0 24px 20px 24px; }
         .collapsible-content p { color: var(--color-text-secondary); line-height: 1.6; margin: 0 0 12px 0; }
         .collapsible-content ul { margin: 8px 0 0 0; padding-left: 20px; }
         .collapsible-content li { color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 6px; }
-        .dropdown-menu { position: relative; }
-        .dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text); cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .dropdown-btn:hover { border-color: var(--color-primary); }
         .dropdown-content { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.12); min-width: 260px; z-index: 1000; padding: 8px; max-height: 70vh; overflow-y: auto; }
         .dropdown-menu.open .dropdown-content { display: block; }
         .dropdown-category { font-size: 0.75rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 12px 6px 12px; }
         .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--color-text); text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: background 0.15s; }
-        .dropdown-item:hover { background: var(--color-background); }
         .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
-        .dropdown-item-icon { width: 28px; height: 28px; background: var(--color-primary-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
         .dropdown-item-icon svg { width: 16px; height: 16px; }
-        
-        /* New Features CSS */
         .feature-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-top: 24px; }
-        .feature-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
         .savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
         .savings-card { background: rgba(196, 83, 58, 0.04); border: 1px solid rgba(196, 83, 58, 0.2); border-radius: 10px; padding: 16px; text-align: center; }
-        .savings-label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 6px; }
         .savings-amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); }
-        .savings-sub { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
-        .bigmac-section { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border: 1px solid #FFB300; border-radius: 12px; padding: 20px; margin-top: 16px; text-align: center; }
+        .bigmac-section { background: var(--color-warning-bg); border: 1px solid var(--color-warning-border); border-radius: 12px; padding: 20px; margin-top: 16px; text-align: center; }
         .bigmac-icon { font-size: 3rem; margin-bottom: 8px; }
         .bigmac-text { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 8px; }
-        .bigmac-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #F57C00; }
+        .bigmac-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-warning-text); }
         .bigmac-sub { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 6px; }
         .regional-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
         .regional-card { background: var(--color-background); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px; }
-        .regional-city { font-weight: 600; color: var(--color-text); font-size: 0.9rem; margin-bottom: 4px; }
-        .regional-amount { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--color-primary); }
-        .regional-note { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; }
-        @media (max-width: 600px) { .savings-grid { grid-template-columns: 1fr; } .regional-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) {
+            .savings-grid { grid-template-columns: 1fr; }
+            .regional-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body class="calc-page">
@@ -339,28 +260,9 @@
             </div>
         </div>
         
-        <div id="action-buttons-section" class="feature-section" style="display: none;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                <button onclick="downloadPDF()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <span>📥 Last ned PDF</span>
-                </button>
-                <button onclick="emailResults()" style="padding: 12px 16px; background: #C4533A; color: white; border: none; border-radius: 6px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <span>✉️ Send til deg selv</span>
-                </button>
-            </div>
-            <div>
-                <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Del resultatet (uten personlige tall):</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem;">
-                    <button onclick="shareToX()" style="padding: 10px; background: #000000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">𝕏</button>
-                    <button onclick="shareToFacebook()" style="padding: 10px; background: #1877F2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">f Facebook</button>
-                    <button onclick="shareToLinkedIn()" style="padding: 10px; background: #0A66C2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">in LinkedIn</button>
-                    <button onclick="copyToClipboard()" style="padding: 10px; background: #666; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">📋 Kopier</button>
-                </div>
-            </div>
-        </div>
         
         <div id="savings-section" class="feature-section" style="display: none;">
-            <div class="feature-title">💰 Besparelsespotensial</div>
+            <div class="feature-title">💰 Hva betyr dette for deg?</div>
             <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Sammenlign med andre soner og se besparelsen:</p>
             <div class="savings-grid">
                 <div class="savings-card">
@@ -389,7 +291,7 @@
         </div>
         
         <div id="regional-section" class="feature-section" style="display: none;">
-            <div class="feature-title">🗺️ AGA-kostnad per region</div>
+            <div class="feature-title">🗺️ Regionalt perspektiv</div>
             <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Årlig besparelse ved å etablere virksomhet i ulike regioner:</p>
             <div class="regional-grid">
                 <div class="regional-card">
@@ -412,6 +314,21 @@
                     <div class="regional-amount" id="regionalFinnmark">-</div>
                     <div class="regional-note">Ingen AGA</div>
                 </div>
+            </div>
+        </div>
+
+        <div id="action-buttons-section" class="share-bar" style="display: none;">
+            <h3 class="share-bar-title">Del og lagre</h3>
+            <div class="share-bar-actions">
+                <button type="button" class="share-btn share-btn-primary" onclick="downloadPDF()">Last ned PDF</button>
+                <button type="button" class="share-btn share-btn-primary" onclick="emailResults()">Send på e-post</button>
+            </div>
+            <p class="share-bar-hint">Del kalkulatoren med andre:</p>
+            <div class="share-bar-social">
+                <button type="button" class="share-btn" onclick="shareToX()">X</button>
+                <button type="button" class="share-btn" onclick="shareToFacebook()">Facebook</button>
+                <button type="button" class="share-btn" onclick="shareToLinkedIn()">LinkedIn</button>
+                <button type="button" class="share-btn" onclick="copyToClipboard()">Kopier</button>
             </div>
         </div>
         
@@ -786,7 +703,7 @@
             
             const modal = document.createElement('div');
             modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
-            modal.innerHTML = '<div style="background: white; border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;"><h3 style="margin: 0 0 16px 0; font-family: \'Source Serif 4\', serif;">Send resultat til deg selv</h3><p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p><textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">' + emailContent + '</textarea><div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;"><button onclick="navigator.clipboard.writeText(\'' + emailContent.replace(/'/g, "\\'").replace(/\n/g, '\\n') + '\'); alert(\'Kopiert!\'); this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #C4533A; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button><button onclick="this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: #E2E8F0; color: #2D3748; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button></div></div>';
+            modal.innerHTML = '<div style="background: var(--color-surface); border-radius: 12px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;"><h3 style="margin: 0 0 16px 0; font-family: \'Source Serif 4\', serif;">Send resultat til deg selv</h3><p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Kopier teksten og lim inn i din e-postklient:</p><textarea readonly style="width: 100%; height: 300px; padding: 12px; border: 1px solid var(--color-border); border-radius: 6px; font-family: monospace; font-size: 0.9rem; resize: none;">' + emailContent + '</textarea><div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-end;"><button onclick="navigator.clipboard.writeText(\'' + emailContent.replace(/'/g, "\\'").replace(/\n/g, '\\n') + '\'); alert(\'Kopiert!\'); this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: var(--color-primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">📋 Kopier</button><button onclick="this.closest(\'[style*=fixed]\').remove();" style="padding: 12px 20px; background: var(--color-background-alt); color: var(--color-text); border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Lukk</button></div></div>';
             document.body.appendChild(modal);
             modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
         }
@@ -807,12 +724,9 @@
                     labels: ['Bruttolønn', 'Arbeidsgiveravgift'],
                     datasets: [{
                         data: [salary, aga],
-                        backgroundColor: [
-                            '#3B82F6',  // Vibrant blue for salary
-                            '#C4533A'   // Brand rust for AGA
-                        ],
+                        backgroundColor: KalkTheme.segmentColor,
                         borderWidth: 2,
-                        borderColor: '#FAF9F7'
+                        borderColor: KalkTheme.surfaceColor
                     }]
                 },
                 options: {
@@ -824,7 +738,6 @@
                             labels: {
                                 font: { family: "'Inter', sans-serif", size: 13 },
                                 padding: 15,
-                                color: '#333',
                                 generateLabels: function(chart) {
                                     const data = chart.data;
                                     return data.labels.map((label, i) => {
@@ -833,7 +746,7 @@
                                         const percentage = ((value / total) * 100).toFixed(1);
                                         return {
                                             text: label + ': ' + formatNumber(value) + ' (' + percentage + '%)',
-                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            fillStyle: KalkTheme.chartColor(i),
                                             hidden: false,
                                             index: i
                                         };
@@ -871,9 +784,6 @@
             const agaCosts = zones.map(z => salary * employees * ZONE_RATES[z].rate);
             const zoneNames = zones.map(z => ZONE_RATES[z].name + ' (' + (ZONE_RATES[z].rate * 100).toFixed(1) + '%)');
             
-            // Color current zone in rust, others in graded blue
-            const colors = zones.map(z => z === currentZone ? '#C4533A' : '#93C5FD');
-            
             window.zoneComparisonChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -881,7 +791,7 @@
                     datasets: [{
                         label: 'Årlig AGA-kostnad',
                         data: agaCosts,
-                        backgroundColor: colors,
+                        backgroundColor: ctx => KalkTheme.chartColor(zones[ctx.dataIndex] === currentZone ? 0 : 1),
                         borderWidth: 0
                     }]
                 },
@@ -928,22 +838,22 @@
                 const extraAGA2025 = excessSalary * 0.05;
                 
                 html = `
-                    <div style="background: #E8F5E9; border-left: 4px solid #4CAF50; padding: 20px; border-radius: 8px;">
-                        <p style="margin: 0 0 12px 0; font-weight: 600; color: #1F2937;">
+                    <div style="background: var(--color-success-bg); border-left: 4px solid var(--color-success); padding: 20px; border-radius: 8px;">
+                        <p style="margin: 0 0 12px 0; font-weight: 600; color: var(--color-text);">
                             ✅ Du sparer penger i 2026!
                         </p>
                         <p style="margin: 0 0 8px 0;">
                             Den ekstra arbeidsgiveravgiften på 5% for lønn over 850 000 kr ble fjernet fra og med 2025.
                         </p>
-                        <p style="margin: 0; font-size: 1.1rem; color: #22c55e; font-weight: 700;">
+                        <p style="margin: 0; font-size: 1.1rem; color: var(--color-success); font-weight: 700;">
                             Besparelse: ${formatNumber(extraAGA2025)} per år
                         </p>
                     </div>
                 `;
             } else {
                 html = `
-                    <div style="background: #F3F4F6; border-left: 4px solid #9CA3AF; padding: 20px; border-radius: 8px;">
-                        <p style="margin: 0; color: #6B7280;">
+                    <div style="background: var(--color-background-alt); border-left: 4px solid #9CA3AF; padding: 20px; border-radius: 8px;">
+                        <p style="margin: 0; color: var(--color-text-secondary);">
                             AGA-satsene for ${ZONE_RATES[zone].name} er uendret fra 2025 til 2026. 
                             Den ekstra avgiften på 5% over 850 000 kr som ble fjernet i 2025 påvirker ikke denne lønnen.
                         </p>
