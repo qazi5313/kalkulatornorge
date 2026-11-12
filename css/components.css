@@ -1516,12 +1516,11 @@ a.contact-card-value:hover {
    MOBILE: header and wide tables
    ======================================== */
 .dropdown-btn { white-space: nowrap; }
+h1, h2, h3 { overflow-wrap: break-word; }
 
 @media (max-width: 480px) {
     .header-content { gap: var(--space-2); }
     .logo-text { font-size: var(--text-base); }
-    .dropdown-btn { padding: 8px 10px; font-size: 0.8rem; gap: 6px; }
-    .dropdown-btn > svg:first-child { display: none; }
     .theme-toggle { width: 36px; height: 36px; }
 }
 
