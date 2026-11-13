@@ -29,7 +29,24 @@
     /* BORDERS */
     --color-border: #E8E5E1;
     --color-border-light: #F0EDE9;
-    
+
+    /* TINTED SURFACES (notices, highlights) */
+    --color-success-bg: #E8F5E9;
+    --color-success-border: #81C784;
+    --color-warning-bg: #FFF8E1;
+    --color-warning-border: #FFB300;
+    --color-warning-text: #C26A00;
+    --color-error-bg: #FFEBEE;
+    --color-info-bg: rgba(196, 83, 58, 0.06);
+
+    /* CHART PALETTE - shared by all charts on all pages */
+    --chart-1: #C4533A;
+    --chart-2: #2F6F8F;
+    --chart-3: #E0A33B;
+    --chart-4: #2D8A5F;
+    --chart-5: #7A5C99;
+    --chart-6: #8C8279;
+
     /* SHADOWS */
     --shadow-sm: 0 1px 3px rgba(26, 26, 26, 0.04);
     --shadow-md: 0 4px 12px rgba(26, 26, 26, 0.06);
@@ -78,6 +95,52 @@
     /* LAYOUT */
     --max-width-xl: 1200px;
     --container-padding: var(--space-6);
+
+    color-scheme: light;
+}
+
+/* DARK MODE - set by js/theme.js on <html data-theme="dark"> */
+:root[data-theme="dark"] {
+    --color-primary: #D4654B;
+    --color-primary-hover: #E07A60;
+    --color-primary-light: rgba(224, 122, 96, 0.16);
+    --color-primary-lighter: rgba(224, 122, 96, 0.08);
+
+    --color-background: #151311;
+    --color-background-alt: #1C1916;
+    --color-surface: #211E1B;
+
+    --color-text: #F2EFEA;
+    --color-text-secondary: #BDB6AD;
+    --color-text-muted: #8F877E;
+
+    --color-success: #4FB386;
+    --color-error: #F0626F;
+
+    --color-border: #3A3530;
+    --color-border-light: #2D2925;
+
+    --color-success-bg: rgba(79, 179, 134, 0.14);
+    --color-success-border: rgba(79, 179, 134, 0.45);
+    --color-warning-bg: rgba(240, 190, 94, 0.12);
+    --color-warning-border: rgba(240, 190, 94, 0.5);
+    --color-warning-text: #F0BE5E;
+    --color-error-bg: rgba(240, 98, 111, 0.14);
+    --color-info-bg: rgba(224, 122, 96, 0.10);
+
+    --chart-1: #E07A60;
+    --chart-2: #5FA8CC;
+    --chart-3: #F0BE5E;
+    --chart-4: #4FB386;
+    --chart-5: #A98BCB;
+    --chart-6: #A89F96;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.4);
+
+    color-scheme: dark;
 }
 
 /* RESET */

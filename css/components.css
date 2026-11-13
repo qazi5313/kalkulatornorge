@@ -19,6 +19,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.header-content > .logo {
+    margin-right: auto;
+    min-width: 0;
 }
 
 .logo {
@@ -73,6 +79,37 @@
 @media (max-width: 768px) {
     .nav-links { display: none; }
 }
+
+/* Lys/mørk modus-knapp (settes inn av js/theme.js) */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.theme-toggle:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-input-focus);
+}
+
+.theme-icon-sun { display: none; }
+[data-theme="dark"] .theme-icon-sun { display: block; }
+[data-theme="dark"] .theme-icon-moon { display: none; }
 
 /* ========================================
    HERO
@@ -1473,4 +1510,28 @@ a.contact-card-value:hover {
 .sources-box-footer a {
     color: var(--color-primary);
     font-weight: 600;
+}
+
+/* ========================================
+   MOBILE: header and wide tables
+   ======================================== */
+.dropdown-btn { white-space: nowrap; }
+h1, h2, h3 { overflow-wrap: break-word; }
+
+@media (max-width: 480px) {
+    .header-content { gap: var(--space-2); }
+    .logo-text { font-size: var(--text-base); }
+    .theme-toggle { width: 36px; height: 36px; }
+}
+
+@media (max-width: 400px) {
+    .logo-text { display: none; }
+}
+
+@media (max-width: 600px) {
+    .info-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .info-table th,
+    .info-table td { padding: 10px 8px; font-size: 0.8rem; }
+    .info-table th { white-space: nowrap; }
+    .info-table td { word-break: normal; overflow-wrap: normal; hyphens: auto; }
 }
