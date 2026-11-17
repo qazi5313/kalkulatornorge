@@ -491,7 +491,7 @@
             
             <!-- Collapsible: Minstefradrag -->
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
                         Minstefradrag - automatisk fradrag
@@ -510,7 +510,7 @@
             
             <!-- Collapsible: Personfradrag -->
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         Personfradrag - bunnfradrag for alle
@@ -525,7 +525,7 @@
             
             <!-- Collapsible: Marginalskatt -->
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
                         Marginalskatt - skatten på siste krone
@@ -552,7 +552,7 @@
             
             <!-- Collapsible: Tips -->
             <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="true">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                         Smarte forhandlingstips
@@ -572,7 +572,7 @@
             <h2>❓ Ofte stilte spørsmål</h2>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">Hvor mye får jeg utbetalt av 500 000 kr i årslønn?</span>
                     <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
@@ -582,7 +582,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">Forhandler jeg brutto eller netto lønn?</span>
                     <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
@@ -592,7 +592,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">Hvorfor varierer skatten fra måned til måned?</span>
                     <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
@@ -854,7 +854,12 @@
 
         // Collapsible sections
         function toggleCollapsible(element) {
-            element.classList.toggle('open');
+            // Only the question line opens/closes the box; clicks inside the answer do nothing
+            var e = window.event;
+            if (e && e.target && e.target.closest && !e.target.closest('.collapsible-header')) return;
+            var isOpen = element.classList.toggle('open');
+            var header = element.querySelector('.collapsible-header');
+            if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
 
         // Enter key to calculate

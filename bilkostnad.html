@@ -614,7 +614,7 @@
             <p style="font-size: 0.85rem; color: var(--color-text-secondary);">*Elbil: 3 270 kr i trafikkforsikringsavgift</p>
             
             <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="true">
                     <h3 class="collapsible-title">🧩 Kostnadskomponenter forklart</h3>
                     <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
@@ -634,7 +634,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <h3 class="collapsible-title">⚡ Elbil vs fossilbil - Detaljert sammenligning</h3>
                     <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
@@ -692,7 +692,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <h3 class="collapsible-title">💡 Tips for å spare på bilhold</h3>
                     <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
@@ -713,7 +713,7 @@
             
             <h2>❓ Ofte stilte spørsmål</h2>
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <h3 class="collapsible-title">Hva koster det å kjøre én kilometer?</h3>
                     <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
@@ -726,7 +726,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <h3 class="collapsible-title">Er det billigere å lease eller eie bil?</h3>
                     <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
@@ -739,7 +739,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <h3 class="collapsible-title">Hva er kjøregodtgjørelse-satsen i 2026?</h3>
                     <svg class="collapsible-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"/>
@@ -1250,7 +1250,12 @@
         // COLLAPSIBLE TOGGLE
         // ============================================
         function toggleCollapsible(element) {
-            element.classList.toggle('open');
+            // Only the question line opens/closes the box; clicks inside the answer do nothing
+            var e = window.event;
+            if (e && e.target && e.target.closest && !e.target.closest('.collapsible-header')) return;
+            var isOpen = element.classList.toggle('open');
+            var header = element.querySelector('.collapsible-header');
+            if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
         
         // ============================================
