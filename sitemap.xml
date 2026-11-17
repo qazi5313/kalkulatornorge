@@ -4,12 +4,26 @@
   <!-- Homepage -->
   <url>
     <loc>https://kalkulatornorge.no/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <!-- Calculators -->
+  <url>
+    <loc>https://kalkulatornorge.no/mva.html</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://kalkulatornorge.no/prosent.html</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
   <url>
     <loc>https://kalkulatornorge.no/skatt.html</loc>
     <lastmod>2026-11-10</lastmod>
