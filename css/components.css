@@ -1125,7 +1125,7 @@ a.contact-card-value:hover {
     transform: rotate(-45deg);
 }
 
-.info-table {
+.prose .info-table {
     width: 100%;
     border-collapse: collapse;
     background: var(--color-surface);
@@ -1135,23 +1135,23 @@ a.contact-card-value:hover {
     margin: var(--space-4) 0;
 }
 
-.info-table th,
-.info-table td {
-    overflow-wrap: anywhere;
+.prose .info-table th,
+.prose .info-table td {
+    overflow-wrap: break-word;
     text-align: left;
     padding: var(--space-3) var(--space-4);
     border-bottom: 1px solid var(--color-border-light);
     font-size: var(--text-sm);
 }
 
-.info-table th {
+.prose .info-table th {
     width: 38%;
     color: var(--color-text-secondary);
     font-weight: 500;
 }
 
-.info-table tr:last-child th,
-.info-table tr:last-child td {
+.prose .info-table tr:last-child th,
+.prose .info-table tr:last-child td {
     border-bottom: none;
 }
 
@@ -1198,9 +1198,38 @@ a.contact-card-value:hover {
     .contact-card-value {
         font-size: var(--text-base);
     }
-    .info-table th {
+    .prose .info-table th {
         width: 34%;
         padding-right: var(--space-2);
+    }
+}
+
+/* Two-column fact tables (Kontakt, Guider): stack label above value on phones */
+@media (max-width: 520px) {
+    .prose .info-table,
+    .prose .info-table tbody,
+    .prose .info-table tr,
+    .prose .info-table th,
+    .prose .info-table td {
+        display: block;
+        width: 100%;
+    }
+    .prose .info-table tr {
+        padding: var(--space-3) var(--space-4);
+        border-bottom: 1px solid var(--color-border-light);
+    }
+    .prose .info-table tr:last-child {
+        border-bottom: none;
+    }
+    .prose .info-table th,
+    .prose .info-table td {
+        padding: 0;
+        border-bottom: none;
+    }
+    .prose .info-table th {
+        width: 100%;
+        font-size: var(--text-xs);
+        margin-bottom: 2px;
     }
 }
 
