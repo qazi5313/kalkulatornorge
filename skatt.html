@@ -586,7 +586,7 @@
             
             <!-- Collapsible: Trinnskatt -->
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
                         1. Trinnskatt (progressiv skatt)
@@ -601,7 +601,7 @@
             
             <!-- Collapsible: Skatt alminnelig inntekt -->
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
                         2. Skatt på alminnelig inntekt (22%)
@@ -616,7 +616,7 @@
             
             <!-- Collapsible: Trygdeavgift -->
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         3. Trygdeavgift (7,6%)
@@ -637,7 +637,7 @@
             
             <!-- Collapsible: Minstefradrag -->
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
                         4. Minstefradrag (automatisk)
@@ -670,7 +670,7 @@
             
             <!-- Collapsible: Fradrag -->
             <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="true">
                     <span class="collapsible-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                         Vanlige fradrag du kan ha krav på
@@ -691,7 +691,7 @@
             <h2>❓ Ofte stilte spørsmål</h2>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">Hvor mye skatt på 500 000 kr i årslønn?</span>
                     <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
@@ -701,7 +701,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">Hva er marginalskatt?</span>
                     <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
@@ -711,7 +711,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header">
+                <button class="collapsible-header" aria-expanded="false">
                     <span class="collapsible-title">Betaler jeg skatt av feriepenger?</span>
                     <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
@@ -950,7 +950,12 @@
 
         // Collapsible sections
         function toggleCollapsible(element) {
-            element.classList.toggle('open');
+            // Only the question line opens/closes the box; clicks inside the answer do nothing
+            var e = window.event;
+            if (e && e.target && e.target.closest && !e.target.closest('.collapsible-header')) return;
+            var isOpen = element.classList.toggle('open');
+            var header = element.querySelector('.collapsible-header');
+            if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
 
         // Enter key to calculate

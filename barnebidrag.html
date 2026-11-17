@@ -395,7 +395,7 @@
             
             <h2>🧩 Privat avtale vs. NAV-fastsettelse</h2>
             <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Privat avtale vs. NAV-fastsettelse</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="true"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Privat avtale vs. NAV-fastsettelse</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content">
                     <p><strong>Privat avtale:</strong> Dere avtaler selv, gratis, høy fleksibilitet, enkelt å endre, innkreving selv eller via Skatteetaten.</p>
                     <p><strong>NAV-fastsettelse:</strong> NAV beregner, gebyr 1 314 kr per forelder, følger regelverk, søknad til NAV for endring, innkreving via Skatteetaten.</p>
@@ -404,17 +404,17 @@
             
             <h2>❓ Ofte stilte spørsmål</h2>
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Til hvilken alder betales barnebidrag?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Til hvilken alder betales barnebidrag?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content"><p>Barnebidrag betales normalt til barnet fyller <strong>18 år</strong>. Hvis barnet går på videregående skole, kan bidraget forlenges til fullført utdanning, vanligvis til 19-20 år. Da betales bidraget direkte til ungdommen.</p></div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Må jeg betale barnebidrag ved delt bosted (50/50)?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Må jeg betale barnebidrag ved delt bosted (50/50)?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content"><p>Ved delt bosted kan det fortsatt bli barnebidrag hvis det er stor inntektsforskjell mellom foreldrene. Den med høyest inntekt betaler da bidrag til den andre for å utjevne barnets levestandard.</p></div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Er barnebidrag skattefritt?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Er barnebidrag skattefritt?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content"><p>Ja, barnebidrag er <strong>skattefritt</strong> for mottakeren og <strong>ikke fradragsberettiget</strong> for den som betaler. Dette gjelder uansett om bidraget er privat avtalt eller fastsatt av NAV.</p></div>
             </div>
             
@@ -629,7 +629,12 @@
         });
         
         function toggleCollapsible(element) {
-            element.classList.toggle('open');
+            // Only the question line opens/closes the box; clicks inside the answer do nothing
+            var e = window.event;
+            if (e && e.target && e.target.closest && !e.target.closest('.collapsible-header')) return;
+            var isOpen = element.classList.toggle('open');
+            var header = element.querySelector('.collapsible-header');
+            if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
         
         

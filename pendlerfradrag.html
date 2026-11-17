@@ -399,7 +399,7 @@
             
             <h2>🧩 Slik beregnes fradraget</h2>
             <div class="collapsible open" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Steg-for-steg beregning</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="true"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Steg-for-steg beregning</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content">
                     <ol>
                         <li><strong>Tell reiseavstand:</strong> Korteste vei fra bolig til arbeidssted</li>
@@ -412,7 +412,7 @@
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Bom, ferge og parkering</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4533A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Bom, ferge og parkering</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content">
                     <ul>
                         <li>Bom og ferge kan legges til hvis du sparer minst 2 timer daglig vs. kollektiv</li>
@@ -425,17 +425,17 @@
             
             <h2>❓ Ofte stilte spørsmål</h2>
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Får jeg fradrag selv om jeg sykler til jobb?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Får jeg fradrag selv om jeg sykler til jobb?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content"><p>Ja! Reisefradraget gis uavhengig av transportmiddel. Selv om du sykler eller går, får du fradrag basert på avstanden. Du trenger ikke dokumentere faktiske utgifter.</p></div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Hva hvis jeg har to jobber?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Hva hvis jeg har to jobber?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content"><p>Du får fradrag for begge arbeidsreisene. Beregn reisekostnad for hver jobb separat, og legg dem sammen før du trekker fra bunnfradraget på 12 000 kr.</p></div>
             </div>
             
             <div class="collapsible" onclick="toggleCollapsible(this)">
-                <button class="collapsible-header"><span class="collapsible-title">Får begge fradrag hvis vi kjører sammen?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Får begge fradrag hvis vi kjører sammen?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="collapsible-content"><p>Ja! Hvis to personer kjører sammen til jobb, får begge fullt reisefradrag. Dette gjelder også ektefeller og samboere.</p></div>
             </div>
             
@@ -608,7 +608,12 @@
         });
         
         function toggleCollapsible(element) {
-            element.classList.toggle('open');
+            // Only the question line opens/closes the box; clicks inside the answer do nothing
+            var e = window.event;
+            if (e && e.target && e.target.closest && !e.target.closest('.collapsible-header')) return;
+            var isOpen = element.classList.toggle('open');
+            var header = element.querySelector('.collapsible-header');
+            if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
         
         // Enter key to calculate
