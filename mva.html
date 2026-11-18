@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4100900262694764" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVA-kalkulator 2026 – Legg til eller trekk ut moms</title>
+    <meta name="description" content="Gratis MVA-kalkulator for 2026. Legg til eller trekk ut merverdiavgift med 25 %, 15 % eller 12 % sats. Se mva-beløp, pris med og uten moms.">
+    <meta name="keywords" content="mva kalkulator, moms kalkulator, merverdiavgift, trekke fra mva, legge til mva, mva 25 prosent, matmoms 15 prosent, mva-satser 2026">
+    <link rel="canonical" href="https://kalkulatornorge.no/mva.html">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/design-system.css?v=20261117">
+    <link rel="stylesheet" href="css/components.css?v=20261117">
+    <link rel="stylesheet" href="css/calculator.css?v=20261112">
+    <script src="js/theme.js?v=20261112"></script>
+    <script src="js/share.js?v=20261112" defer></script>
+    <meta property="og:title" content="MVA-kalkulator 2026 | Kalkulatornorge.no">
+    <meta property="og:description" content="Legg til eller trekk ut mva med 25 %, 15 % eller 12 % sats.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kalkulatornorge.no/mva.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "Hvordan trekker jeg ut mva fra en pris?", "acceptedAnswer": {"@type": "Answer", "text": "Del prisen inkludert mva på 1,25 for å finne beløpet uten mva (ved 25 % sats). Mva-beløpet er prisen minus dette, eller prisen ganget med 0,2. Eksempel: 1 000 kr inkl. mva gir 800 kr eks. mva og 200 kr i mva."}},
+        {"@type": "Question", "name": "Hvorfor er mva 20 % av prisen og ikke 25 %?", "acceptedAnswer": {"@type": "Answer", "text": "Satsen på 25 % regnes av prisen uten mva. Når mva er lagt til, utgjør avgiften 25/125 = 20 % av totalprisen. Ved 15 % sats er andelen 13,04 %, og ved 12 % er den 10,71 %."}},
+        {"@type": "Question", "name": "Hvilke mva-satser gjelder i Norge i 2026?", "acceptedAnswer": {"@type": "Answer", "text": "Generell sats er 25 %. Mat og alkoholfri drikke, samt vann og avløp, har 15 %. Persontransport, overnatting, kino og en del kultur- og opplevelsestilbud har 12 %."}},
+        {"@type": "Question", "name": "Må jeg registrere meg for mva som enkeltpersonforetak?", "acceptedAnswer": {"@type": "Answer", "text": "Du må registrere deg i Merverdiavgiftsregisteret når avgiftspliktig omsetning og uttak overstiger 50 000 kroner i løpet av en periode på 12 måneder. Under grensen skal du ikke legge mva på fakturaene."}}
+      ]
+    }
+    </script>
+    <style>
+        .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: var(--color-surface); }
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
+        .results-table tr.highlight td { background: rgba(196, 83, 58, 0.04); }
+        .results-table tr.highlight td:last-child { color: var(--color-primary); }
+        .results-total { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%); border-radius: 0 0 12px 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .total-label { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
+        .total-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
+        .total-sub { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+        .total-right .monthly-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
+        .total-right .monthly-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
+        @media (max-width: 480px) {
+            .results-total { flex-direction: column; text-align: center; gap: 16px; }
+            .total-value { font-size: 1.75rem; }
+        }
+        .info-box-header svg { color: var(--color-primary); }
+        .info-box-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin: 0; }
+        .info-box p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0 0 12px 0; }
+        .info-box a { color: var(--color-primary); text-decoration: none; }
+        .info-box a:hover { text-decoration: underline; }
+        .seo-content p { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+        .seo-content a { color: var(--color-primary); text-decoration: none; }
+        .seo-content a:hover { text-decoration: underline; }
+        .callout { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; }
+        .callout-text { margin: 0; font-size: 0.9rem; }
+        .callout.tip { background: var(--color-success-bg); border-left: 4px solid var(--color-success); }
+        .callout.tip .callout-icon { color: var(--color-success); }
+        .callout.warning .callout-icon { color: var(--color-warning-text); }
+        .callout.info .callout-icon { color: var(--color-primary); }
+        .info-table .rate-badge { display: inline-block; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+        .info-table tr:hover td { background: var(--color-background); }
+        .collapsible { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
+        .collapsible-header { width: 100%; padding: 18px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: inherit; text-align: left; }
+        .collapsible-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 10px; }
+        .collapsible-icon { transition: transform 0.3s; color: var(--color-text-secondary); }
+        .collapsible-content { display: none; padding: 0 24px 24px 24px; }
+        .collapsible.open .collapsible-content { display: block; }
+        .collapsible-content p { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0 0 12px 0; }
+        .collapsible-content ul { margin: 12px 0; padding-left: 20px; }
+        .collapsible-content li { color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
+        .related-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.2s; display: flex; align-items: flex-start; gap: 14px; overflow: hidden; }
+        .related-card-icon { width: 40px; height: 40px; background: var(--color-primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .related-card-icon svg { width: 20px; height: 20px; }
+        .related-card-text { flex: 1; min-width: 0; }
+        .related-card-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px 0; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto; }
+        .related-card-text p { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; word-wrap: break-word; overflow-wrap: break-word; }
+        .disclaimer p { margin: 0; color: var(--color-text); font-size: 0.9rem; }
+        .dropdown-btn:hover { border-color: var(--color-primary); background: var(--color-background); }
+        .dropdown-btn svg:last-child { transition: transform 0.2s; }
+        .dropdown-menu.open .dropdown-btn svg:last-child { transform: rotate(180deg); }
+        .dropdown-content { position: absolute; top: calc(100% + 8px); right: 0; width: 280px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.2s; z-index: 1000; max-height: 70vh; overflow-y: auto; }
+        .dropdown-menu.open .dropdown-content { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-category { padding: 12px 16px 6px 16px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-secondary); }
+        .dropdown-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; text-decoration: none; color: var(--color-text); font-size: 0.9rem; transition: background 0.15s; }
+        .dropdown-item.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 500; }
+        .dropdown-item-icon svg { width: 14px; height: 14px; }
+        .dropdown-item.active .dropdown-item-icon { background: var(--color-primary); }
+        .dropdown-item.active .dropdown-item-icon svg path { fill: white; }
+        .calc-page .header { background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+        .calc-page .header-content { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+        .seg { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .seg button { flex: 1 1 auto; padding: 10px 14px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); border-radius: 10px; font-family: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+        @media (hover: hover) { .seg button:hover { border-color: var(--color-primary); } }
+        .seg button[aria-pressed="true"] { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+        .form-error { display: none; color: var(--color-error, #b42318); font-size: 0.85rem; margin: -4px 0 12px 0; }
+        .result-sentence { padding: 16px 20px; font-size: 0.95rem; color: var(--color-text); line-height: 1.6; }
+        #results .results-table td.formula { white-space: normal; overflow-wrap: anywhere; font-weight: 500; font-size: 0.8rem; }
+        .formula { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.85rem; }
+        .vbar { margin: 20px 0 4px; }
+        .vbar-track { display: flex; height: 18px; border-radius: 9px; overflow: hidden; background: var(--color-background-alt); border: 1px solid var(--color-border); }
+        .vbar-seg { height: 100%; transition: width 0.35s ease; }
+        .vbar-seg.base { background: var(--color-text-muted); opacity: 0.55; }
+        .vbar-seg.accent { background: var(--color-primary); }
+        .vbar-legend { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-top: 8px; font-size: 0.85rem; color: var(--color-text-secondary); }
+        .vbar-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+        .vbar-legend .dot.base { background: var(--color-text-muted); opacity: 0.55; }
+        .vbar-legend .dot.accent { background: var(--color-primary); }
+        .cmp { margin: 8px 0 20px; display: grid; gap: 10px; }
+        .cmp-row { display: grid; grid-template-columns: minmax(64px, auto) 1fr; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--color-text-secondary); }
+        .cmp-fill { height: 26px; border-radius: 6px; min-width: 4px; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px; box-sizing: border-box; font-weight: 600; font-size: 0.8rem; white-space: nowrap; transition: width 0.35s ease; }
+        .cmp-fill.base { background: var(--color-background-alt); border: 1px solid var(--color-border); color: var(--color-text); }
+        .cmp-fill.accent { background: var(--color-primary); color: #fff; }
+        .cmp-fill.small { justify-content: flex-start; background: transparent; border: none; }
+        .cmp-fill.small .cmp-pill { display: inline-block; height: 26px; min-width: 4px; border-radius: 6px; margin-right: 8px; }
+        .cmp-pill.base { background: var(--color-background-alt); border: 1px solid var(--color-border); box-sizing: border-box; }
+        .cmp-pill.accent { background: var(--color-primary); }
+        .copy-btn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin: -6px -6px -6px 6px; vertical-align: middle; border: none; background: none; color: var(--color-text-muted); border-radius: 8px; cursor: pointer; }
+        .copy-btn:hover, .copy-btn:focus-visible { color: var(--color-primary); background: var(--color-primary-light); }
+        .copy-btn svg { width: 16px; height: 16px; }
+        .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--color-text); color: var(--color-surface); padding: 10px 18px; border-radius: 10px; font-size: 0.9rem; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 2000; }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .lines { display: grid; gap: 12px; margin-bottom: 12px; }
+        .line-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1fr) 44px; gap: 8px; align-items: center; }
+        .line-row .form-input, .line-row .form-select { padding: 12px; }
+        .line-remove { width: 44px; height: 44px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text-secondary); border-radius: 10px; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+        .line-remove:hover { border-color: var(--color-error); color: var(--color-error); }
+        .add-line { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px dashed var(--color-border); background: none; color: var(--color-primary); border-radius: 10px; font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+        .add-line:active, .add-line:focus-visible { border-color: var(--color-primary); background: var(--color-primary-lighter); }
+        @media (max-width: 560px) {
+            .line-row { grid-template-columns: minmax(0, 1fr) 88px; grid-template-areas: "desc rm" "amt rate"; padding-bottom: 12px; border-bottom: 1px solid var(--color-border-light); }
+            .line-row .line-desc { grid-area: desc; }
+            .line-row .line-amount { grid-area: amt; }
+            .line-row .line-rate { grid-area: rate; }
+            .line-row .line-remove { grid-area: rm; justify-self: end; }
+            .seg { display: grid; grid-template-columns: 1fr 1fr; }
+            .seg button { padding: 10px 8px; }
+            .seg button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+        }
+        .examples-list li { margin-bottom: 6px; }
+    </style>
+</head>
+<body class="calc-page">
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="17" viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="white"/></svg>
+                    </div>
+                    <span class="logo-text">Kalkulatornorge.no</span>
+                </a>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button class="dropdown-btn" onclick="toggleDropdown()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        Andre Kalkulatorer
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-category">Jobb & Lønn</div>
+                        <a href="skatt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></span>Skattekalkulator</a>
+                        <a href="brutto-netto.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M17 0V1.76465H2V3.5293H18V15H0V0H17ZM15 7.05859C14.4477 7.05859 14 7.4541 14 7.94141C14.0002 8.42856 14.4478 8.82324 15 8.82324C15.5522 8.82324 15.9998 8.42856 16 7.94141C16 7.4541 15.5523 7.05859 15 7.05859Z" fill="#C4533A"/></svg></span>Brutto/Netto Lønn</a>
+                        <a href="feriepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 19 19" fill="none"><path d="M17.9289 14.0716C19.0376 11.6942 19.1564 8.97359 18.2593 6.50849C17.3619 4.04339 15.5223 2.03542 13.1446 0.926754C10.7671 -0.181914 8.04655 -0.300484 5.58145 0.596641C3.11635 1.49377 1.10862 3.33366 -4.65976e-05 5.7111L8.22404 9.54616L4.94851 16.5705L0.0622568 16.5705L0.0622566 18.5488L17.8666 18.5488L17.8666 16.5705L7.13107 16.5705L10.0168 10.3822L17.9289 14.0716Z" fill="#C4533A"/></svg></span>Feriepenger</a>
+                        <a href="overtid.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M8.72852 2.25098C12.9078 2.25098 16.2957 5.63911 16.2959 9.81836C16.2959 11.4898 15.7526 13.0338 14.835 14.2861L16.832 16.2402L15.2783 17.7588L13.3193 15.832C12.0458 16.806 10.4555 17.3867 8.72852 17.3867C6.99424 17.3867 5.3973 16.8017 4.12109 15.8203L2.16992 17.7402L0.617188 16.2217L2.60938 14.2695C1.6992 13.0202 1.16113 11.4823 1.16113 9.81836C1.16133 5.63915 4.54928 2.25104 8.72852 2.25098ZM7.89746 10.0791L10.6318 12.7197L11.752 11.6055L9.6543 9.49805V5.44141H7.89746V10.0791ZM14.2393 0C16.0265 0 17.4755 1.44908 17.4756 3.23633C17.4756 3.98175 17.2204 4.66576 16.7969 5.21289C15.7242 3.28619 13.9834 1.78306 11.8857 1.01953C12.4758 0.393233 13.3109 0.000102796 14.2393 0ZM3.23633 0C4.16225 0 4.9951 0.3913 5.58496 1.01465C3.48612 1.7749 1.74256 3.27476 0.666992 5.19922C0.250188 4.65446 0 3.97523 0 3.23633C0 1.44908 1.44906 0 3.23633 0Z" fill="#C4533A"/></svg></span>Overtid</a>
+                        <a href="arbeidsgiveravgift.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/></svg></span>Arbeidsgiveravgift</a>
+                        <div class="dropdown-category">Husholdning</div>
+                        <a href="stromkostnad.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M5.07715 4.44238H10.1543V0H11.8457V4.44238H15.2305V6.21973H14.3848V8.33496C14.3847 11.7866 11.8007 14.6321 8.46191 15.0488V17.7695H6.76953V15.0498C3.43037 14.6335 0.845797 11.7869 0.845703 8.33496V6.21973H0V4.44238H3.38477V0H5.07715V4.44238Z" fill="#C4533A"/></svg></span>Strømkostnad</a>
+                        <a href="bilkostnad.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H20V7H19V15.5H16V13H4V15.5H1V7H0V5H3L5 0H15L17 5ZM5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8ZM15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8ZM5 5H15L14 2H6L5 5Z" fill="#C4533A"/></svg></span>Bilkostnad</a>
+                        <div class="dropdown-category">Familie & Helse</div>
+                        <a href="barnebidrag.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path d="M1.5 15C2.32843 15 3 15.6716 3 16.5C3 17.3284 2.32843 18 1.5 18C0.671573 18 0 17.3284 0 16.5C0 15.6716 0.671573 15 1.5 15ZM12.5 15C13.3284 15 14 15.6716 14 16.5C14 17.3284 13.3284 18 12.5 18C11.6716 18 11 17.3284 11 16.5C11 15.6716 11.6716 15 12.5 15ZM16 6H14V14H0V7H12.5V4.5H16V6ZM8.5 6H0.5C0.5 2.68629 3.18629 0 6.5 0H8.5V6Z" fill="#C4533A"/></svg></span>Barnebidrag</a>
+                        <a href="sykepenger.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M14 4.2666H18V16H0V4.2666H4V0H14V4.2666ZM7.5 11V15H10.5V11H7.5ZM2 11.9951H4V9.99512H2V11.9951ZM14 11.9951H16V9.99512H14V11.9951ZM2 7.99512H4V5.99512H2V7.99512ZM14 7.99512H16V5.99512H14V7.99512ZM8.25 3.95117H6.25V5.45117H8.25V7.45117H9.75V5.45117H11.75V3.95117H9.75V1.95117H8.25V3.95117Z" fill="#C4533A"/></svg></span>Sykepenger</a>
+                        <div class="dropdown-category">Transport</div>
+                        <a href="pendlerfradrag.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 14" fill="none"><path d="M16.5 5L20 5.5V12H17.8262C17.4141 13.1647 16.3059 14 15 14C13.6941 14 12.5859 13.1647 12.1738 12H7.80762C7.3955 13.1647 6.2873 14 4.98145 14C3.67559 14 2.56739 13.1647 2.15527 12H0V5H1.5L3.5 0H12.5L16.5 5ZM5.05664 9.6123C4.24394 9.6125 3.58516 10.2713 3.58496 11.084C3.58496 11.4303 3.70513 11.7486 3.90527 12H3.86621C3.95827 12.1026 4.06492 12.1913 4.18164 12.2656C4.42641 12.4473 4.72841 12.5566 5.05664 12.5566C5.86963 12.5566 6.5293 11.897 6.5293 11.084C6.5291 10.2712 5.86951 9.6123 5.05664 9.6123ZM15.0088 9.6123C14.1959 9.6123 13.5373 10.2712 13.5371 11.084C13.5371 11.897 14.1958 12.5566 15.0088 12.5566C15.8217 12.5566 16.4805 11.8969 16.4805 11.084C16.4803 10.2712 15.8216 9.61237 15.0088 9.6123ZM4 5H7.5V2H5L4 5ZM9 5H14L11.5 2H9V5Z" fill="#C4533A"/></svg></span>Pendlerfradrag</a>
+                        <a href="tilhengervekt.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 20 16" fill="none"><path d="M17 11H20V13H8.98145C8.98145 14.6569 7.6383 16 5.98145 16C4.32459 16 2.98145 14.6569 2.98145 13H0V0H17V11ZM5.98145 11.6211C5.21976 11.6211 4.60254 12.2383 4.60254 13C4.60254 13.7617 5.21976 14.3789 5.98145 14.3789C6.74313 14.3789 7.36035 13.7617 7.36035 13C7.36035 12.2383 6.74313 11.6211 5.98145 11.6211ZM2.98145 10H3.98145V2H2.98145V10ZM5.98145 10H6.98145V2H5.98145V10ZM8.98145 10H9.98145V2H8.98145V10ZM11.9814 10H12.9814V2H11.9814V10Z" fill="#C4533A"/></svg></span>Tilhengervekt</a>
+                        <div class="dropdown-category">Næring</div>
+                        <a href="timelonn-frilanser.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M0 0H2V14H18V16H0V0ZM4 6H7V12H4V6ZM8 2H11V12H8V2ZM12 8H15V12H12V8Z" fill="#C4533A"/></svg></span>Timelønn Frilansere</a>
+                        <a href="mva.html" class="dropdown-item active"><span class="dropdown-item-icon"><svg viewBox="0 0 16 18" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H16V18L13.33 16.5L10.67 18L8 16.5L5.33 18L2.67 16.5L0 18V0ZM3 4H13V5.6H3V4ZM3 7.6H13V9.2H3V7.6ZM3 11.2H9V12.8H3V11.2Z" fill="#C4533A"/></svg></span>MVA-kalkulator</a>
+                        <div class="dropdown-category">Hverdag</div>
+                        <a href="prosent.html" class="dropdown-item"><span class="dropdown-item-icon"><svg viewBox="0 0 16 16" fill="none"><path d="M12.6 0.6L15.4 3.4L3.4 15.4L0.6 12.6L12.6 0.6ZM4 0.5C5.93 0.5 7.5 2.07 7.5 4C7.5 5.93 5.93 7.5 4 7.5C2.07 7.5 0.5 5.93 0.5 4C0.5 2.07 2.07 0.5 4 0.5ZM12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5C10.07 15.5 8.5 13.93 8.5 12C8.5 10.07 10.07 8.5 12 8.5Z" fill="#C4533A"/></svg></span>Prosentkalkulator</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="calc-container">
+        <a href="/" class="back-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Tilbake til alle kalkulatorer</a>
+        
+        <div class="calc-header">
+            <div class="calc-icon"><svg viewBox="0 0 16 18" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H16V18L13.33 16.5L10.67 18L8 16.5L5.33 18L2.67 16.5L0 18V0ZM3 4H13V5.6H3V4ZM3 7.6H13V9.2H3V7.6ZM3 11.2H9V12.8H3V11.2Z" fill="#C4533A"/></svg></div>
+            <h1>MVA-kalkulator 2026</h1>
+            <p>Legg til eller trekk ut merverdiavgift med riktig norsk sats</p>
+        </div>
+        
+        <div class="calc-box">
+            <div class="seg" role="group" aria-label="Velg beregning">
+                <button type="button" data-mode="add" aria-pressed="true" onclick="setMode('add')">Legg til mva</button>
+                <button type="button" data-mode="remove" aria-pressed="false" onclick="setMode('remove')">Trekk ut mva</button>
+                <button type="button" data-mode="lines" aria-pressed="false" onclick="setMode('lines')">Flere varelinjer</button>
+            </div>
+            <div id="singleWrap">
+                <div class="form-group">
+                    <label class="form-label" for="amount" id="amountLabel">Beløp uten mva (kr)</label>
+                    <input type="number" class="form-input" id="amount" placeholder="f.eks. 1000" min="0" step="any" inputmode="decimal">
+                    <span class="form-hint" id="amountHint">Prisen før merverdiavgift er lagt til</span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="rate">Mva-sats</label>
+                        <select class="form-select" id="rate">
+                            <option value="25">25 % – generell sats</option>
+                            <option value="15">15 % – mat og drikke, vann og avløp</option>
+                            <option value="12">12 % – transport, hotell, kino, kultur</option>
+                            <option value="custom">Annen sats …</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="customWrap" style="display:none">
+                        <label class="form-label" for="customRate">Egen sats (%)</label>
+                        <input type="number" class="form-input" id="customRate" placeholder="f.eks. 11,11" min="0" max="100" step="any" inputmode="decimal">
+                    </div>
+                </div>
+            </div>
+            <div id="linesWrap" style="display:none">
+                <div class="form-group">
+                    <label class="form-label" for="linesBasis">Beløpene du skriver inn er</label>
+                    <select class="form-select" id="linesBasis">
+                        <option value="eks">uten mva (faktura)</option>
+                        <option value="inkl">med mva (kvittering)</option>
+                    </select>
+                </div>
+                <div class="lines" id="lines" aria-label="Varelinjer"></div>
+                <button type="button" class="add-line" onclick="addLine()">+ Legg til linje</button>
+            </div>
+            <p class="form-error" id="formError" role="alert"></p>
+            <button class="calc-btn" onclick="calculate(true)"><svg width="18" height="20" viewBox="0 0 16 18" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H16V18L13.33 16.5L10.67 18L8 16.5L5.33 18L2.67 16.5L0 18V0ZM3 4H13V5.6H3V4ZM3 7.6H13V9.2H3V7.6ZM3 11.2H9V12.8H3V11.2Z" fill="currentColor"/></svg>Beregn mva</button>
+            
+            <div class="results-section" id="results">
+                <table class="results-table">
+                    <thead><tr><th>Beskrivelse</th><th>Beløp</th></tr></thead>
+                    <tbody id="resultRows"></tbody>
+                </table>
+                <div class="results-total">
+                    <div class="total-left">
+                        <div class="total-label" id="totalLabel">Pris inkludert mva</div>
+                        <div class="total-value" id="resultTotal">0 kr</div>
+                        <div class="total-sub" id="totalSub">Herav mva 0 kr</div>
+                    </div>
+                    <div class="total-right">
+                        <div class="monthly-label">Mva-andel av totalpris</div>
+                        <div class="monthly-value" id="resultAndel">20 %</div>
+                    </div>
+                </div>
+                <div class="vbar" aria-hidden="true">
+                    <div class="vbar-track"><div class="vbar-seg base" id="barEks"></div><div class="vbar-seg accent" id="barMva"></div></div>
+                    <div class="vbar-legend"><span><span class="dot base"></span><span id="legEks">Uten mva</span></span><span><span class="dot accent"></span><span id="legMva">Mva</span></span></div>
+                </div>
+                <!-- AD UNIT 1 GOES HERE -->
+                <div class="ad-container">
+                    <span class="ad-label">Annonse</span>
+                <!-- Calculator - Below Results -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-4100900262694764"
+                    data-ad-slot="6014935858"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                </div>
+
+                <div class="share-bar">
+                    <h3 class="share-bar-title">Del og lagre</h3>
+                    <div class="share-bar-actions">
+                        <button type="button" class="share-btn share-btn-primary" onclick="KalkShare.pdf()">Last ned PDF</button>
+                        <button type="button" class="share-btn share-btn-primary" onclick="KalkShare.email()">Send på e-post</button>
+                    </div>
+                    <p class="share-bar-hint">Del kalkulatoren med andre:</p>
+                    <div class="share-bar-social">
+                        <button type="button" class="share-btn" onclick="KalkShare.x()">X</button>
+                        <button type="button" class="share-btn" onclick="KalkShare.facebook()">Facebook</button>
+                        <button type="button" class="share-btn" onclick="KalkShare.linkedin()">LinkedIn</button>
+                        <button type="button" class="share-btn" onclick="KalkShare.copy()">Kopier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        
+        <div class="info-box">
+            <div class="info-box-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><h3>Om beregningen</h3></div>
+            <p><strong>Legg til mva:</strong> beløp uten mva × (1 + sats). <strong>Trekk ut mva:</strong> beløp med mva ÷ (1 + sats). Ved 25 % betyr det × 1,25 og ÷ 1,25.</p>
+            <p><strong>Flere varelinjer:</strong> legg inn flere beløp med ulik sats, for eksempel mat (15 %) og tjenester (25 %) på samme faktura. Du får grunnlag og mva for hver sats, slik det skal stå på fakturaen. Trykk på kopier-ikonet for å lime inn et beløp i faktura eller regneark.</p>
+            <p>Beløpene vises med øre. På kvitteringer og fakturaer rundes ofte totalbeløpet av til nærmeste hele krone.</p>
+        </div>
+        
+        <div class="seo-content">
+            <h2>🧾 Mva-satser i Norge 2026</h2>
+            <p>Merverdiavgift (mva, ofte kalt moms) legges på de fleste varer og tjenester som selges i Norge. Det finnes tre satser i 2026, i tillegg til omsetning som er fritatt (0 %). Regjeringens budsjettforslag for 2027 holder satsene uendret.</p>
+            <table class="info-table">
+                <thead><tr><th>Sats</th><th>Gjelder blant annet</th><th>Andel av pris inkl. mva</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="rate-badge">25 %</span></td><td>De fleste varer og tjenester (generell sats)</td><td>20 %</td></tr>
+                    <tr><td><span class="rate-badge">15 %</span></td><td>Mat og alkoholfri drikke, vann og avløp</td><td>13,04 %</td></tr>
+                    <tr><td><span class="rate-badge">12 %</span></td><td>Persontransport, hotell og overnatting, kino, en del kultur-, sports- og fornøyelsestilbud</td><td>10,71 %</td></tr>
+                    <tr><td><span class="rate-badge">0 %</span></td><td>Fritatt omsetning, for eksempel eksport, aviser og bøker</td><td>0 %</td></tr>
+                </tbody>
+            </table>
+            <div class="callout info">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Mva på vann og avløp ble 15 % i 2025</div>
+                    <p class="callout-text">Fra 1. juli 2025 ble satsen for vann- og avløpstjenester satt ned fra 25 % til 15 %. Det kan du se på det kommunale gebyret ditt.</p>
+                </div>
+            </div>
+
+            <h2>🧮 Slik regner du ut mva for hånd</h2>
+            <p>Den vanligste feilen er å regne 25 % av prisen <em>inkludert</em> mva når du skal finne avgiften. Det gir for høyt svar.</p>
+            <table class="info-table">
+                <thead><tr><th>Oppgave</th><th>Formel (25 %)</th><th>Eksempel</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Legge til mva</strong></td><td><span class="formula">eks. mva × 1,25</span></td><td>800 kr × 1,25 = 1 000 kr</td></tr>
+                    <tr><td><strong>Finne pris uten mva</strong></td><td><span class="formula">inkl. mva ÷ 1,25</span></td><td>1 000 kr ÷ 1,25 = 800 kr</td></tr>
+                    <tr><td><strong>Finne mva-beløpet</strong></td><td><span class="formula">inkl. mva × 0,20</span></td><td>1 000 kr × 0,20 = 200 kr</td></tr>
+                </tbody>
+            </table>
+            <div class="callout warning">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Vanlig feil: 1 000 × 25 % = 250 kr</div>
+                    <p class="callout-text">Når 1 000 kr allerede inkluderer mva, er avgiften 200 kr, ikke 250 kr. Del alltid på 1,25 først. For 15 % deler du på 1,15, og for 12 % på 1,12.</p>
+                </div>
+            </div>
+
+            <h2>📋 Mva for deg som driver for deg selv</h2>
+            <div class="collapsible open" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header" aria-expanded="true"><span class="collapsible-title">Når må jeg registrere meg i Merverdiavgiftsregisteret?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Du må registrere virksomheten når avgiftspliktig omsetning og uttak går over <strong>50 000 kroner i løpet av en periode på 12 måneder</strong> (merverdiavgiftsloven § 2-1). Før du er registrert, skal du ikke legge mva på fakturaene dine, og du får heller ikke fradrag for mva på innkjøp.</p></div>
+            </div>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Hva er inngående og utgående mva?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p><strong>Utgående mva</strong> er avgiften du legger på det du selger. <strong>Inngående mva</strong> er avgiften du betaler når du kjøper inn til virksomheten. I mva-meldingen betaler du differansen til staten, eller du får penger tilbake hvis inngående mva er størst.</p></div>
+            </div>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Hva er forskjellen på fritatt og unntatt?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p><strong>Fritatt</strong> omsetning (0 %) er innenfor mva-systemet: du legger ikke på mva, men får fradrag for mva på innkjøp. Eksempler er eksport, aviser og bøker.</p><p><strong>Unntatt</strong> omsetning er utenfor mva-systemet, for eksempel helsetjenester, undervisning og finansielle tjenester. Da legger du ikke på mva, og du får heller ikke fradrag for mva på innkjøp.</p></div>
+            </div>
+
+            <h2>❓ Ofte stilte spørsmål</h2>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Hvordan trekker jeg ut mva fra en pris?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Del prisen inkludert mva på 1,25 for å finne beløpet uten mva (ved 25 % sats). Mva-beløpet er prisen minus dette, eller prisen ganget med 0,2. Eksempel: 1 000 kr inkl. mva gir 800 kr eks. mva og 200 kr i mva.</p></div>
+            </div>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Hvorfor er mva 20 % av prisen og ikke 25 %?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Satsen på 25 % regnes av prisen uten mva. Når mva er lagt til, utgjør avgiften 25/125 = 20 % av totalprisen. Ved 15 % sats er andelen 13,04 %, og ved 12 % er den 10,71 %.</p></div>
+            </div>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Hvilke mva-satser gjelder i Norge i 2026?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Generell sats er 25 %. Mat og alkoholfri drikke, samt vann og avløp, har 15 %. Persontransport, overnatting, kino og en del kultur- og opplevelsestilbud har 12 %.</p></div>
+            </div>
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Må jeg registrere meg for mva som enkeltpersonforetak?</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="collapsible-content"><p>Du må registrere deg i Merverdiavgiftsregisteret når avgiftspliktig omsetning og uttak overstiger 50 000 kroner i løpet av en periode på 12 måneder. Under grensen skal du ikke legge mva på fakturaene.</p></div>
+            </div>
+
+            <div class="callout tip">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                <div class="callout-content">
+                    <div class="callout-title">Tips: Regn timeprisen før mva</div>
+                    <p class="callout-text">Som frilanser bør du sette timeprisen uten mva og legge avgiften på fakturaen etterpå. Bruk <a href="timelonn-frilanser.html">timelønnskalkulatoren for frilansere</a> for å finne riktig pris.</p>
+                </div>
+            </div>
+
+            <!-- Kilder og sist oppdatert -->
+            <section class="sources-box" aria-labelledby="kilder-tittel">
+                <div class="sources-box-header">
+                    <h2 id="kilder-tittel">Kilder</h2>
+                    <span class="sources-updated">Sist oppdatert november 2026</span>
+                </div>
+                <ul>
+                <li><a href="https://www.regjeringen.no/no/tema/okonomi-og-budsjett/skatter-og-avgifter/avgiftssatser-2026/id3121982/" target="_blank" rel="noopener">Regjeringen: Avgiftssatser 2026</a> – mva-satsene 25, 15 og 12 %</li>
+                <li><a href="https://www.regjeringen.no/no/tema/okonomi-og-budsjett/skatter-og-avgifter/skatte-og-avgiftssatser/avgiftssatser-2027/id3173439/" target="_blank" rel="noopener">Regjeringen: Avgiftssatser i 2026 og forslag for 2027</a> – satsene foreslås uendret for 2027</li>
+                <li><a href="https://lovdata.no/lov/2009-06-19-58" target="_blank" rel="noopener">Lovdata: Merverdiavgiftsloven</a> – § 2-1 om registreringsgrensen på 50 000 kr, kapittel 5 og 6 om satser og fritak</li>
+                </ul>
+                <p class="sources-box-footer">Kalkulatornorge.no er ikke tilknyttet Skatteetaten, NAV eller andre offentlige etater, og resultatene er estimater. Fant du en feil? <a href="kontakt.html">Gi beskjed</a> · <a href="om-oss.html">Slik lages kalkulatorene</a></p>
+            </section>
+
+            <h2>🔗 Relaterte kalkulatorer</h2>
+            <div class="related-grid">
+                <a href="prosent.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 16 16" fill="none"><path d="M12.6 0.6L15.4 3.4L3.4 15.4L0.6 12.6L12.6 0.6ZM4 0.5C5.93 0.5 7.5 2.07 7.5 4C7.5 5.93 5.93 7.5 4 7.5C2.07 7.5 0.5 5.93 0.5 4C0.5 2.07 2.07 0.5 4 0.5ZM12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5C10.07 15.5 8.5 13.93 8.5 12C8.5 10.07 10.07 8.5 12 8.5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Prosentkalkulator</h4><p>Prosent, rabatt og endring</p></div></a>
+                <a href="timelonn-frilanser.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 16" fill="none"><path d="M0 0H2V14H18V16H0V0ZM4 6H7V12H4V6ZM8 2H11V12H8V2ZM12 8H15V12H12V8Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Timelønn Frilansere</h4><p>Finn riktig timepris</p></div></a>
+                <a href="arbeidsgiveravgift.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 18 15" fill="none"><path d="M7 9H11V8H18V14.5C18 14.7761 17.7761 15 17.5 15H0.5C0.223858 15 0 14.7761 0 14.5V8H7V9ZM11 2V1H7V2H11ZM17.5 2C17.7761 2 18 2.22386 18 2.5V7H0V2.5C0 2.22386 0.223858 2 0.5 2H6V0H12V2H17.5Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Arbeidsgiveravgift</h4><p>Avgift etter sone</p></div></a>
+                <a href="skatt.html" class="related-card"><div class="related-card-icon"><svg viewBox="0 0 17 16" fill="none"><path d="M10.0244 4C10.0815 4.01814 13.5221 5.12759 15.0039 9.45508C16.3797 13.4731 16.0051 15.967 16 16H0.0654297C0.0604077 15.9735 -0.373679 13.6483 1.06152 9.45508C2.49841 5.25716 6.00772 4.01139 6.04004 4H10.0244ZM7.58301 7.70996C7.2283 7.76079 6.94283 7.86439 6.72754 8.02246C6.41487 8.25113 6.25781 8.58694 6.25781 9.03027C6.25783 9.27287 6.29547 9.47852 6.37012 9.64648C6.44947 9.81418 6.57781 9.95674 6.75488 10.0732C6.9321 10.1897 7.17275 10.2976 7.47559 10.3955C7.70389 10.4654 7.88946 10.5237 8.0293 10.5703C8.17311 10.6168 8.27855 10.6679 8.34375 10.7236C8.41339 10.7796 8.44921 10.8573 8.44922 10.9551C8.44922 11.0948 8.38742 11.1864 8.2666 11.2285C8.1501 11.2657 7.97467 11.2841 7.74219 11.2842C7.51856 11.2842 7.27767 11.2538 7.02148 11.1934C6.76518 11.1328 6.53106 11.0529 6.32129 10.9551V12.04C6.51236 12.1285 6.74359 12.1988 7.01367 12.25C7.19563 12.2813 7.3863 12.3003 7.58301 12.3105V13.25H8.58301V12.2559C8.88419 12.196 9.13005 12.0952 9.31738 11.9492C9.63426 11.6973 9.79297 11.3654 9.79297 10.9551C9.79296 10.7219 9.75838 10.5139 9.68848 10.332C9.61854 10.1455 9.48475 9.98171 9.28906 9.8418C9.09791 9.70197 8.81729 9.58327 8.44922 9.48535C8.13263 9.40155 7.91033 9.33352 7.78418 9.28223C7.66296 9.22628 7.60265 9.13994 7.60254 9.02344C7.60254 8.8881 7.67467 8.80415 7.81934 8.77148C7.96373 8.73898 8.13903 8.7217 8.34375 8.72168C8.52083 8.72174 8.71079 8.74105 8.91113 8.77832C9.11147 8.81567 9.32208 8.8783 9.54102 8.9668V7.875C9.37795 7.82376 9.16283 7.77729 8.89746 7.73535C8.79199 7.7184 8.68621 7.70639 8.58301 7.69629V6.75H7.58301V7.70996ZM10.0322 3H6.03223L4.03223 0H12.0322L10.0322 3Z" fill="#C4533A"/></svg></div><div class="related-card-text"><h4>Skattekalkulator</h4><p>Detaljert skatteberegning</p></div></a>
+            </div>
+            
+            <div class="disclaimer"><p><strong>Viktig:</strong> Kalkulatoren regner ut mva med satsen du velger. Hvilken sats som gjelder for en bestemt vare eller tjeneste, avgjøres av merverdiavgiftsloven. Er du usikker, sjekk med Skatteetaten eller regnskapsføreren din.</p></div>
+        </div>
+
+        <!-- AD UNIT 2 GOES HERE -->
+            <div class="ad-container">
+                <span class="ad-label">Annonse</span>
+                <!-- Calculator - Bottom Page -->
+                <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4100900262694764"
+                data-ad-slot="7800443206"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="/" class="footer-link">Alle kalkulatorer</a>
+                <a href="/guider/" class="footer-link">Guider</a>
+                <a href="om-oss.html" class="footer-link">Om oss</a>
+                <a href="kontakt.html" class="footer-link">Kontakt</a>
+                <a href="personvern.html" class="footer-link">Personvern</a>
+                <a href="https://github.com/qazi5313/kalkulatornorge" class="footer-link">GitHub</a>
+            </div>
+            <p class="footer-copyright">© 2026 Kalkulatornorge.no - Laget med <span class="heart">❤️</span> for norske brukere</p>
+        </div>
+    </footer>
+    
+    <script>
+        var mode = 'add';
+        var COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        function fmt(n) { return n.toLocaleString('nb-NO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '\u00a0kr'; }
+        function plain(n) { return (Math.round(n * 100) / 100).toFixed(2).replace('.', ','); }
+        function pct(n) { return (Math.round(n * 100) / 100).toLocaleString('nb-NO') + '\u00a0%'; }
+        function parse(v) { return v === '' || v == null ? NaN : parseFloat(String(v).replace(',', '.')); }
+        function num(id) { return parse(document.getElementById(id).value); }
+        function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+        function setMode(m) {
+            mode = m;
+            document.querySelectorAll('.seg button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-mode') === m); });
+            document.getElementById('singleWrap').style.display = m === 'lines' ? 'none' : 'block';
+            document.getElementById('linesWrap').style.display = m === 'lines' ? 'block' : 'none';
+            if (m !== 'lines') {
+                document.getElementById('amountLabel').textContent = m === 'add' ? 'Beløp uten mva (kr)' : 'Beløp med mva (kr)';
+                document.getElementById('amountHint').textContent = m === 'add' ? 'Prisen før merverdiavgift er lagt til' : 'Prisen du betaler, inkludert merverdiavgift';
+            } else if (!document.querySelector('.line-row')) { addLine(); addLine(); }
+            showError('');
+            calculate(false);
+        }
+        function showError(msg) { var el = document.getElementById('formError'); el.textContent = msg; el.style.display = msg ? 'block' : 'none'; }
+        function addLine() {
+            var wrap = document.getElementById('lines');
+            var i = wrap.children.length + 1;
+            var row = document.createElement('div');
+            row.className = 'line-row';
+            row.innerHTML = '<input type="text" class="form-input line-desc" placeholder="Beskrivelse (valgfritt)" aria-label="Beskrivelse linje ' + i + '">' +
+                '<input type="number" class="form-input line-amount" placeholder="Beløp" min="0" step="any" inputmode="decimal" aria-label="Beløp linje ' + i + '">' +
+                '<select class="form-select line-rate" aria-label="Mva-sats linje ' + i + '"><option value="25">25 %</option><option value="15">15 %</option><option value="12">12 %</option><option value="0">0 %</option></select>' +
+                '<button type="button" class="line-remove" aria-label="Fjern linje ' + i + '">×</button>';
+            row.querySelector('.line-remove').addEventListener('click', function () {
+                if (wrap.children.length > 1) row.remove(); else { row.querySelector('.line-amount').value = ''; row.querySelector('.line-desc').value = ''; }
+                calculate(false);
+            });
+            row.querySelectorAll('input, select').forEach(function (el) {
+                el.addEventListener('input', function () { calculate(false); });
+                el.addEventListener('change', function () { calculate(false); });
+                el.addEventListener('keypress', function (e) { if (e.key === 'Enter') calculate(true); });
+            });
+            wrap.appendChild(row);
+        }
+        function copyCell(value) { return '<span>' + fmt(value) + '</span><button type="button" class="copy-btn" data-copy="' + plain(value) + '" aria-label="Kopier ' + plain(value) + '">' + COPY_SVG + '</button>'; }
+        function render(rows, eks, mva, inkl, totalLabel, totalValue) {
+            document.getElementById('resultRows').innerHTML = rows.map(function (r) {
+                return '<tr' + (r.hl ? ' class="highlight"' : '') + '><td>' + esc(r.label) + '</td><td>' + copyCell(r.value) + '</td></tr>';
+            }).join('');
+            document.getElementById('totalLabel').textContent = totalLabel;
+            document.getElementById('resultTotal').textContent = fmt(totalValue);
+            document.getElementById('totalSub').textContent = 'Herav mva ' + fmt(mva);
+            var share = inkl > 0 ? mva / inkl * 100 : 0;
+            document.getElementById('resultAndel').textContent = pct(share);
+            document.getElementById('barEks').style.width = (100 - share) + '%';
+            document.getElementById('barMva').style.width = share + '%';
+            document.getElementById('legEks').textContent = 'Uten mva ' + pct(100 - share);
+            document.getElementById('legMva').textContent = 'Mva ' + pct(share);
+        }
+        function hide() { document.getElementById('results').style.display = 'none'; }
+        function calculate(fromButton) {
+            var rows, eks = 0, mva = 0, inkl = 0, totalLabel, totalValue;
+            if (mode === 'lines') {
+                var basis = document.getElementById('linesBasis').value, byRate = {}, count = 0, bad = false;
+                document.querySelectorAll('.line-row').forEach(function (row) {
+                    var a = parse(row.querySelector('.line-amount').value);
+                    if (isNaN(a)) return;
+                    if (a < 0) { bad = true; return; }
+                    var r = parseFloat(row.querySelector('.line-rate').value) / 100;
+                    var e = basis === 'eks' ? a : a / (1 + r);
+                    var k = String(r * 100);
+                    byRate[k] = byRate[k] || { eks: 0, mva: 0 };
+                    byRate[k].eks += e; byRate[k].mva += e * r; count++;
+                });
+                if (bad) { showError('Beløp kan ikke være negative.'); hide(); return; }
+                if (!count) { if (fromButton) showError('Skriv inn beløp på minst én linje.'); hide(); return; }
+                rows = [];
+                Object.keys(byRate).sort(function (x, y) { return y - x; }).forEach(function (k) {
+                    rows.push({ label: 'Grunnlag ' + k + '\u00a0%', value: byRate[k].eks });
+                    rows.push({ label: 'Mva ' + k + '\u00a0%', value: byRate[k].mva, hl: true });
+                    eks += byRate[k].eks; mva += byRate[k].mva;
+                });
+                inkl = eks + mva;
+                rows.push({ label: 'Sum uten mva', value: eks });
+                rows.push({ label: 'Sum mva', value: mva, hl: true });
+                totalLabel = 'Totalt inkludert mva'; totalValue = inkl;
+            } else {
+                var amount = num('amount');
+                var rateSel = document.getElementById('rate').value;
+                var rate = rateSel === 'custom' ? num('customRate') : parseFloat(rateSel);
+                if (isNaN(amount) || amount <= 0) { if (fromButton) showError('Skriv inn et beløp større enn 0.'); hide(); return; }
+                if (isNaN(rate) || rate < 0 || rate > 100) { if (fromButton || rateSel === 'custom') showError('Skriv inn en sats mellom 0 og 100 %.'); hide(); return; }
+                var r = rate / 100;
+                if (mode === 'add') { eks = amount; inkl = amount * (1 + r); } else { inkl = amount; eks = amount / (1 + r); }
+                mva = inkl - eks;
+                rows = [{ label: 'Beløp uten mva', value: eks }, { label: 'Mva (' + pct(rate) + ')', value: mva, hl: true }, { label: 'Beløp med mva', value: inkl }];
+                totalLabel = mode === 'add' ? 'Pris inkludert mva' : 'Pris uten mva';
+                totalValue = mode === 'add' ? inkl : eks;
+            }
+            showError('');
+            render(rows, eks, mva, inkl, totalLabel, totalValue);
+            var res = document.getElementById('results');
+            var wasHidden = res.style.display !== 'block';
+            res.style.display = 'block';
+            if (fromButton && wasHidden) res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        var toastTimer;
+        function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('show'); }, 1600); }
+        function legacyCopy(text) {
+            var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.opacity = '0'; ta.style.fontSize = '16px';
+            document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+            var done = false; try { done = document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
+            return done;
+        }
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text).catch(function () { if (!legacyCopy(text)) throw new Error('copy'); });
+            }
+            return legacyCopy(text) ? Promise.resolve() : Promise.reject(new Error('copy'));
+        }
+        document.getElementById('resultRows').addEventListener('click', function (e) {
+            var btn = e.target.closest('.copy-btn');
+            if (!btn) return;
+            copyText(btn.getAttribute('data-copy')).then(function () { toast('Kopiert: ' + btn.getAttribute('data-copy')); }, function () { toast('Kunne ikke kopiere'); });
+        });
+        document.getElementById('rate').addEventListener('change', function () {
+            document.getElementById('customWrap').style.display = this.value === 'custom' ? 'block' : 'none';
+            calculate(false);
+        });
+        document.getElementById('linesBasis').addEventListener('change', function () { calculate(false); });
+        ['amount', 'customRate'].forEach(function (id) {
+            var el = document.getElementById(id);
+            el.addEventListener('input', function () { calculate(false); });
+            el.addEventListener('keypress', function (e) { if (e.key === 'Enter') calculate(true); });
+        });
+
+        function toggleDropdown() { document.getElementById('dropdownMenu').classList.toggle('open'); }
+        document.addEventListener('click', function(e) { const dropdown = document.getElementById('dropdownMenu'); if (!dropdown.contains(e.target)) { dropdown.classList.remove('open'); } });
+        function toggleCollapsible(element) {
+            // Only the question line opens/closes the box; clicks inside the answer do nothing
+            var e = window.event;
+            if (e && e.target && e.target.closest && !e.target.closest('.collapsible-header')) return;
+            var isOpen = element.classList.toggle('open');
+            var header = element.querySelector('.collapsible-header');
+            if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        }
+    </script>
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "MVA-kalkulator 2026",
+  "description": "Legg til eller trekk ut merverdiavgift (moms) med norske satser på 25 %, 15 % og 12 %.",
+  "url": "https://kalkulatornorge.no/mva.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "nb-NO",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "NOK"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Kalkulatornorge.no",
+    "url": "https://kalkulatornorge.no"
+  }
+}
+</script>
+</body>
+</html>
