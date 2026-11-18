@@ -99,12 +99,52 @@
         .calc-page .header-content { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
         .seg { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .seg button { flex: 1 1 auto; padding: 10px 14px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); border-radius: 10px; font-family: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
-        .seg button:hover { border-color: var(--color-primary); }
+        @media (hover: hover) { .seg button:hover { border-color: var(--color-primary); } }
         .seg button[aria-pressed="true"] { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
         .form-error { display: none; color: var(--color-error, #b42318); font-size: 0.85rem; margin: -4px 0 12px 0; }
         .result-sentence { padding: 16px 20px; font-size: 0.95rem; color: var(--color-text); line-height: 1.6; }
-        #results .results-table td.formula { white-space: normal; overflow-wrap: anywhere; }
+        #results .results-table td.formula { white-space: normal; overflow-wrap: anywhere; font-weight: 500; font-size: 0.8rem; }
         .formula { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.85rem; }
+        .vbar { margin: 20px 0 4px; }
+        .vbar-track { display: flex; height: 18px; border-radius: 9px; overflow: hidden; background: var(--color-background-alt); border: 1px solid var(--color-border); }
+        .vbar-seg { height: 100%; transition: width 0.35s ease; }
+        .vbar-seg.base { background: var(--color-text-muted); opacity: 0.55; }
+        .vbar-seg.accent { background: var(--color-primary); }
+        .vbar-legend { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-top: 8px; font-size: 0.85rem; color: var(--color-text-secondary); }
+        .vbar-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+        .vbar-legend .dot.base { background: var(--color-text-muted); opacity: 0.55; }
+        .vbar-legend .dot.accent { background: var(--color-primary); }
+        .cmp { margin: 8px 0 20px; display: grid; gap: 10px; }
+        .cmp-row { display: grid; grid-template-columns: minmax(64px, auto) 1fr; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--color-text-secondary); }
+        .cmp-fill { height: 26px; border-radius: 6px; min-width: 4px; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px; box-sizing: border-box; font-weight: 600; font-size: 0.8rem; white-space: nowrap; transition: width 0.35s ease; }
+        .cmp-fill.base { background: var(--color-background-alt); border: 1px solid var(--color-border); color: var(--color-text); }
+        .cmp-fill.accent { background: var(--color-primary); color: #fff; }
+        .cmp-fill.small { justify-content: flex-start; background: transparent; border: none; }
+        .cmp-fill.small .cmp-pill { display: inline-block; height: 26px; min-width: 4px; border-radius: 6px; margin-right: 8px; }
+        .cmp-pill.base { background: var(--color-background-alt); border: 1px solid var(--color-border); box-sizing: border-box; }
+        .cmp-pill.accent { background: var(--color-primary); }
+        .copy-btn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin: -6px -6px -6px 6px; vertical-align: middle; border: none; background: none; color: var(--color-text-muted); border-radius: 8px; cursor: pointer; }
+        .copy-btn:hover, .copy-btn:focus-visible { color: var(--color-primary); background: var(--color-primary-light); }
+        .copy-btn svg { width: 16px; height: 16px; }
+        .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--color-text); color: var(--color-surface); padding: 10px 18px; border-radius: 10px; font-size: 0.9rem; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 2000; }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .lines { display: grid; gap: 12px; margin-bottom: 12px; }
+        .line-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1fr) 44px; gap: 8px; align-items: center; }
+        .line-row .form-input, .line-row .form-select { padding: 12px; }
+        .line-remove { width: 44px; height: 44px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text-secondary); border-radius: 10px; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+        .line-remove:hover { border-color: var(--color-error); color: var(--color-error); }
+        .add-line { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px dashed var(--color-border); background: none; color: var(--color-primary); border-radius: 10px; font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+        .add-line:active, .add-line:focus-visible { border-color: var(--color-primary); background: var(--color-primary-lighter); }
+        @media (max-width: 560px) {
+            .line-row { grid-template-columns: minmax(0, 1fr) 88px; grid-template-areas: "desc rm" "amt rate"; padding-bottom: 12px; border-bottom: 1px solid var(--color-border-light); }
+            .line-row .line-desc { grid-area: desc; }
+            .line-row .line-amount { grid-area: amt; }
+            .line-row .line-rate { grid-area: rate; }
+            .line-row .line-remove { grid-area: rm; justify-self: end; }
+            .seg { display: grid; grid-template-columns: 1fr 1fr; }
+            .seg button { padding: 10px 8px; }
+            .seg button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+        }
         .examples-list li { margin-bottom: 6px; }
     </style>
 </head>
@@ -162,12 +202,12 @@
         
         <div class="calc-box">
             <div class="seg" role="group" aria-label="Velg type prosentregning">
-                <button type="button" data-mode="of" aria-pressed="true" onclick="setMode('of')">X % av et tall</button>
-                <button type="button" data-mode="share" aria-pressed="false" onclick="setMode('share')">Hvor mange %</button>
-                <button type="button" data-mode="change" aria-pressed="false" onclick="setMode('change')">Endring i %</button>
-                <button type="button" data-mode="add" aria-pressed="false" onclick="setMode('add')">Legg til %</button>
-                <button type="button" data-mode="sub" aria-pressed="false" onclick="setMode('sub')">Trekk fra % (rabatt)</button>
-                <button type="button" data-mode="orig" aria-pressed="false" onclick="setMode('orig')">Finn opprinnelig verdi</button>
+                <button type="button" data-mode="of" aria-pressed="true" onclick="setMode('of')">X&nbsp;% av et tall</button>
+                <button type="button" data-mode="share" aria-pressed="false" onclick="setMode('share')">Hvor mange&nbsp;%</button>
+                <button type="button" data-mode="change" aria-pressed="false" onclick="setMode('change')">Endring i&nbsp;%</button>
+                <button type="button" data-mode="add" aria-pressed="false" onclick="setMode('add')">Legg til&nbsp;%</button>
+                <button type="button" data-mode="sub" aria-pressed="false" onclick="setMode('sub')">Trekk fra&nbsp;%</button>
+                <button type="button" data-mode="orig" aria-pressed="false" onclick="setMode('orig')">Før endring</button>
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -191,6 +231,7 @@
             
             <div class="results-section" id="results">
                 <p class="result-sentence" id="resultSentence"></p>
+                <div class="cmp" id="cmp" aria-hidden="true"></div>
                 <table class="results-table">
                     <thead><tr><th>Beskrivelse</th><th>Verdi</th></tr></thead>
                     <tbody>
@@ -277,7 +318,7 @@
             <h2>🏷️ Prosent i hverdagen</h2>
             <div class="collapsible open" onclick="toggleCollapsible(this)">
                 <button class="collapsible-header" aria-expanded="true"><span class="collapsible-title">Rabatt og salg</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-                <div class="collapsible-content"><p>For å finne prisen etter rabatt, ganger du med (1 − rabatt). 30 % av 1 299 kr gir 1 299 × 0,7 = 909,30 kr. Vil du vite hva varen kostet før rabatten, velger du «Finn opprinnelig verdi».</p></div>
+                <div class="collapsible-content"><p>For å finne prisen etter rabatt, ganger du med (1 − rabatt). 30 % av 1 299 kr gir 1 299 × 0,7 = 909,30 kr. Vil du vite hva varen kostet før rabatten, velger du «Før endring».</p></div>
             </div>
             <div class="collapsible" onclick="toggleCollapsible(this)">
                 <button class="collapsible-header" aria-expanded="false"><span class="collapsible-title">Mva og moms</span><svg class="collapsible-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -404,6 +445,20 @@
             document.getElementById('extraLabel').textContent = label || '';
             document.getElementById('extraValue').textContent = value || '';
         }
+        function bars(list) {
+            var box = document.getElementById('cmp');
+            var max = Math.max.apply(null, list.map(function (x) { return Math.abs(x.v); }));
+            if (!isFinite(max) || max === 0 || list.some(function (x) { return x.v < 0; })) { box.style.display = 'none'; box.innerHTML = ''; return; }
+            box.style.display = '';
+            box.innerHTML = list.map(function (x) {
+                var w = Math.max(x.v / max * 100, 1.5);
+                var cls = x.accent ? 'accent' : 'base';
+                var fill = w >= 38
+                    ? '<div class="cmp-fill ' + cls + '" style="width:' + w + '%">' + n(x.v) + '</div>'
+                    : '<div class="cmp-fill small"><span class="cmp-pill ' + cls + '" style="width:' + w + '%"></span>' + n(x.v) + '</div>';
+                return '<div class="cmp-row"><span>' + x.label + '</span>' + fill + '</div>';
+            }).join('');
+        }
         function calculate(fromButton) {
             var a = num('a'), b = num('b'), res = document.getElementById('results');
             if (isNaN(a) || isNaN(b)) {
@@ -449,6 +504,13 @@
                 label = 'Verdi før endring';
                 extra(up ? 'Økningen var' : 'Reduksjonen var', n(Math.abs(out - a)));
             }
+            var cmp;
+            if (mode === 'of') cmp = [{ label: 'Hele tallet', v: b }, { label: n(a) + '\u00a0%', v: out, accent: true }];
+            else if (mode === 'share') cmp = [{ label: 'Helheten', v: b }, { label: 'Delen', v: a, accent: true }];
+            else if (mode === 'change') cmp = [{ label: 'Fra', v: a }, { label: 'Til', v: b, accent: true }];
+            else if (mode === 'orig') cmp = [{ label: 'Før', v: out }, { label: 'Etter', v: a, accent: true }];
+            else cmp = [{ label: 'Før', v: a }, { label: 'Etter', v: out, accent: true }];
+            bars(cmp);
             showError('');
             document.getElementById('resultSentence').textContent = sentence;
             document.getElementById('resultFormula').textContent = formula;
